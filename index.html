@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wishlist ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #F7F4EF; font-family: 'Noto Sans JP', 'Helvetica Neue', sans-serif; min-height: 100vh; }
+  
+  /* Header */
+  #header { background: #1A1814; padding: 20px 20px 16px; position: sticky; top: 0; z-index: 10; }
+  #header-inner { max-width: 680px; margin: 0 auto; }
+  #header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  #app-title { font-size: 20px; font-weight: 800; color: #FDFBF8; letter-spacing: -0.02em; }
+  #app-subtitle { font-size: 12px; color: #8C8880; margin-top: 2px; }
+  #btn-add { background: #C4A35A; color: #1A1814; border: none; border-radius: 11px; padding: 10px 18px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; letter-spacing: 0.02em; }
+  #btn-add:hover { background: #D4B36A; }
+  #search { width: 100%; padding: 9px 14px; border-radius: 10px; border: none; background: #2C2924; color: #FDFBF8; font-size: 13px; outline: none; font-family: inherit; }
+  #search::placeholder { color: #5C5A55; }
+
+  /* Tabs */
+  #tabs-wrap { background: #FDFBF8; border-bottom: 1px solid #EAE6E0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #tabs { max-width: 680px; margin: 0 auto; display: flex; padding: 0 12px; }
+  .tab { padding: 11px 12px; font-size: 12px; font-weight: 400; color: #8C8880; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: inherit; transition: color 0.15s; }
+  .tab.active { font-weight: 700; color: #1A1814; border-bottom-color: #C4A35A; }
+  .tab-count { margin-left: 4px; font-size: 10px; background: #EAE6E0; color: #8C8880; border-radius: 10px; padding: 1px 5px; }
+  .tab.active .tab-count { background: #C4A35A; color: #1A1814; }
+
+  /* Main */
+  #main { max-width: 680px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* Cards */
+  .card { background: #fff; border: 1px solid #EAE6E0; border-radius: 14px; padding: 15px 16px; display: flex; flex-direction: column; gap: 9px; transition: opacity 0.2s; margin-bottom: 10px; }
+  .card.done { background: #F7F5F2; opacity: 0.6; }
+  .card-top { display: flex; align-items: flex-start; gap: 10px; }
+  .check-btn { width: 20px; height: 20px; min-width: 20px; border-radius: 6px; border: 2px solid #CCCAC5; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; margin-top: 2px; transition: all 0.15s; }
+  .check-btn.checked { border-color: #7EB8A0; background: #7EB8A0; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-title { font-weight: 600; font-size: 15px; color: #1A1814; line-height: 1.4; word-break: break-word; }
+  .card.done .card-title { text-decoration: line-through; }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; align-items: center; }
+  .badge-cat { font-size: 11px; color: #8C8880; background: #F0EDE8; border-radius: 20px; padding: 2px 8px; }
+  .badge-pri { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 20px; }
+  .delete-btn { background: none; border: none; color: #C9C5BE; cursor: pointer; font-size: 18px; padding: 0 2px; line-height: 1; flex-shrink: 0; }
+  .delete-btn:hover { color: #E8503A; }
+  .card-memo { font-size: 13px; color: #6E6B65; line-height: 1.6; padding-left: 30px; }
+  .card-link { display: flex; align-items: center; gap: 7px; margin-left: 30px; padding: 7px 11px; background: #F7F5F2; border: 1px solid #EAE6E0; border-radius: 8px; text-decoration: none; color: #3D3A35; font-size: 12px; overflow: hidden; transition: background 0.15s; }
+  .card-link:hover { background: #EEE; }
+  .card-link-domain { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+  .card-link-icon { color: #B0ACA6; flex-shrink: 0; }
+  .card-date { font-size: 11px; color: #B0ACA6; padding-left: 30px; }
+
+  /* Empty */
+  #empty { text-align: center; padding: 70px 20px; color: #B0ACA6; }
+  #empty-icon { font-size: 36px; margin-bottom: 12px; }
+  #empty-text { font-size: 14px; }
+
+  /* Done toggle */
+  #done-toggle { font-size: 12px; color: #8C8880; background: none; border: 1px solid #DDD9D2; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; margin-bottom: 14px; }
+
+  /* Modal */
+  #modal-overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
+  #modal-overlay.open { display: flex; }
+  #modal { background: #FDFBF8; border-radius: 18px; padding: 26px 24px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,0.16); display: flex; flex-direction: column; gap: 15px; max-height: 90vh; overflow-y: auto; }
+  #modal-title { font-weight: 700; font-size: 17px; color: #1A1814; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: #8C8880; margin-bottom: 6px; letter-spacing: 0.05em; }
+  .field input, .field textarea { width: 100%; padding: 9px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 14px; color: #1A1814; background: #FFF; outline: none; font-family: inherit; }
+  .field input:focus, .field textarea:focus { border-color: #C4A35A; }
+  .field textarea { resize: vertical; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; background: #F0EDE8; color: #5C5A55; border: none; transition: all 0.15s; }
+  .chip.selected { background: #1A1814; color: #FDFBF8; }
+  .chip-pri.selected-high { background: #E8503A; color: #fff; }
+  .chip-pri.selected-mid { background: #C4A35A; color: #fff; }
+  .chip-pri.selected-low { background: #7EB8A0; color: #fff; }
+  #modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  #btn-cancel { font-size: 14px; padding: 9px 18px; border-radius: 9px; background: #F0EDE8; color: #5C5A55; border: none; cursor: pointer; font-family: inherit; }
+  #btn-save { font-size: 14px; padding: 9px 22px; border-radius: 9px; background: #1A1814; color: #FDFBF8; border: none; font-weight: 600; font-family: inherit; cursor: pointer; }
+  #btn-save:disabled { opacity: 0.35; cursor: not-allowed; }
+  #btn-save:not(:disabled):hover { background: #2C2924; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div id="header">
+  <div id="header-inner">
+    <div id="header-top">
+      <div>
+        <div id="app-title">Wishlist ✦</div>
+        <div id="app-subtitle"></div>
+      </div>
+      <button id="btn-add" onclick="openModal()">＋ 追加</button>
+    </div>
+    <input id="search" type="search" placeholder="🔍  キーワードで検索..." oninput="render()">
+  </div>
+</div>
+
+<!-- Tabs -->
+<div id="tabs-wrap">
+  <div id="tabs"></div>
+</div>
+
+<!-- Main -->
+<div id="main">
+  <button id="done-toggle" onclick="toggleShowDone()" style="display:none"></button>
+  <div id="card-list"></div>
+  <div id="empty" style="display:none">
+    <div id="empty-icon">✦</div>
+    <div id="empty-text">まだアイテムがありません。「＋ 追加」から始めましょう。</div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal-overlay" onclick="overlayClick(event)">
+  <div id="modal">
+    <div id="modal-title">新しいアイテムを追加</div>
+    <div class="field">
+      <label>タイトル *</label>
+      <input id="f-title" type="text" placeholder="例：あのカフェのパスタ">
+    </div>
+    <div class="field">
+      <label>リンク（Instagram / Web / X など）</label>
+      <input id="f-url" type="url" placeholder="https://...">
+    </div>
+    <div class="field">
+      <label>カテゴリ</label>
+      <div class="chips" id="chips-cat"></div>
+    </div>
+    <div class="field">
+      <label>優先度</label>
+      <div class="chips" id="chips-pri"></div>
+    </div>
+    <div class="field">
+      <label>メモ</label>
+      <textarea id="f-memo" rows="3" placeholder="気になった理由、サイズ感など..."></textarea>
+    </div>
+    <div id="modal-actions">
+      <button id="btn-cancel" onclick="closeModal()">キャンセル</button>
+      <button id="btn-save" onclick="saveItem()" disabled>追加する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'wishlist_v1';
+const CATEGORIES = [
+  { id: 'want',  label: '欲しいもの',      emoji: '🛍' },
+  { id: 'todo',  label: 'やりたいこと',    emoji: '🗺' },
+  { id: 'food',  label: '食べたい・行きたい', emoji: '🍽' },
+  { id: 'learn', label: '学びたい',         emoji: '📖' },
+  { id: 'other', label: 'その他',           emoji: '◎' },
+];
+const PRIORITY = [
+  { id: 'high', label: '絶対',   color: '#E8503A' },
+  { id: 'mid',  label: 'いつか', color: '#C4A35A' },
+  { id: 'low',  label: '気になる', color: '#7EB8A0' },
+];
+
+let items = [];
+let filterCat = 'all';
+let showDone = false;
+let formCat = 'want';
+let formPri = 'mid';
+
+function load() {
+  try { items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { items = []; }
+}
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+function extractDomain(url) {
+  try { return new URL(url).hostname.replace('www.', ''); } catch { return null; }
+}
+function getFavicon(url) {
+  const d = extractDomain(url);
+  return d ? `https://www.google.com/s2/favicons?domain=${d}&sz=32` : null;
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtDate(iso) {
+  return new Date(iso).toLocaleDateString('ja-JP', { year:'numeric', month:'short', day:'numeric' });
+}
+
+// --- Render ---
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const active = items.filter(i => !i.done);
+  const done   = items.filter(i =>  i.done);
+
+  // subtitle
+  document.getElementById('app-subtitle').textContent =
+    `${active.length} 件未達成` + (done.length ? `　/ ${done.length} 件達成済み` : '');
+
+  // tabs
+  const tabsEl = document.getElementById('tabs');
+  const allCats = [{ id:'all', label:'すべて', emoji:'✦' }, ...CATEGORIES];
+  tabsEl.innerHTML = allCats.map(c => {
+    const cnt = c.id === 'all'
+      ? active.length
+      : items.filter(i => i.category === c.id && !i.done).length;
+    return `<button class="tab ${filterCat===c.id?'active':''}" onclick="setFilter('${c.id}')">
+      ${c.emoji} ${c.label}
+      ${cnt > 0 ? `<span class="tab-count">${cnt}</span>` : ''}
+    </button>`;
+  }).join('');
+
+  // filter
+  let visible = items.filter(i => {
+    if (!showDone && i.done) return false;
+    if (filterCat !== 'all' && i.category !== filterCat) return false;
+    if (q && !i.title.toLowerCase().includes(q) && !(i.memo||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  // done toggle btn
+  const dt = document.getElementById('done-toggle');
+  if (done.length > 0) {
+    dt.style.display = 'block';
+    dt.textContent = showDone ? '▲ 達成済みを隠す' : `▼ 達成済みを表示 (${done.length})`;
+  } else {
+    dt.style.display = 'none';
+  }
+
+  // cards
+  const list = document.getElementById('card-list');
+  const empty = document.getElementById('empty');
+  if (visible.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    document.getElementById('empty-text').textContent =
+      q ? '検索結果がありません' : 'まだアイテムがありません。「＋ 追加」から始めましょう。';
+  } else {
+    empty.style.display = 'none';
+    list.innerHTML = visible.map(item => {
+      const cat = CATEGORIES.find(c => c.id === item.category);
+      const pri = PRIORITY.find(p => p.id === item.priority);
+      const domain = extractDomain(item.url);
+      const favicon = item.url ? getFavicon(item.url) : null;
+      return `
+        <div class="card ${item.done?'done':''}">
+          <div class="card-top">
+            <button class="check-btn ${item.done?'checked':''}" onclick="toggleDone('${item.id}')" title="${item.done?'未完了に戻す':'達成済みにする'}">
+              ${item.done ? '✓' : ''}
+            </button>
+            <div class="card-body">
+              <div class="card-title">${esc(item.title)}</div>
+              <div class="card-badges">
+                ${cat ? `<span class="badge-cat">${cat.emoji} ${cat.label}</span>` : ''}
+                ${pri ? `<span class="badge-pri" style="background:${pri.color}22;color:${pri.color};border:1px solid ${pri.color}44">${pri.label}</span>` : ''}
+              </div>
+            </div>
+            <button class="delete-btn" onclick="deleteItem('${item.id}')" title="削除">×</button>
+          </div>
+          ${item.memo ? `<div class="card-memo">${esc(item.memo)}</div>` : ''}
+          ${item.url ? `
+            <a class="card-link" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
+              ${favicon ? `<img src="${favicon}" width="14" height="14" onerror="this.style.display='none'" alt="">` : ''}
+              <span class="card-link-domain">${esc(domain || item.url)}</span>
+              <span class="card-link-icon">↗</span>
+            </a>` : ''}
+          <div class="card-date">${fmtDate(item.createdAt)}</div>
+        </div>`;
+    }).join('');
+  }
+}
+
+function setFilter(id) { filterCat = id; render(); }
+function toggleShowDone() { showDone = !showDone; render(); }
+function toggleDone(id) {
+  items = items.map(i => i.id === id ? {...i, done: !i.done} : i);
+  save(); render();
+}
+function deleteItem(id) {
+  if (!confirm('削除しますか？')) return;
+  items = items.filter(i => i.id !== id);
+  save(); render();
+}
+
+// --- Modal ---
+function buildChips() {
+  document.getElementById('chips-cat').innerHTML = CATEGORIES.map(c =>
+    `<button class="chip ${formCat===c.id?'selected':''}" onclick="setFormCat('${c.id}')">${c.emoji} ${c.label}</button>`
+  ).join('');
+  document.getElementById('chips-pri').innerHTML = PRIORITY.map(p =>
+    `<button class="chip chip-pri ${formPri===p.id?'selected-'+p.id:''}" onclick="setFormPri('${p.id}')" style="${formPri===p.id?`background:${p.color};color:#fff`:''}">${p.label}</button>`
+  ).join('');
+}
+function setFormCat(id) { formCat = id; buildChips(); }
+function setFormPri(id) { formPri = id; buildChips(); }
+
+function openModal(prefillUrl) {
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-url').value = prefillUrl || '';
+  document.getElementById('f-memo').value = '';
+  formCat = 'want'; formPri = 'mid';
+  buildChips();
+  document.getElementById('btn-save').disabled = true;
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('f-title').focus(), 100);
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+function overlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+document.getElementById('f-title').addEventListener('input', function() {
+  document.getElementById('btn-save').disabled = this.value.trim() === '';
+});
+
+function saveItem() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) return;
+  const item = {
+    id: Date.now().toString(),
+    title,
+    url: document.getElementById('f-url').value.trim(),
+    memo: document.getElementById('f-memo').value.trim(),
+    category: formCat,
+    priority: formPri,
+    done: false,
+    createdAt: new Date().toISOString(),
+  };
+  items.unshift(item);
+  save(); render();
+  closeModal();
+}
+
+// URLパラメータから自動入力（ショートカット連携用）
+function checkUrlParam() {
+  const params = new URLSearchParams(window.location.search);
+  const sharedUrl = params.get('url');
+  if (sharedUrl) {
+    history.replaceState({}, '', window.location.pathname);
+    openModal(sharedUrl);
+  }
+}
+
+load();
+render();
+checkUrlParam();
+</script>
+</body>
+</html>
