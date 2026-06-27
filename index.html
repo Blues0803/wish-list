@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Life Map</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Life Map">
+<meta name="theme-color" content="#1E1A14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+JP:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
@@ -62,6 +68,73 @@ body {
 .btn-hdr.primary {
   background: var(--gold); border-color: var(--gold); color: var(--ink);
 }
+.btn-hdr.icon {
+  padding: 8px 11px; font-size: 15px;
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+  color: #8A7E64;
+}
+
+/* ── SETTINGS MODAL ── */
+#st-overlay {
+  position: fixed; inset: 0;
+  background: rgba(20,16,10,0.65);
+  z-index: 100; display: none;
+  align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+#st-overlay.open { display: flex; }
+#st-sheet {
+  background: var(--paper);
+  border-radius: 22px 22px 0 0;
+  padding: 22px 18px 44px;
+  width: 100%; max-width: 560px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.st-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--ink); letter-spacing: 0.07em;
+}
+.st-section { display: flex; flex-direction: column; gap: 8px; }
+.st-label {
+  font-size: 10px; font-weight: 700;
+  color: var(--faint); letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.st-url-box {
+  background: var(--parch2);
+  border: 1px solid var(--line);
+  border-radius: 10px; padding: 12px 14px;
+  font-size: 13px; color: var(--ink);
+  word-break: break-all; line-height: 1.5;
+  font-family: monospace;
+}
+.st-copy-btn {
+  width: 100%; padding: 11px;
+  background: var(--ink); color: var(--parch);
+  border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  letter-spacing: 0.03em;
+}
+.st-steps {
+  background: var(--parch);
+  border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.st-step {
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.st-step-num {
+  width: 22px; height: 22px; min-width: 22px;
+  background: var(--gold); color: var(--ink);
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.st-step-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
 #hdr-search {
   width: 100%; padding: 9px 14px;
   border-radius: 10px; border: none;
@@ -347,6 +420,7 @@ body {
         <div id="app-sub">—</div>
       </div>
       <div id="hdr-btns">
+        <button class="btn-hdr icon" onclick="openSettings()" title="設定">⚙</button>
         <button class="btn-hdr" onclick="openDreamModal()">夢を記す</button>
         <button class="btn-hdr primary" onclick="openQuestModal()">＋ クエスト</button>
       </div>
@@ -443,6 +517,40 @@ body {
       <button class="btn-cancel" onclick="closeDreamModal()">もどる</button>
       <button class="btn-commit" id="dm-save" onclick="saveDream()" disabled>地図に刻む</button>
     </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div id="st-overlay" onclick="stOverlayClick(event)">
+  <div id="st-sheet">
+    <div class="st-title">⚙ 設定</div>
+    <div class="st-section">
+      <div class="st-label">このアプリのURL</div>
+      <div class="st-url-box" id="st-url-display"></div>
+      <button class="st-copy-btn" onclick="copyUrl()">URLをコピー</button>
+    </div>
+    <div class="st-section">
+      <div class="st-label">ホーム画面にアイコンを追加する方法</div>
+      <div class="st-steps">
+        <div class="st-step">
+          <div class="st-step-num">1</div>
+          <div class="st-step-text">SafariでこのアプリのURLを開く</div>
+        </div>
+        <div class="st-step">
+          <div class="st-step-num">2</div>
+          <div class="st-step-text">画面下の共有ボタン（□↑）をタップ</div>
+        </div>
+        <div class="st-step">
+          <div class="st-step-num">3</div>
+          <div class="st-step-text">「ホーム画面に追加」をタップ</div>
+        </div>
+        <div class="st-step">
+          <div class="st-step-num">4</div>
+          <div class="st-step-text">名前を「Life Map」にして「追加」をタップ</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-cancel" style="width:100%;text-align:center;padding:12px" onclick="closeSettings()">閉じる</button>
   </div>
 </div>
 
@@ -871,6 +979,21 @@ function checkUrlParam() {
   const params = new URLSearchParams(window.location.search);
   const u = params.get('url');
   if (u) { history.replaceState({},'',window.location.pathname); setTimeout(()=>openQuestModal(decodeURIComponent(u)),300); }
+}
+
+function openSettings() {
+  document.getElementById('st-url-display').textContent = window.location.origin + window.location.pathname;
+  document.getElementById('st-overlay').classList.add('open');
+}
+function closeSettings() { document.getElementById('st-overlay').classList.remove('open'); }
+function stOverlayClick(e) { if(e.target===document.getElementById('st-overlay')) closeSettings(); }
+function copyUrl() {
+  const url = window.location.origin + window.location.pathname;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn = document.querySelector('.st-copy-btn');
+    btn.textContent = 'コピーしました ✓';
+    setTimeout(()=>{ btn.textContent = 'URLをコピー'; }, 2000);
+  });
 }
 
 load(); render(); checkUrlParam();
