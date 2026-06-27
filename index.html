@@ -2,647 +2,804 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wishlist ✦</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Life Map</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+JP:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
+:root {
+  --ink:     #1E1A14;
+  --parch:   #F4EDD8;
+  --parch2:  #EAE0C4;
+  --paper:   #FAF6EC;
+  --line:    #D8CBA8;
+  --gold:    #B8924A;
+  --gold-lt: #CFA85E;
+  --muted:   #8A7E64;
+  --faint:   #B0A07C;
+
+  --taste:    #9B6B8A;
+  --narrative:#4A7A6A;
+  --ajito:    #5A6E9A;
+  --gear:     #8A6A3A;
+  --aura:     #9A5A4A;
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #F7F4EF; font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
+body {
+  background: var(--parch);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
 
-/* Header */
-#header { background: #1A1814; padding: 20px 20px 16px; position: sticky; top: 0; z-index: 20; }
-#header-inner { max-width: 720px; margin: 0 auto; }
-#header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-#app-title { font-size: 20px; font-weight: 800; color: #FDFBF8; letter-spacing: -0.02em; }
-#app-subtitle { font-size: 12px; color: #8C8880; margin-top: 2px; }
-#header-actions { display: flex; gap: 8px; }
-.btn-gold { background: #C4A35A; color: #1A1814; border: none; border-radius: 11px; padding: 10px 16px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap; }
-.btn-outline { background: transparent; color: #C4A35A; border: 1px solid #C4A35A44; border-radius: 11px; padding: 10px 14px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap; }
-#search { width: 100%; padding: 9px 14px; border-radius: 10px; border: none; background: #2C2924; color: #FDFBF8; font-size: 13px; outline: none; font-family: inherit; }
-#search::placeholder { color: #5C5A55; }
+/* ── HEADER ── */
+#hdr {
+  background: var(--ink);
+  padding: 18px 18px 14px;
+  position: sticky; top: 0; z-index: 30;
+}
+#hdr-inner { max-width: 680px; margin: 0 auto; }
+#hdr-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
+#app-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--gold-lt);
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+#app-sub { font-size: 11px; color: #6A6050; margin-top: 3px; letter-spacing: 0.03em; }
+#hdr-btns { display: flex; gap: 7px; flex-shrink: 0; }
+.btn-hdr {
+  border: 1px solid rgba(184,146,74,0.3);
+  color: var(--gold-lt);
+  background: rgba(184,146,74,0.08);
+  border-radius: 10px; padding: 8px 13px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  letter-spacing: 0.03em; white-space: nowrap;
+}
+.btn-hdr.primary {
+  background: var(--gold); border-color: var(--gold); color: var(--ink);
+}
+#hdr-search {
+  width: 100%; padding: 9px 14px;
+  border-radius: 10px; border: none;
+  background: rgba(255,255,255,0.06);
+  color: #C8B888; font-size: 13px;
+  outline: none; font-family: inherit;
+}
+#hdr-search::placeholder { color: #4A4030; }
 
-/* View tabs */
-#view-tabs { background: #FDFBF8; border-bottom: 1px solid #EAE6E0; }
-#view-tabs-inner { max-width: 720px; margin: 0 auto; display: flex; padding: 0 16px; }
-.view-tab { padding: 11px 14px; font-size: 12px; font-weight: 400; color: #8C8880; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: inherit; }
-.view-tab.active { font-weight: 700; color: #1A1814; border-bottom-color: #C4A35A; }
+/* ── TABS ── */
+#tabs-wrap { background: var(--paper); border-bottom: 1px solid var(--line); overflow-x: auto; }
+#tabs { max-width: 680px; margin: 0 auto; display: flex; padding: 0 14px; }
+.tab {
+  padding: 10px 12px; font-size: 12px;
+  color: var(--faint); background: none;
+  border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; font-family: inherit;
+  white-space: nowrap; letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+.tab.active { font-weight: 700; color: var(--ink); border-bottom-color: var(--gold); }
 
-/* Main */
-#main { max-width: 720px; margin: 0 auto; padding: 20px 16px 80px; }
+/* ── MAIN ── */
+#main { max-width: 680px; margin: 0 auto; padding: 18px 14px 80px; }
 
-/* Budget bar */
-#budget-bar { background: #fff; border: 1px solid #EAE6E0; border-radius: 14px; padding: 16px 18px; margin-bottom: 16px; display: none; }
-#budget-bar.show { display: block; }
-.budget-title { font-size: 12px; font-weight: 700; color: #8C8880; letter-spacing: 0.06em; margin-bottom: 10px; }
-.budget-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.budget-label { font-size: 13px; color: #5C5A55; }
-.budget-amount { font-size: 15px; font-weight: 700; color: #1A1814; }
-.budget-amount.over { color: #E8503A; }
-.budget-progress { height: 6px; background: #F0EDE8; border-radius: 10px; overflow: hidden; }
-.budget-fill { height: 100%; background: #C4A35A; border-radius: 10px; transition: width 0.3s; }
-.budget-fill.over { background: #E8503A; }
-.budget-input-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
-.budget-input-row input { flex: 1; padding: 7px 10px; border: 1px solid #DDD9D2; border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; }
-.budget-input-row button { padding: 7px 14px; background: #1A1814; color: #fff; border: none; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: inherit; }
+/* ── DREAM CARDS ── */
+.dream-card {
+  border-radius: 16px; margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(30,26,20,0.1);
+  border: 1px solid var(--line);
+}
+.dream-hero {
+  height: 110px; position: relative;
+  display: flex; align-items: flex-end;
+  padding: 12px 14px; overflow: hidden;
+}
+.dream-hero-img {
+  position: absolute; inset: 0;
+  object-fit: cover; width: 100%; height: 100%;
+}
+.dream-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(20,16,10,0.75) 0%, rgba(20,16,10,0.2) 60%, transparent 100%);
+}
+.dream-realm-badge {
+  position: absolute; top: 10px; right: 10px;
+  font-family: 'EB Garamond', serif;
+  font-size: 11px; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.8);
+  background: rgba(0,0,0,0.3);
+  border-radius: 20px; padding: 3px 10px;
+  z-index: 1;
+}
+.dream-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px; font-weight: 600;
+  color: #FAF6EC; position: relative; z-index: 1;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  line-height: 1.3;
+}
+.dream-body { background: var(--paper); padding: 12px 14px; }
+.dream-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
+.dream-footer { display: flex; align-items: center; justify-content: space-between; }
+.dream-quest-stat { font-size: 11px; color: var(--gold); font-weight: 600; }
+.dream-btns { display: flex; gap: 7px; }
+.btn-sm {
+  font-size: 11px; padding: 5px 11px;
+  border-radius: 8px; cursor: pointer;
+  font-family: inherit; font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.btn-sm.ghost { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.btn-sm.gold { background: var(--gold); border: none; color: var(--ink); }
+.btn-sm.danger { background: transparent; border: 1px solid #E0A090; color: #B05040; }
 
-/* Group section */
-.group-section { margin-bottom: 20px; }
-.group-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; cursor: pointer; padding: 4px 0; }
-.group-header-left { display: flex; align-items: center; gap: 8px; }
-.group-toggle { font-size: 10px; color: #B0ACA6; transition: transform 0.2s; }
-.group-toggle.open { transform: rotate(90deg); }
-.group-name { font-size: 14px; font-weight: 700; color: #1A1814; }
-.group-count { font-size: 11px; color: #B0ACA6; background: #F0EDE8; border-radius: 10px; padding: 2px 7px; }
-.group-total { font-size: 12px; color: #C4A35A; font-weight: 600; }
-.group-body { display: flex; flex-direction: column; gap: 10px; }
-.group-body.collapsed { display: none; }
+/* realm hero gradients */
+.hero-taste     { background: linear-gradient(135deg, #4A2A44 0%, #9B6B8A 100%); }
+.hero-narrative { background: linear-gradient(135deg, #1A3A2A 0%, #4A7A6A 100%); }
+.hero-ajito     { background: linear-gradient(135deg, #1A2A4A 0%, #5A6E9A 100%); }
+.hero-gear      { background: linear-gradient(135deg, #3A2A1A 0%, #8A6A3A 100%); }
+.hero-aura      { background: linear-gradient(135deg, #3A1A14 0%, #9A5A4A 100%); }
 
-/* Subgroup */
-.subgroup-label { font-size: 11px; font-weight: 700; color: #B0ACA6; letter-spacing: 0.08em; text-transform: uppercase; margin: 12px 0 6px; padding-left: 2px; }
+/* ── QUEST SECTION ── */
+.quest-section { margin-bottom: 18px; }
+.quest-sec-hdr {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 9px; cursor: pointer; padding: 2px 0;
+}
+.quest-sec-badge {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; padding: 4px 11px;
+  border-radius: 20px;
+}
+.quest-sec-count { font-size: 11px; color: var(--faint); }
+.quest-sec-toggle { font-size: 10px; color: var(--faint); margin-left: auto; }
+.quest-list { display: flex; flex-direction: column; gap: 8px; }
+.quest-list.collapsed { display: none; }
 
-/* Cards */
-.card { background: #fff; border: 1px solid #EAE6E0; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; transition: opacity 0.2s; }
-.card.done { background: #F7F5F2; opacity: 0.55; }
-.card-top { display: flex; align-items: flex-start; gap: 10px; }
-.check-btn { width: 20px; height: 20px; min-width: 20px; border-radius: 6px; border: 2px solid #CCCAC5; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; margin-top: 2px; transition: all 0.15s; }
-.check-btn.checked { border-color: #7EB8A0; background: #7EB8A0; }
-.card-body { flex: 1; min-width: 0; }
-.card-title { font-weight: 600; font-size: 14px; color: #1A1814; line-height: 1.4; word-break: break-word; }
-.card.done .card-title { text-decoration: line-through; }
-.card-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; align-items: center; }
-.badge { font-size: 10px; border-radius: 20px; padding: 2px 8px; }
-.badge-sub { background: #F0EDE8; color: #8C8880; }
-.badge-pri { font-weight: 700; letter-spacing: 0.04em; }
-.card-price { font-size: 15px; font-weight: 700; color: #C4A35A; margin-top: 2px; }
-.delete-btn { background: none; border: none; color: #C9C5BE; cursor: pointer; font-size: 18px; padding: 0 2px; line-height: 1; flex-shrink: 0; }
-.card-memo { font-size: 12px; color: #6E6B65; line-height: 1.6; padding-left: 30px; }
-.card-link { display: flex; align-items: center; gap: 7px; margin-left: 30px; padding: 6px 10px; background: #F7F5F2; border: 1px solid #EAE6E0; border-radius: 8px; text-decoration: none; color: #3D3A35; font-size: 11px; overflow: hidden; }
-.card-link:hover { background: #EEE; }
-.card-link-domain { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-.card-date { font-size: 11px; color: #B0ACA6; padding-left: 30px; }
+/* ── QUEST CARD ── */
+.quest-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 12px 13px;
+  display: flex; flex-direction: column; gap: 7px;
+  transition: opacity 0.2s;
+}
+.quest-card.done { opacity: 0.45; }
+.quest-card-top { display: flex; align-items: flex-start; gap: 9px; }
+.quest-check {
+  width: 19px; height: 19px; min-width: 19px;
+  border-radius: 5px; border: 1.5px solid var(--line);
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 10px; margin-top: 2px;
+  transition: all 0.15s; flex-shrink: 0;
+}
+.quest-check.done { border-color: #5A8A5A; background: #5A8A5A; }
+.quest-body { flex: 1; min-width: 0; }
+.quest-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; word-break: break-word; }
+.quest-card.done .quest-title { text-decoration: line-through; color: var(--faint); }
+.quest-price { font-size: 13px; font-weight: 700; color: var(--gold); margin-top: 2px; }
+.quest-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.quest-tag {
+  font-size: 10px; border-radius: 20px;
+  padding: 2px 8px; font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.quest-del { background: none; border: none; color: #C4B090; cursor: pointer; font-size: 17px; flex-shrink: 0; padding: 0 2px; }
+.quest-memo { font-size: 12px; color: var(--muted); line-height: 1.65; padding-left: 28px; }
+.quest-link {
+  display: flex; align-items: center; gap: 6px;
+  margin-left: 28px; padding: 6px 10px;
+  background: var(--parch); border: 1px solid var(--line);
+  border-radius: 8px; text-decoration: none;
+  color: var(--ink); font-size: 11px; overflow: hidden;
+}
+.quest-link-domain { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.quest-date { font-size: 10px; color: var(--faint); padding-left: 28px; }
 
-/* Priority colors */
-.pri-high { background: #E8503A22; color: #E8503A; border: 1px solid #E8503A44; }
-.pri-mid { background: #C4A35A22; color: #C4A35A; border: 1px solid #C4A35A44; }
-.pri-low { background: #7EB8A022; color: #7EB8A0; border: 1px solid #7EB8A044; }
+/* quest type colors */
+.type-armor    { background: rgba(80,100,160,0.12); color: #506090; border: 1px solid rgba(80,100,160,0.25); }
+.type-weapon   { background: rgba(160,80,40,0.12);  color: #904830; border: 1px solid rgba(160,80,40,0.25); }
+.type-skill    { background: rgba(80,140,80,0.12);  color: #407840; border: 1px solid rgba(80,140,80,0.25); }
+.type-dungeon  { background: rgba(100,70,140,0.12); color: #604888; border: 1px solid rgba(100,70,140,0.25); }
+.type-guild    { background: rgba(160,120,40,0.12); color: #907020; border: 1px solid rgba(160,120,40,0.25); }
+.type-tome     { background: rgba(60,100,120,0.12); color: #305870; border: 1px solid rgba(60,100,120,0.25); }
 
-/* Empty */
-#empty { text-align: center; padding: 60px 20px; color: #B0ACA6; }
+/* dream realm colors */
+.realm-taste     { background: rgba(155,107,138,0.15); color: var(--taste); }
+.realm-narrative { background: rgba(74,122,106,0.15);  color: var(--narrative); }
+.realm-ajito     { background: rgba(90,110,154,0.15);  color: var(--ajito); }
+.realm-gear      { background: rgba(138,106,58,0.15);  color: var(--gear); }
+.realm-aura      { background: rgba(154,90,74,0.15);   color: var(--aura); }
 
-/* Modal */
-#modal-overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 100; display: none; align-items: flex-end; justify-content: center; }
-#modal-overlay.open { display: flex; }
-#modal { background: #FDFBF8; border-radius: 20px 20px 0 0; padding: 24px 22px 40px; width: 100%; max-width: 540px; max-height: 92vh; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
-#modal-title { font-weight: 700; font-size: 17px; color: #1A1814; }
-.field label { display: block; font-size: 11px; font-weight: 700; color: #8C8880; margin-bottom: 5px; letter-spacing: 0.06em; }
-.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 14px; color: #1A1814; background: #FFF; outline: none; font-family: inherit; }
-.field input:focus, .field textarea:focus, .field select:focus { border-color: #C4A35A; }
-.field textarea { resize: vertical; }
-.price-row { display: flex; gap: 8px; }
-.price-row input { flex: 1; }
+/* priority */
+.pri-now    { background: rgba(180,70,40,0.12); color: #B04428; border: 1px solid rgba(180,70,40,0.25); }
+.pri-soon   { background: rgba(184,146,74,0.12); color: #8A6020; border: 1px solid rgba(184,146,74,0.25); }
+.pri-someday{ background: rgba(80,120,80,0.12); color: #406040; border: 1px solid rgba(80,120,80,0.25); }
+
+/* ── EMPTY ── */
+#empty { text-align: center; padding: 60px 20px; }
+#empty-icon { font-size: 38px; margin-bottom: 12px; opacity: 0.45; }
+#empty-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── MODAL ── */
+.m-overlay {
+  position: fixed; inset: 0;
+  background: rgba(20,16,10,0.65);
+  z-index: 100; display: none;
+  align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.m-overlay.open { display: flex; }
+.m-sheet {
+  background: var(--paper);
+  border-radius: 22px 22px 0 0;
+  padding: 22px 18px 44px;
+  width: 100%; max-width: 560px;
+  max-height: 92vh; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 13px;
+}
+.m-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--ink); letter-spacing: 0.07em;
+}
+.m-field label {
+  display: block; font-size: 10px; font-weight: 700;
+  color: var(--faint); margin-bottom: 5px;
+  letter-spacing: 0.09em; text-transform: uppercase;
+}
+.m-field input, .m-field textarea, .m-field select {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 10px;
+  font-size: 14px; color: var(--ink);
+  background: #FFF; outline: none; font-family: inherit;
+}
+.m-field input:focus, .m-field textarea:focus, .m-field select:focus { border-color: var(--gold); }
+.m-field textarea { resize: vertical; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; background: #F0EDE8; color: #5C5A55; border: none; transition: all 0.15s; }
-.chip.sel { background: #1A1814; color: #FDFBF8; }
-.chip-pri.sel-high { background: #E8503A; color: #fff; }
-.chip-pri.sel-mid { background: #C4A35A; color: #fff; }
-.chip-pri.sel-low { background: #7EB8A0; color: #fff; }
-#modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
-.btn-cancel { font-size: 14px; padding: 10px 18px; border-radius: 9px; background: #F0EDE8; color: #5C5A55; border: none; cursor: pointer; font-family: inherit; }
-.btn-save { font-size: 14px; padding: 10px 22px; border-radius: 9px; background: #1A1814; color: #FDFBF8; border: none; font-weight: 600; font-family: inherit; cursor: pointer; }
-.btn-save:disabled { opacity: 0.35; cursor: not-allowed; }
+.chip {
+  font-size: 12px; padding: 5px 13px;
+  border-radius: 20px; cursor: pointer;
+  font-family: inherit; border: 1px solid var(--line);
+  background: var(--parch2); color: var(--muted);
+  transition: all 0.15s; font-weight: 500;
+}
+.chip.sel { background: var(--ink); color: var(--parch); border-color: var(--ink); }
+.m-actions { display: flex; gap: 9px; justify-content: flex-end; margin-top: 4px; }
+.btn-cancel {
+  font-size: 14px; padding: 10px 17px;
+  border-radius: 10px; background: var(--parch2);
+  color: var(--muted); border: none; cursor: pointer; font-family: inherit;
+}
+.btn-commit {
+  font-size: 14px; padding: 10px 20px;
+  border-radius: 10px; background: var(--ink);
+  color: var(--parch); border: none;
+  font-weight: 600; font-family: inherit; cursor: pointer;
+}
+.btn-commit:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* Group modal */
-#grp-modal-overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
-#grp-modal-overlay.open { display: flex; }
-#grp-modal { background: #FDFBF8; border-radius: 18px; padding: 24px 22px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 14px; }
-.grp-list { display: flex; flex-direction: column; gap: 6px; max-height: 240px; overflow-y: auto; }
-.grp-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #F7F4EF; border-radius: 9px; }
-.grp-item-name { font-size: 14px; color: #1A1814; }
-.grp-item-del { background: none; border: none; color: #C9C5BE; cursor: pointer; font-size: 16px; }
-.grp-add-row { display: flex; gap: 8px; }
-.grp-add-row input { flex: 1; padding: 9px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 14px; font-family: inherit; outline: none; }
-.grp-add-row input:focus { border-color: #C4A35A; }
-.grp-add-row button { padding: 9px 16px; background: #1A1814; color: #fff; border: none; border-radius: 9px; font-size: 13px; cursor: pointer; font-family: inherit; }
-.sub-add-row { display: flex; gap: 8px; margin-top: 4px; }
-.sub-add-row input { flex: 1; padding: 8px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 13px; font-family: inherit; outline: none; }
-.sub-add-row button { padding: 8px 14px; background: #C4A35A; color: #1A1814; border: none; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
+/* dream modal center */
+#dm-overlay {
+  position: fixed; inset: 0;
+  background: rgba(20,16,10,0.65);
+  z-index: 100; display: none;
+  align-items: center; justify-content: center;
+  padding: 20px; backdrop-filter: blur(3px);
+}
+#dm-overlay.open { display: flex; }
+#dm-sheet {
+  background: var(--paper); border-radius: 18px;
+  padding: 22px 18px; width: 100%; max-width: 460px;
+  display: flex; flex-direction: column; gap: 13px;
+  max-height: 90vh; overflow-y: auto;
+}
+
+/* realm chips */
+.realm-chip {
+  font-family: 'EB Garamond', serif;
+  font-size: 13px; padding: 6px 14px;
+  border-radius: 20px; cursor: pointer;
+  font-family: inherit; border: 1px solid transparent;
+  transition: all 0.15s; opacity: 0.55; font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.realm-chip.sel { opacity: 1; }
+
+/* type chips */
+.type-chip {
+  font-size: 12px; padding: 6px 13px;
+  border-radius: 20px; cursor: pointer;
+  font-family: inherit; border: 1px solid var(--line);
+  background: var(--parch2); color: var(--muted);
+  transition: all 0.15s; font-weight: 500;
+  opacity: 0.65;
+}
+.type-chip.sel { opacity: 1; font-weight: 700; }
+
+/* subcat chips */
+.sub-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.sub-chip {
+  font-size: 11px; padding: 4px 10px;
+  border-radius: 20px; cursor: pointer;
+  font-family: inherit; border: 1px solid var(--line);
+  background: transparent; color: var(--muted);
+  transition: all 0.15s;
+}
+.sub-chip.sel { background: var(--ink); color: var(--parch); border-color: var(--ink); }
 </style>
 </head>
 <body>
 
-<div id="header">
-  <div id="header-inner">
-    <div id="header-top">
+<div id="hdr">
+  <div id="hdr-inner">
+    <div id="hdr-top">
       <div>
-        <div id="app-title">Wishlist ✦</div>
-        <div id="app-subtitle"></div>
+        <div id="app-title">✦ Life Map</div>
+        <div id="app-sub">—</div>
       </div>
-      <div id="header-actions">
-        <button class="btn-outline" onclick="openGrpModal()">グループ管理</button>
-        <button class="btn-gold" onclick="openModal()">＋ 追加</button>
+      <div id="hdr-btns">
+        <button class="btn-hdr" onclick="openDreamModal()">夢を記す</button>
+        <button class="btn-hdr primary" onclick="openQuestModal()">＋ クエスト</button>
       </div>
     </div>
-    <input id="search" type="search" placeholder="🔍  キーワードで検索..." oninput="render()">
+    <input id="hdr-search" type="search" placeholder="記録を探す..." oninput="render()">
   </div>
 </div>
 
-<div id="view-tabs">
-  <div id="view-tabs-inner">
-    <button class="view-tab active" onclick="setView('list',this)">📋 リスト</button>
-    <button class="view-tab" onclick="setView('budget',this)">💰 予算比較</button>
+<div id="tabs-wrap">
+  <div id="tabs">
+    <button class="tab active" id="tab-all"    onclick="setTab('all',this)">すべて</button>
+    <button class="tab" id="tab-armor"   onclick="setTab('armor',this)">⚔️ 装備</button>
+    <button class="tab" id="tab-weapon"  onclick="setTab('weapon',this)">🪄 武器</button>
+    <button class="tab" id="tab-skill"   onclick="setTab('skill',this)">📜 スキル</button>
+    <button class="tab" id="tab-dungeon" onclick="setTab('dungeon',this)">🏰 ダンジョン</button>
+    <button class="tab" id="tab-guild"   onclick="setTab('guild',this)">🍺 ギルド酒場</button>
+    <button class="tab" id="tab-tome"    onclick="setTab('tome',this)">📖 魔導書</button>
+    <button class="tab" id="tab-dreams"  onclick="setTab('dreams',this)">🗺 夢の地図</button>
   </div>
 </div>
 
 <div id="main">
-  <!-- Budget bar -->
-  <div id="budget-bar">
-    <div class="budget-title">BUDGET OVERVIEW</div>
-    <div class="budget-row">
-      <span class="budget-label">合計金額（未達成）</span>
-      <span class="budget-amount" id="total-amount">¥0</span>
-    </div>
-    <div class="budget-row">
-      <span class="budget-label">予算</span>
-      <span class="budget-amount" id="budget-display">未設定</span>
-    </div>
-    <div class="budget-progress"><div class="budget-fill" id="budget-fill" style="width:0%"></div></div>
-    <div class="budget-input-row">
-      <input type="number" id="budget-input" placeholder="予算を入力（円）">
-      <button onclick="setBudget()">設定</button>
-    </div>
-  </div>
-
   <div id="card-list"></div>
   <div id="empty" style="display:none">
-    <div style="font-size:36px;margin-bottom:12px">✦</div>
-    <div style="font-size:14px" id="empty-text">まだアイテムがありません。「＋ 追加」から始めましょう。</div>
+    <div id="empty-icon">✦</div>
+    <div id="empty-text">まだ記録がありません。<br>「＋ クエスト」から冒険を始めよう。</div>
   </div>
 </div>
 
-<!-- Item Modal -->
-<div id="modal-overlay" onclick="overlayClick(event)">
-  <div id="modal">
-    <div id="modal-title">新しいアイテムを追加</div>
-    <div class="field">
+<!-- Quest Modal -->
+<div class="m-overlay" id="qm-overlay" onclick="qmOverlayClick(event)">
+  <div class="m-sheet">
+    <div class="m-title">クエストを記録する</div>
+    <div class="m-field">
       <label>タイトル *</label>
-      <input id="f-title" type="text" placeholder="例：レザーブーツ">
+      <input id="qm-title" type="text" placeholder="例：白シャツを探す">
     </div>
-    <div class="field">
-      <label>リンク</label>
-      <input id="f-url" type="url" placeholder="https://...">
+    <div class="m-field">
+      <label>種別</label>
+      <div class="chips" id="qm-type-chips"></div>
     </div>
-    <div class="field">
-      <label>価格（円）</label>
-      <input id="f-price" type="number" placeholder="例：24800">
-    </div>
-    <div class="field">
-      <label>グループ</label>
-      <select id="f-group" onchange="updateSubSelect()">
-        <option value="">グループなし</option>
-      </select>
-    </div>
-    <div class="field" id="sub-field" style="display:none">
+    <div class="m-field" id="qm-sub-field">
       <label>サブカテゴリ</label>
-      <select id="f-sub">
-        <option value="">なし</option>
-      </select>
+      <div class="sub-chips" id="qm-sub-chips"></div>
     </div>
-    <div class="field">
+    <div class="m-field">
+      <label>リンク（参考URL）</label>
+      <input id="qm-url" type="url" placeholder="https://...">
+    </div>
+    <div class="m-field">
+      <label>価格（円）</label>
+      <input id="qm-price" type="number" placeholder="例：24800">
+    </div>
+    <div class="m-field">
+      <label>どの夢のため？</label>
+      <select id="qm-dream"><option value="">夢に紐づけない</option></select>
+    </div>
+    <div class="m-field">
       <label>優先度</label>
-      <div class="chips" id="chips-pri"></div>
+      <div class="chips" id="qm-pri-chips"></div>
     </div>
-    <div class="field">
+    <div class="m-field">
       <label>メモ</label>
-      <textarea id="f-memo" rows="2" placeholder="気になった理由など..."></textarea>
+      <textarea id="qm-memo" rows="2" placeholder="思ったこと、感じたことなど..."></textarea>
     </div>
-    <div id="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">キャンセル</button>
-      <button class="btn-save" id="btn-save" onclick="saveItem()" disabled>追加する</button>
+    <div class="m-actions">
+      <button class="btn-cancel" onclick="closeQuestModal()">もどる</button>
+      <button class="btn-commit" id="qm-save" onclick="saveQuest()" disabled>記録する</button>
     </div>
   </div>
 </div>
 
-<!-- Group Modal -->
-<div id="grp-modal-overlay" onclick="grpOverlayClick(event)">
-  <div id="grp-modal">
-    <div style="font-weight:700;font-size:16px;color:#1A1814">グループ管理</div>
-    <div class="grp-list" id="grp-list"></div>
-    <div class="grp-add-row">
-      <input id="grp-input" type="text" placeholder="新しいグループ名">
-      <button onclick="addGroup()">追加</button>
+<!-- Dream Modal -->
+<div id="dm-overlay" onclick="dmOverlayClick(event)">
+  <div id="dm-sheet">
+    <div class="m-title">夢を地図に刻む</div>
+    <div class="m-field">
+      <label>夢のタイトル *</label>
+      <input id="dm-title" type="text" placeholder="例：自然の中に生きる">
     </div>
-    <div style="margin-top:8px;border-top:1px solid #EAE6E0;padding-top:12px">
-      <div style="font-size:12px;font-weight:700;color:#8C8880;margin-bottom:8px">サブカテゴリを追加</div>
-      <select id="grp-select-for-sub" style="width:100%;padding:8px 10px;border:1px solid #DDD9D2;border-radius:8px;font-size:13px;font-family:inherit;margin-bottom:8px;outline:none;">
-        <option value="">グループを選択</option>
-      </select>
-      <div class="sub-add-row">
-        <input id="sub-input" type="text" placeholder="サブカテゴリ名（例：カジュアル）">
-        <button onclick="addSub()">追加</button>
-      </div>
+    <div class="m-field">
+      <label>ひとこと</label>
+      <textarea id="dm-desc" rows="2" placeholder="例：森の中に家を建て、季節とともに暮らす"></textarea>
     </div>
-    <button class="btn-cancel" style="width:100%;text-align:center" onclick="closeGrpModal()">閉じる</button>
+    <div class="m-field">
+      <label>Realm</label>
+      <div class="chips" id="dm-realm-chips"></div>
+    </div>
+    <div class="m-field">
+      <label>イメージ画像URL（任意）</label>
+      <input id="dm-img" type="url" placeholder="https://...">
+    </div>
+    <div class="m-actions">
+      <button class="btn-cancel" onclick="closeDreamModal()">もどる</button>
+      <button class="btn-commit" id="dm-save" onclick="saveDream()" disabled>地図に刻む</button>
+    </div>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = 'wishlist_v2';
-const GROUPS_KEY = 'wishlist_groups_v2';
-const BUDGET_KEY = 'wishlist_budget_v2';
-const PRIORITY = [
-  { id: 'high', label: '絶対',    color: '#E8503A' },
-  { id: 'mid',  label: 'いつか',  color: '#C4A35A' },
-  { id: 'low',  label: '気になる', color: '#7EB8A0' },
+const SK_Q = 'lifemap_q_v2';
+const SK_D = 'lifemap_d_v2';
+
+const QUEST_TYPES = [
+  { id:'armor',   label:'⚔️ 装備',     cls:'type-armor',
+    subs:['トップス','ボトムス','アウター','シューズ','バッグ','アクセサリー','帽子','時計','その他'] },
+  { id:'weapon',  label:'🪄 武器',     cls:'type-weapon',
+    subs:['ゴルフ','アウトドア','カメラ','ガジェット','スポーツ','音楽','その他'] },
+  { id:'skill',   label:'📜 スキル',   cls:'type-skill',
+    subs:['習い事','資格','語学','体験','読書','その他'] },
+  { id:'dungeon', label:'🏰 ダンジョン',cls:'type-dungeon',
+    subs:['国内旅行','海外旅行','ホテル','スポット','その他'] },
+  { id:'guild',   label:'🍺 ギルド酒場',cls:'type-guild',
+    subs:['レストラン','カフェ','バー','テイクアウト','その他'] },
+  { id:'tome',    label:'📖 魔導書',   cls:'type-tome',
+    subs:['レシピ','動画','本','レッスン','その他'] },
 ];
 
-let items = [];
-let groups = []; // [{id, name, subs:[]}]
-let budget = 0;
-let currentView = 'list';
-let formPri = 'mid';
+const REALMS = [
+  { id:'taste',     label:'Taste',     cls:'realm-taste',     hero:'hero-taste' },
+  { id:'narrative', label:'Narrative', cls:'realm-narrative', hero:'hero-narrative' },
+  { id:'ajito',     label:'Ajito',     cls:'realm-ajito',     hero:'hero-ajito' },
+  { id:'gear',      label:'Gear',      cls:'realm-gear',      hero:'hero-gear' },
+  { id:'aura',      label:'Aura',      cls:'realm-aura',      hero:'hero-aura' },
+];
+
+const PRIORITIES = [
+  { id:'now',     label:'今すぐ',   cls:'pri-now' },
+  { id:'soon',    label:'近いうち', cls:'pri-soon' },
+  { id:'someday', label:'いつか',   cls:'pri-someday' },
+];
+
+let quests = [];
+let dreams = [];
+let currentTab = 'all';
+let qType = 'armor';
+let qSub  = '';
+let qPri  = 'soon';
+let dRealm = 'taste';
 
 function load() {
-  try { items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { items = []; }
-  try { groups = JSON.parse(localStorage.getItem(GROUPS_KEY)) || []; } catch { groups = []; }
-  try { budget = parseFloat(localStorage.getItem(BUDGET_KEY)) || 0; } catch { budget = 0; }
+  try { quests = JSON.parse(localStorage.getItem(SK_Q)) || []; } catch { quests = []; }
+  try { dreams = JSON.parse(localStorage.getItem(SK_D)) || []; } catch { dreams = []; }
 }
-function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
-function saveGroups() { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); }
-function saveBudget() { localStorage.setItem(BUDGET_KEY, String(budget)); }
+function saveQ() { localStorage.setItem(SK_Q, JSON.stringify(quests)); }
+function saveD() { localStorage.setItem(SK_D, JSON.stringify(dreams)); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtPrice(p) { return p ? '¥'+Number(p).toLocaleString() : ''; }
+function fmtDate(iso) { return new Date(iso).toLocaleDateString('ja-JP',{month:'short',day:'numeric'}); }
+function getFavicon(url) { try { return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=32`; } catch { return null; } }
+function getDomain(url) { try { return new URL(url).hostname.replace('www.',''); } catch { return null; } }
 
-function extractDomain(url) {
-  try { return new URL(url).hostname.replace('www.', ''); } catch { return null; }
-}
-function getFavicon(url) {
-  const d = extractDomain(url);
-  return d ? `https://www.google.com/s2/favicons?domain=${d}&sz=32` : null;
-}
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function fmtDate(iso) {
-  return new Date(iso).toLocaleDateString('ja-JP', { month:'short', day:'numeric' });
-}
-function fmtPrice(p) {
-  if (!p) return '';
-  return '¥' + Number(p).toLocaleString();
-}
-
-// --- View ---
-function setView(v, el) {
-  currentView = v;
-  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+function setTab(t, el) {
+  currentTab = t;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
   el.classList.add('active');
   render();
 }
 
-// --- Budget ---
-function setBudget() {
-  const v = parseFloat(document.getElementById('budget-input').value);
-  if (!isNaN(v) && v >= 0) { budget = v; saveBudget(); render(); }
-}
-
-// --- Render ---
 function render() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const activeItems = items.filter(i => !i.done);
-  const doneItems = items.filter(i => i.done);
-  const totalPrice = activeItems.filter(i => i.price).reduce((s, i) => s + Number(i.price), 0);
-
-  // subtitle
-  document.getElementById('app-subtitle').textContent =
-    `${activeItems.length} 件` + (totalPrice > 0 ? `　合計 ¥${totalPrice.toLocaleString()}` : '');
-
-  // budget bar
-  const budgetBar = document.getElementById('budget-bar');
-  if (currentView === 'budget') {
-    budgetBar.classList.add('show');
-    document.getElementById('total-amount').textContent = '¥' + totalPrice.toLocaleString();
-    const overBudget = budget > 0 && totalPrice > budget;
-    document.getElementById('total-amount').className = 'budget-amount' + (overBudget ? ' over' : '');
-    document.getElementById('budget-display').textContent = budget > 0 ? '¥' + budget.toLocaleString() : '未設定';
-    if (budget > 0 && document.getElementById('budget-input').value === '') {
-      document.getElementById('budget-input').placeholder = '¥' + budget.toLocaleString();
-    }
-    const pct = budget > 0 ? Math.min((totalPrice / budget) * 100, 100) : 0;
-    const fill = document.getElementById('budget-fill');
-    fill.style.width = pct + '%';
-    fill.className = 'budget-fill' + (overBudget ? ' over' : '');
-  } else {
-    budgetBar.classList.remove('show');
-  }
-
-  // filter items
-  let visible = items.filter(i => {
-    if (q && !i.title.toLowerCase().includes(q) && !(i.memo||'').toLowerCase().includes(q)) return false;
-    return true;
-  });
-
+  const q = document.getElementById('hdr-search').value.toLowerCase();
   const list = document.getElementById('card-list');
   const empty = document.getElementById('empty');
 
+  const activeQ = quests.filter(x => !x.done).length;
+  const total = quests.filter(x => !x.done && x.price).reduce((s,x)=>s+Number(x.price),0);
+  document.getElementById('app-sub').textContent =
+    `${activeQ} quests active${total>0 ? '  ·  ¥'+total.toLocaleString() : ''}`;
+
+  if (currentTab === 'dreams') { renderDreams(q, list, empty); return; }
+
+  let visible = quests.filter(x => {
+    if (currentTab !== 'all' && x.type !== currentTab) return false;
+    if (q && !x.title.toLowerCase().includes(q) && !(x.memo||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+
   if (visible.length === 0) {
-    list.innerHTML = '';
-    empty.style.display = 'block';
-    document.getElementById('empty-text').textContent = q ? '検索結果がありません' : 'まだアイテムがありません。「＋ 追加」から始めましょう。';
+    list.innerHTML = ''; empty.style.display = 'block';
+    document.getElementById('empty-icon').textContent = '⚔️';
+    document.getElementById('empty-text').innerHTML = q ? '該当する記録がありません。' : '「＋ クエスト」から冒険を始めよう。';
     return;
   }
   empty.style.display = 'none';
 
-  if (currentView === 'budget') {
-    renderBudgetView(visible);
-  } else {
-    renderListView(visible);
-  }
-}
-
-function renderListView(visible) {
-  const list = document.getElementById('card-list');
-  // Group by group
-  const ungrouped = visible.filter(i => !i.groupId);
-  const grouped = {};
-  groups.forEach(g => {
-    const its = visible.filter(i => i.groupId === g.id);
-    if (its.length > 0) grouped[g.id] = its;
-  });
-  // Done items
-  const doneItems = visible.filter(i => i.done);
-  const activeUngrouped = ungrouped.filter(i => !i.done);
-
+  // Group: by dream, then ungrouped, then done
   let html = '';
+  const active = visible.filter(x => !x.done);
+  const done   = visible.filter(x =>  x.done);
 
-  // Grouped sections
-  groups.forEach(g => {
-    const its = visible.filter(i => i.groupId === g.id);
-    if (its.length === 0) return;
-    const activeIts = its.filter(i => !i.done);
-    const total = activeIts.filter(i => i.price).reduce((s,i) => s + Number(i.price), 0);
-    html += `<div class="group-section">
-      <div class="group-header" onclick="toggleGroup('grp-${g.id}')">
-        <div class="group-header-left">
-          <span class="group-toggle open" id="toggle-grp-${g.id}">▶</span>
-          <span class="group-name">${esc(g.name)}</span>
-          <span class="group-count">${activeIts.length}</span>
+  if (currentTab === 'all') {
+    // group by dream
+    const dreamIds = [...new Set(active.filter(x=>x.dreamId).map(x=>x.dreamId))];
+    dreamIds.forEach(did => {
+      const d = dreams.find(x=>x.id===did);
+      if (!d) return;
+      const realm = REALMS.find(r=>r.id===d.realm)||REALMS[0];
+      const its = active.filter(x=>x.dreamId===did);
+      html += `<div class="quest-section">
+        <div class="quest-sec-hdr" onclick="toggleSec('sec-${did}','tog-${did}')">
+          <span class="quest-sec-badge ${realm.cls}">${realm.label} — ${esc(d.title)}</span>
+          <span class="quest-sec-count">${its.length}</span>
+          <span class="quest-sec-toggle" id="tog-${did}">▼</span>
         </div>
-        ${total > 0 ? `<span class="group-total">${fmtPrice(total)}</span>` : ''}
-      </div>
-      <div class="group-body" id="grp-${g.id}">`;
-
-    // Sub groups
-    const subs = g.subs || [];
-    const noSub = its.filter(i => !i.subCat);
-    const subMap = {};
-    subs.forEach(s => { subMap[s] = its.filter(i => i.subCat === s); });
-
-    if (noSub.length > 0) {
-      noSub.forEach(item => { html += renderCard(item); });
-    }
-    subs.forEach(s => {
-      const sits = subMap[s];
-      if (sits.length === 0) return;
-      html += `<div class="subgroup-label">${esc(s)}</div>`;
-      sits.forEach(item => { html += renderCard(item); });
+        <div class="quest-list" id="sec-${did}">${its.map(renderQCard).join('')}</div>
+      </div>`;
     });
-
-    html += `</div></div>`;
-  });
-
-  // Ungrouped
-  if (activeUngrouped.length > 0) {
-    html += `<div class="group-section">
-      <div class="group-header" onclick="toggleGroup('grp-ungrouped')">
-        <div class="group-header-left">
-          <span class="group-toggle open" id="toggle-grp-ungrouped">▶</span>
-          <span class="group-name">未分類</span>
-          <span class="group-count">${activeUngrouped.length}</span>
+    const free = active.filter(x=>!x.dreamId);
+    if (free.length>0) {
+      html += `<div class="quest-section">
+        <div class="quest-sec-hdr" onclick="toggleSec('sec-free','tog-free')">
+          <span class="quest-sec-badge" style="background:rgba(184,146,74,0.12);color:var(--gold)">✦ 自由なクエスト</span>
+          <span class="quest-sec-count">${free.length}</span>
+          <span class="quest-sec-toggle" id="tog-free">▼</span>
         </div>
-      </div>
-      <div class="group-body" id="grp-ungrouped">`;
-    activeUngrouped.forEach(item => { html += renderCard(item); });
-    html += `</div></div>`;
+        <div class="quest-list" id="sec-free">${free.map(renderQCard).join('')}</div>
+      </div>`;
+    }
+  } else {
+    // flat list by subcat
+    const type = QUEST_TYPES.find(t=>t.id===currentTab);
+    const subs = type ? type.subs : [];
+    const noSub = active.filter(x=>!x.subCat);
+    const subMap = {};
+    subs.forEach(s=>{ subMap[s] = active.filter(x=>x.subCat===s); });
+
+    if (noSub.length>0) html += noSub.map(renderQCard).join('');
+    subs.forEach(s=>{
+      if (!subMap[s] || subMap[s].length===0) return;
+      html += `<div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:0.09em;text-transform:uppercase;margin:14px 0 6px 2px">${esc(s)}</div>`;
+      html += subMap[s].map(renderQCard).join('');
+    });
   }
 
-  // Done
-  if (doneItems.length > 0) {
-    html += `<div class="group-section">
-      <div class="group-header" onclick="toggleGroup('grp-done')">
-        <div class="group-header-left">
-          <span class="group-toggle" id="toggle-grp-done">▶</span>
-          <span class="group-name" style="color:#B0ACA6">達成済み</span>
-          <span class="group-count">${doneItems.length}</span>
-        </div>
+  if (done.length>0) {
+    html += `<div class="quest-section" style="margin-top:8px">
+      <div class="quest-sec-hdr" onclick="toggleSec('sec-done','tog-done')">
+        <span class="quest-sec-badge" style="background:rgba(0,0,0,0.05);color:var(--faint)">✓ 達成済み</span>
+        <span class="quest-sec-count">${done.length}</span>
+        <span class="quest-sec-toggle" id="tog-done">▶</span>
       </div>
-      <div class="group-body collapsed" id="grp-done">`;
-    doneItems.forEach(item => { html += renderCard(item); });
-    html += `</div></div>`;
+      <div class="quest-list collapsed" id="sec-done">${done.map(renderQCard).join('')}</div>
+    </div>`;
   }
 
   list.innerHTML = html;
 }
 
-function renderBudgetView(visible) {
-  const list = document.getElementById('card-list');
-  // Sort by price desc, active only
-  const priced = visible.filter(i => !i.done && i.price).sort((a,b) => Number(b.price) - Number(a.price));
-  const unpriced = visible.filter(i => !i.done && !i.price);
-
-  let html = '';
-  if (priced.length > 0) {
-    html += `<div class="subgroup-label" style="margin-top:0">価格あり</div>`;
-    priced.forEach(item => { html += renderCard(item, true); });
-  }
-  if (unpriced.length > 0) {
-    html += `<div class="subgroup-label">価格未設定</div>`;
-    unpriced.forEach(item => { html += renderCard(item, true); });
-  }
-  list.innerHTML = html;
-}
-
-function renderCard(item, showPrice = true) {
-  const pri = PRIORITY.find(p => p.id === item.priority);
-  const domain = extractDomain(item.url);
-  const favicon = item.url ? getFavicon(item.url) : null;
-  const grp = groups.find(g => g.id === item.groupId);
+function renderQCard(x) {
+  const type = QUEST_TYPES.find(t=>t.id===x.type);
+  const pri  = PRIORITIES.find(p=>p.id===x.priority);
+  const domain = getDomain(x.url);
+  const favicon = x.url ? getFavicon(x.url) : null;
   return `
-    <div class="card ${item.done?'done':''}">
-      <div class="card-top">
-        <button class="check-btn ${item.done?'checked':''}" onclick="toggleDone('${item.id}')">${item.done?'✓':''}</button>
-        <div class="card-body">
-          <div class="card-title">${esc(item.title)}</div>
-          ${item.price && showPrice ? `<div class="card-price">${fmtPrice(item.price)}</div>` : ''}
-          <div class="card-badges">
-            ${grp ? `<span class="badge badge-sub">${esc(grp.name)}${item.subCat ? ' / ' + esc(item.subCat) : ''}</span>` : ''}
-            ${pri ? `<span class="badge badge-pri pri-${item.priority}">${pri.label}</span>` : ''}
+  <div class="quest-card ${x.done?'done':''}">
+    <div class="quest-card-top">
+      <button class="quest-check ${x.done?'done':''}" onclick="toggleQuest('${x.id}')">${x.done?'✓':''}</button>
+      <div class="quest-body">
+        <div class="quest-title">${esc(x.title)}</div>
+        ${x.price?`<div class="quest-price">${fmtPrice(x.price)}</div>`:''}
+        <div class="quest-tags">
+          ${type?`<span class="quest-tag ${type.cls}">${type.label}</span>`:''}
+          ${x.subCat?`<span class="quest-tag" style="background:rgba(0,0,0,0.05);color:var(--muted);border:1px solid var(--line)">${esc(x.subCat)}</span>`:''}
+          ${pri?`<span class="quest-tag ${pri.cls}">${pri.label}</span>`:''}
+        </div>
+      </div>
+      <button class="quest-del" onclick="deleteQuest('${x.id}')">×</button>
+    </div>
+    ${x.memo?`<div class="quest-memo">${esc(x.memo)}</div>`:''}
+    ${x.url?`<a class="quest-link" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">
+      ${favicon?`<img src="${favicon}" width="13" height="13" onerror="this.style.display='none'" alt="">`:''}
+      <span class="quest-link-domain">${esc(domain||x.url)}</span>
+      <span style="color:var(--faint);flex-shrink:0">↗</span>
+    </a>`:''}
+    <div class="quest-date">${fmtDate(x.createdAt)}</div>
+  </div>`;
+}
+
+function renderDreams(q, list, empty) {
+  const visible = dreams.filter(d=>!q||d.title.toLowerCase().includes(q)||(d.desc||'').toLowerCase().includes(q));
+  if (visible.length===0) {
+    list.innerHTML=''; empty.style.display='block';
+    document.getElementById('empty-icon').textContent='🗺';
+    document.getElementById('empty-text').innerHTML='夢がまだ記されていません。<br>「夢を記す」から始めよう。';
+    return;
+  }
+  empty.style.display='none';
+  list.innerHTML = visible.map(d=>{
+    const realm = REALMS.find(r=>r.id===d.realm)||REALMS[0];
+    const dq = quests.filter(x=>x.dreamId===d.id);
+    const doneQ = dq.filter(x=>x.done).length;
+    return `
+    <div class="dream-card">
+      <div class="dream-hero ${realm.hero}">
+        ${d.img?`<img class="dream-hero-img" src="${esc(d.img)}" alt="" onerror="this.style.display='none'">`:''}
+        <div class="dream-hero-overlay"></div>
+        <span class="dream-realm-badge">${realm.label}</span>
+        <div class="dream-title">${esc(d.title)}</div>
+      </div>
+      <div class="dream-body">
+        ${d.desc?`<div class="dream-desc">${esc(d.desc)}</div>`:''}
+        <div class="dream-footer">
+          <span class="dream-quest-stat">${dq.length>0?`${doneQ}/${dq.length} quests`:'no quests yet'}</span>
+          <div class="dream-btns">
+            <button class="btn-sm danger" onclick="deleteDream('${d.id}')">削除</button>
+            <button class="btn-sm gold" onclick="openQuestForDream('${d.id}')">＋ クエスト</button>
           </div>
         </div>
-        <button class="delete-btn" onclick="deleteItem('${item.id}')">×</button>
       </div>
-      ${item.memo ? `<div class="card-memo">${esc(item.memo)}</div>` : ''}
-      ${item.url ? `<a class="card-link" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
-        ${favicon ? `<img src="${favicon}" width="13" height="13" onerror="this.style.display='none'" alt="">` : ''}
-        <span class="card-link-domain">${esc(domain || item.url)}</span>
-        <span style="color:#B0ACA6;flex-shrink:0">↗</span>
-      </a>` : ''}
-      <div class="card-date">${fmtDate(item.createdAt)}</div>
     </div>`;
+  }).join('');
 }
 
-function toggleGroup(id) {
-  const body = document.getElementById(id);
-  const toggle = document.getElementById('toggle-' + id);
-  if (!body) return;
-  body.classList.toggle('collapsed');
-  if (toggle) toggle.classList.toggle('open');
+function toggleSec(id, togId) {
+  const el = document.getElementById(id);
+  const tog = document.getElementById(togId);
+  if (!el) return;
+  el.classList.toggle('collapsed');
+  if (tog) tog.textContent = el.classList.contains('collapsed') ? '▶' : '▼';
+}
+function toggleQuest(id) {
+  quests = quests.map(x=>x.id===id?{...x,done:!x.done}:x);
+  saveQ(); render();
+}
+function deleteQuest(id) {
+  if (!confirm('このクエストを削除しますか？')) return;
+  quests = quests.filter(x=>x.id!==id);
+  saveQ(); render();
+}
+function deleteDream(id) {
+  if (!confirm('この夢を削除しますか？')) return;
+  dreams = dreams.filter(d=>d.id!==id);
+  quests = quests.map(x=>x.dreamId===id?{...x,dreamId:null}:x);
+  saveD(); saveQ(); render();
 }
 
-function toggleDone(id) {
-  items = items.map(i => i.id === id ? {...i, done: !i.done} : i);
-  save(); render();
+// ── Quest Modal ──
+function buildQTypeChips() {
+  document.getElementById('qm-type-chips').innerHTML = QUEST_TYPES.map(t=>
+    `<button class="type-chip ${t.cls} ${qType===t.id?'sel':''}" onclick="setQType('${t.id}')">${t.label}</button>`
+  ).join('');
+  buildQSubChips();
 }
-function deleteItem(id) {
-  if (!confirm('削除しますか？')) return;
-  items = items.filter(i => i.id !== id);
-  save(); render();
-}
-
-// --- Modal ---
-function buildPriChips() {
-  document.getElementById('chips-pri').innerHTML = PRIORITY.map(p =>
-    `<button class="chip chip-pri ${formPri===p.id?'sel-'+p.id:''}" onclick="setFormPri('${p.id}')" style="${formPri===p.id?`background:${p.color};color:#fff`:''}">${p.label}</button>`
+function setQType(id) { qType=id; qSub=''; buildQTypeChips(); }
+function buildQSubChips() {
+  const type = QUEST_TYPES.find(t=>t.id===qType);
+  const subs = type ? type.subs : [];
+  document.getElementById('qm-sub-chips').innerHTML = subs.map(s=>
+    `<button class="sub-chip ${qSub===s?'sel':''}" onclick="setQSub('${s}')">${esc(s)}</button>`
   ).join('');
 }
-function setFormPri(id) { formPri = id; buildPriChips(); }
-
-function updateSubSelect() {
-  const gid = document.getElementById('f-group').value;
-  const subField = document.getElementById('sub-field');
-  const subSel = document.getElementById('f-sub');
-  if (!gid) { subField.style.display = 'none'; return; }
-  const grp = groups.find(g => g.id === gid);
-  if (!grp || !grp.subs || grp.subs.length === 0) { subField.style.display = 'none'; return; }
-  subField.style.display = 'block';
-  subSel.innerHTML = '<option value="">なし</option>' + grp.subs.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+function setQSub(s) { qSub = qSub===s?'':s; buildQSubChips(); }
+function buildQPriChips() {
+  document.getElementById('qm-pri-chips').innerHTML = PRIORITIES.map(p=>
+    `<button class="chip ${qPri===p.id?'sel':''}" onclick="setQPri('${p.id}')">${p.label}</button>`
+  ).join('');
+}
+function setQPri(id) { qPri=id; buildQPriChips(); }
+function buildDreamSelect(preId) {
+  document.getElementById('qm-dream').innerHTML =
+    '<option value="">夢に紐づけない</option>' +
+    dreams.map(d=>`<option value="${d.id}" ${preId===d.id?'selected':''}>${esc(d.title)}</option>`).join('');
 }
 
-function buildGroupSelect() {
-  const sel = document.getElementById('f-group');
-  sel.innerHTML = '<option value="">グループなし</option>' + groups.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
+let _prefillDreamId = null;
+function openQuestModal(url) {
+  _prefillDreamId = null;
+  buildDreamSelect(null);
+  buildQTypeChips(); buildQPriChips();
+  document.getElementById('qm-title').value = '';
+  document.getElementById('qm-url').value = url||'';
+  document.getElementById('qm-price').value = '';
+  document.getElementById('qm-memo').value = '';
+  document.getElementById('qm-save').disabled = true;
+  document.getElementById('qm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('qm-title').focus(),100);
+}
+function openQuestForDream(did) {
+  _prefillDreamId = did;
+  buildDreamSelect(did);
+  buildQTypeChips(); buildQPriChips();
+  document.getElementById('qm-title').value = '';
+  document.getElementById('qm-url').value = '';
+  document.getElementById('qm-price').value = '';
+  document.getElementById('qm-memo').value = '';
+  document.getElementById('qm-save').disabled = true;
+  document.getElementById('qm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('qm-title').focus(),100);
+}
+function closeQuestModal() { document.getElementById('qm-overlay').classList.remove('open'); }
+function qmOverlayClick(e) { if(e.target===document.getElementById('qm-overlay')) closeQuestModal(); }
+
+function saveQuest() {
+  const title = document.getElementById('qm-title').value.trim();
+  if (!title) return;
+  quests.unshift({
+    id: Date.now().toString(), title,
+    type: qType, subCat: qSub,
+    url: document.getElementById('qm-url').value.trim(),
+    price: document.getElementById('qm-price').value.trim(),
+    memo: document.getElementById('qm-memo').value.trim(),
+    dreamId: document.getElementById('qm-dream').value || null,
+    priority: qPri, done: false,
+    createdAt: new Date().toISOString(),
+  });
+  saveQ(); render(); closeQuestModal();
 }
 
-function openModal(prefillUrl) {
-  buildGroupSelect();
-  document.getElementById('f-title').value = '';
-  document.getElementById('f-url').value = prefillUrl || '';
-  document.getElementById('f-price').value = '';
-  document.getElementById('f-memo').value = '';
-  document.getElementById('f-group').value = '';
-  document.getElementById('sub-field').style.display = 'none';
-  formPri = 'mid'; buildPriChips();
-  document.getElementById('btn-save').disabled = true;
-  document.getElementById('modal-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('f-title').focus(), 100);
+// ── Dream Modal ──
+function buildDRealmChips() {
+  document.getElementById('dm-realm-chips').innerHTML = REALMS.map(r=>
+    `<button class="chip realm-chip ${r.cls} ${dRealm===r.id?'sel':''}" onclick="setDRealm('${r.id}')">${r.label}</button>`
+  ).join('');
 }
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-function overlayClick(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+function setDRealm(id) { dRealm=id; buildDRealmChips(); }
+function openDreamModal() {
+  dRealm='taste'; buildDRealmChips();
+  document.getElementById('dm-title').value='';
+  document.getElementById('dm-desc').value='';
+  document.getElementById('dm-img').value='';
+  document.getElementById('dm-save').disabled=true;
+  document.getElementById('dm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('dm-title').focus(),100);
+}
+function closeDreamModal() { document.getElementById('dm-overlay').classList.remove('open'); }
+function dmOverlayClick(e) { if(e.target===document.getElementById('dm-overlay')) closeDreamModal(); }
+function saveDream() {
+  const title = document.getElementById('dm-title').value.trim();
+  if (!title) return;
+  dreams.push({
+    id: Date.now().toString(), title,
+    desc: document.getElementById('dm-desc').value.trim(),
+    img: document.getElementById('dm-img').value.trim(),
+    realm: dRealm, createdAt: new Date().toISOString(),
+  });
+  saveD(); render(); closeDreamModal();
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('f-title').addEventListener('input', function() {
-    document.getElementById('btn-save').disabled = this.value.trim() === '';
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('qm-title').addEventListener('input', function(){
+    document.getElementById('qm-save').disabled = !this.value.trim();
+  });
+  document.getElementById('dm-title').addEventListener('input', function(){
+    document.getElementById('dm-save').disabled = !this.value.trim();
   });
 });
 
-function saveItem() {
-  const title = document.getElementById('f-title').value.trim();
-  if (!title) return;
-  const gid = document.getElementById('f-group').value;
-  const item = {
-    id: Date.now().toString(),
-    title,
-    url: document.getElementById('f-url').value.trim(),
-    price: document.getElementById('f-price').value.trim(),
-    memo: document.getElementById('f-memo').value.trim(),
-    groupId: gid || null,
-    subCat: gid ? document.getElementById('f-sub').value : '',
-    priority: formPri,
-    done: false,
-    createdAt: new Date().toISOString(),
-  };
-  items.unshift(item);
-  save(); render(); closeModal();
-}
-
-// --- Group Modal ---
-function openGrpModal() {
-  renderGrpList();
-  buildGrpSubSelect();
-  document.getElementById('grp-modal-overlay').classList.add('open');
-}
-function closeGrpModal() { document.getElementById('grp-modal-overlay').classList.remove('open'); render(); }
-function grpOverlayClick(e) { if (e.target === document.getElementById('grp-modal-overlay')) closeGrpModal(); }
-
-function renderGrpList() {
-  document.getElementById('grp-list').innerHTML = groups.map(g => `
-    <div class="grp-item">
-      <div>
-        <div class="grp-item-name">${esc(g.name)}</div>
-        ${g.subs && g.subs.length > 0 ? `<div style="font-size:11px;color:#B0ACA6;margin-top:2px">${g.subs.map(s=>esc(s)).join(' · ')}</div>` : ''}
-      </div>
-      <button class="grp-item-del" onclick="deleteGroup('${g.id}')">×</button>
-    </div>`).join('') || '<div style="font-size:13px;color:#B0ACA6;padding:8px 0">グループがありません</div>';
-}
-
-function buildGrpSubSelect() {
-  document.getElementById('grp-select-for-sub').innerHTML =
-    '<option value="">グループを選択</option>' + groups.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
-}
-
-function addGroup() {
-  const name = document.getElementById('grp-input').value.trim();
-  if (!name) return;
-  groups.push({ id: Date.now().toString(), name, subs: [] });
-  saveGroups();
-  document.getElementById('grp-input').value = '';
-  renderGrpList(); buildGrpSubSelect();
-}
-
-function deleteGroup(id) {
-  if (!confirm('グループを削除しますか？（アイテムは未分類になります）')) return;
-  groups = groups.filter(g => g.id !== id);
-  items = items.map(i => i.groupId === id ? {...i, groupId: null, subCat: ''} : i);
-  save(); saveGroups(); renderGrpList(); buildGrpSubSelect();
-}
-
-function addSub() {
-  const gid = document.getElementById('grp-select-for-sub').value;
-  const name = document.getElementById('sub-input').value.trim();
-  if (!gid || !name) return;
-  const grp = groups.find(g => g.id === gid);
-  if (!grp) return;
-  if (!grp.subs) grp.subs = [];
-  if (!grp.subs.includes(name)) grp.subs.push(name);
-  saveGroups();
-  document.getElementById('sub-input').value = '';
-  renderGrpList();
-}
-
-// URL param
 function checkUrlParam() {
   const params = new URLSearchParams(window.location.search);
-  const sharedUrl = params.get('url');
-  if (sharedUrl) {
-    history.replaceState({}, '', window.location.pathname);
-    setTimeout(() => openModal(decodeURIComponent(sharedUrl)), 300);
-  }
+  const u = params.get('url');
+  if (u) { history.replaceState({},'',window.location.pathname); setTimeout(()=>openQuestModal(decodeURIComponent(u)),300); }
 }
 
 load(); render(); checkUrlParam();
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('f-title').addEventListener('input', function() {
-    document.getElementById('btn-save').disabled = this.value.trim() === '';
-  });
-});
 </script>
 </body>
 </html>
