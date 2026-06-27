@@ -5,87 +5,132 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wishlist ✦</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #F7F4EF; font-family: 'Noto Sans JP', 'Helvetica Neue', sans-serif; min-height: 100vh; }
-  
-  /* Header */
-  #header { background: #1A1814; padding: 20px 20px 16px; position: sticky; top: 0; z-index: 10; }
-  #header-inner { max-width: 680px; margin: 0 auto; }
-  #header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  #app-title { font-size: 20px; font-weight: 800; color: #FDFBF8; letter-spacing: -0.02em; }
-  #app-subtitle { font-size: 12px; color: #8C8880; margin-top: 2px; }
-  #btn-add { background: #C4A35A; color: #1A1814; border: none; border-radius: 11px; padding: 10px 18px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; letter-spacing: 0.02em; }
-  #btn-add:hover { background: #D4B36A; }
-  #search { width: 100%; padding: 9px 14px; border-radius: 10px; border: none; background: #2C2924; color: #FDFBF8; font-size: 13px; outline: none; font-family: inherit; }
-  #search::placeholder { color: #5C5A55; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F7F4EF; font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
 
-  /* Tabs */
-  #tabs-wrap { background: #FDFBF8; border-bottom: 1px solid #EAE6E0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  #tabs { max-width: 680px; margin: 0 auto; display: flex; padding: 0 12px; }
-  .tab { padding: 11px 12px; font-size: 12px; font-weight: 400; color: #8C8880; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: inherit; transition: color 0.15s; }
-  .tab.active { font-weight: 700; color: #1A1814; border-bottom-color: #C4A35A; }
-  .tab-count { margin-left: 4px; font-size: 10px; background: #EAE6E0; color: #8C8880; border-radius: 10px; padding: 1px 5px; }
-  .tab.active .tab-count { background: #C4A35A; color: #1A1814; }
+/* Header */
+#header { background: #1A1814; padding: 20px 20px 16px; position: sticky; top: 0; z-index: 20; }
+#header-inner { max-width: 720px; margin: 0 auto; }
+#header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+#app-title { font-size: 20px; font-weight: 800; color: #FDFBF8; letter-spacing: -0.02em; }
+#app-subtitle { font-size: 12px; color: #8C8880; margin-top: 2px; }
+#header-actions { display: flex; gap: 8px; }
+.btn-gold { background: #C4A35A; color: #1A1814; border: none; border-radius: 11px; padding: 10px 16px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.btn-outline { background: transparent; color: #C4A35A; border: 1px solid #C4A35A44; border-radius: 11px; padding: 10px 14px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+#search { width: 100%; padding: 9px 14px; border-radius: 10px; border: none; background: #2C2924; color: #FDFBF8; font-size: 13px; outline: none; font-family: inherit; }
+#search::placeholder { color: #5C5A55; }
 
-  /* Main */
-  #main { max-width: 680px; margin: 0 auto; padding: 18px 16px 60px; }
+/* View tabs */
+#view-tabs { background: #FDFBF8; border-bottom: 1px solid #EAE6E0; }
+#view-tabs-inner { max-width: 720px; margin: 0 auto; display: flex; padding: 0 16px; }
+.view-tab { padding: 11px 14px; font-size: 12px; font-weight: 400; color: #8C8880; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; font-family: inherit; }
+.view-tab.active { font-weight: 700; color: #1A1814; border-bottom-color: #C4A35A; }
 
-  /* Cards */
-  .card { background: #fff; border: 1px solid #EAE6E0; border-radius: 14px; padding: 15px 16px; display: flex; flex-direction: column; gap: 9px; transition: opacity 0.2s; margin-bottom: 10px; }
-  .card.done { background: #F7F5F2; opacity: 0.6; }
-  .card-top { display: flex; align-items: flex-start; gap: 10px; }
-  .check-btn { width: 20px; height: 20px; min-width: 20px; border-radius: 6px; border: 2px solid #CCCAC5; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; margin-top: 2px; transition: all 0.15s; }
-  .check-btn.checked { border-color: #7EB8A0; background: #7EB8A0; }
-  .card-body { flex: 1; min-width: 0; }
-  .card-title { font-weight: 600; font-size: 15px; color: #1A1814; line-height: 1.4; word-break: break-word; }
-  .card.done .card-title { text-decoration: line-through; }
-  .card-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; align-items: center; }
-  .badge-cat { font-size: 11px; color: #8C8880; background: #F0EDE8; border-radius: 20px; padding: 2px 8px; }
-  .badge-pri { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 20px; }
-  .delete-btn { background: none; border: none; color: #C9C5BE; cursor: pointer; font-size: 18px; padding: 0 2px; line-height: 1; flex-shrink: 0; }
-  .delete-btn:hover { color: #E8503A; }
-  .card-memo { font-size: 13px; color: #6E6B65; line-height: 1.6; padding-left: 30px; }
-  .card-link { display: flex; align-items: center; gap: 7px; margin-left: 30px; padding: 7px 11px; background: #F7F5F2; border: 1px solid #EAE6E0; border-radius: 8px; text-decoration: none; color: #3D3A35; font-size: 12px; overflow: hidden; transition: background 0.15s; }
-  .card-link:hover { background: #EEE; }
-  .card-link-domain { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-  .card-link-icon { color: #B0ACA6; flex-shrink: 0; }
-  .card-date { font-size: 11px; color: #B0ACA6; padding-left: 30px; }
+/* Main */
+#main { max-width: 720px; margin: 0 auto; padding: 20px 16px 80px; }
 
-  /* Empty */
-  #empty { text-align: center; padding: 70px 20px; color: #B0ACA6; }
-  #empty-icon { font-size: 36px; margin-bottom: 12px; }
-  #empty-text { font-size: 14px; }
+/* Budget bar */
+#budget-bar { background: #fff; border: 1px solid #EAE6E0; border-radius: 14px; padding: 16px 18px; margin-bottom: 16px; display: none; }
+#budget-bar.show { display: block; }
+.budget-title { font-size: 12px; font-weight: 700; color: #8C8880; letter-spacing: 0.06em; margin-bottom: 10px; }
+.budget-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.budget-label { font-size: 13px; color: #5C5A55; }
+.budget-amount { font-size: 15px; font-weight: 700; color: #1A1814; }
+.budget-amount.over { color: #E8503A; }
+.budget-progress { height: 6px; background: #F0EDE8; border-radius: 10px; overflow: hidden; }
+.budget-fill { height: 100%; background: #C4A35A; border-radius: 10px; transition: width 0.3s; }
+.budget-fill.over { background: #E8503A; }
+.budget-input-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+.budget-input-row input { flex: 1; padding: 7px 10px; border: 1px solid #DDD9D2; border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; }
+.budget-input-row button { padding: 7px 14px; background: #1A1814; color: #fff; border: none; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: inherit; }
 
-  /* Done toggle */
-  #done-toggle { font-size: 12px; color: #8C8880; background: none; border: 1px solid #DDD9D2; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; margin-bottom: 14px; }
+/* Group section */
+.group-section { margin-bottom: 20px; }
+.group-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; cursor: pointer; padding: 4px 0; }
+.group-header-left { display: flex; align-items: center; gap: 8px; }
+.group-toggle { font-size: 10px; color: #B0ACA6; transition: transform 0.2s; }
+.group-toggle.open { transform: rotate(90deg); }
+.group-name { font-size: 14px; font-weight: 700; color: #1A1814; }
+.group-count { font-size: 11px; color: #B0ACA6; background: #F0EDE8; border-radius: 10px; padding: 2px 7px; }
+.group-total { font-size: 12px; color: #C4A35A; font-weight: 600; }
+.group-body { display: flex; flex-direction: column; gap: 10px; }
+.group-body.collapsed { display: none; }
 
-  /* Modal */
-  #modal-overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
-  #modal-overlay.open { display: flex; }
-  #modal { background: #FDFBF8; border-radius: 18px; padding: 26px 24px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,0.16); display: flex; flex-direction: column; gap: 15px; max-height: 90vh; overflow-y: auto; }
-  #modal-title { font-weight: 700; font-size: 17px; color: #1A1814; }
-  .field label { display: block; font-size: 12px; font-weight: 600; color: #8C8880; margin-bottom: 6px; letter-spacing: 0.05em; }
-  .field input, .field textarea { width: 100%; padding: 9px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 14px; color: #1A1814; background: #FFF; outline: none; font-family: inherit; }
-  .field input:focus, .field textarea:focus { border-color: #C4A35A; }
-  .field textarea { resize: vertical; }
-  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
-  .chip { font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; background: #F0EDE8; color: #5C5A55; border: none; transition: all 0.15s; }
-  .chip.selected { background: #1A1814; color: #FDFBF8; }
-  .chip-pri.selected-high { background: #E8503A; color: #fff; }
-  .chip-pri.selected-mid { background: #C4A35A; color: #fff; }
-  .chip-pri.selected-low { background: #7EB8A0; color: #fff; }
-  #modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-  #btn-cancel { font-size: 14px; padding: 9px 18px; border-radius: 9px; background: #F0EDE8; color: #5C5A55; border: none; cursor: pointer; font-family: inherit; }
-  #btn-save { font-size: 14px; padding: 9px 22px; border-radius: 9px; background: #1A1814; color: #FDFBF8; border: none; font-weight: 600; font-family: inherit; cursor: pointer; }
-  #btn-save:disabled { opacity: 0.35; cursor: not-allowed; }
-  #btn-save:not(:disabled):hover { background: #2C2924; }
+/* Subgroup */
+.subgroup-label { font-size: 11px; font-weight: 700; color: #B0ACA6; letter-spacing: 0.08em; text-transform: uppercase; margin: 12px 0 6px; padding-left: 2px; }
+
+/* Cards */
+.card { background: #fff; border: 1px solid #EAE6E0; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; transition: opacity 0.2s; }
+.card.done { background: #F7F5F2; opacity: 0.55; }
+.card-top { display: flex; align-items: flex-start; gap: 10px; }
+.check-btn { width: 20px; height: 20px; min-width: 20px; border-radius: 6px; border: 2px solid #CCCAC5; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; margin-top: 2px; transition: all 0.15s; }
+.check-btn.checked { border-color: #7EB8A0; background: #7EB8A0; }
+.card-body { flex: 1; min-width: 0; }
+.card-title { font-weight: 600; font-size: 14px; color: #1A1814; line-height: 1.4; word-break: break-word; }
+.card.done .card-title { text-decoration: line-through; }
+.card-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; align-items: center; }
+.badge { font-size: 10px; border-radius: 20px; padding: 2px 8px; }
+.badge-sub { background: #F0EDE8; color: #8C8880; }
+.badge-pri { font-weight: 700; letter-spacing: 0.04em; }
+.card-price { font-size: 15px; font-weight: 700; color: #C4A35A; margin-top: 2px; }
+.delete-btn { background: none; border: none; color: #C9C5BE; cursor: pointer; font-size: 18px; padding: 0 2px; line-height: 1; flex-shrink: 0; }
+.card-memo { font-size: 12px; color: #6E6B65; line-height: 1.6; padding-left: 30px; }
+.card-link { display: flex; align-items: center; gap: 7px; margin-left: 30px; padding: 6px 10px; background: #F7F5F2; border: 1px solid #EAE6E0; border-radius: 8px; text-decoration: none; color: #3D3A35; font-size: 11px; overflow: hidden; }
+.card-link:hover { background: #EEE; }
+.card-link-domain { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.card-date { font-size: 11px; color: #B0ACA6; padding-left: 30px; }
+
+/* Priority colors */
+.pri-high { background: #E8503A22; color: #E8503A; border: 1px solid #E8503A44; }
+.pri-mid { background: #C4A35A22; color: #C4A35A; border: 1px solid #C4A35A44; }
+.pri-low { background: #7EB8A022; color: #7EB8A0; border: 1px solid #7EB8A044; }
+
+/* Empty */
+#empty { text-align: center; padding: 60px 20px; color: #B0ACA6; }
+
+/* Modal */
+#modal-overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 100; display: none; align-items: flex-end; justify-content: center; }
+#modal-overlay.open { display: flex; }
+#modal { background: #FDFBF8; border-radius: 20px 20px 0 0; padding: 24px 22px 40px; width: 100%; max-width: 540px; max-height: 92vh; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+#modal-title { font-weight: 700; font-size: 17px; color: #1A1814; }
+.field label { display: block; font-size: 11px; font-weight: 700; color: #8C8880; margin-bottom: 5px; letter-spacing: 0.06em; }
+.field input, .field textarea, .field select { width: 100%; padding: 9px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 14px; color: #1A1814; background: #FFF; outline: none; font-family: inherit; }
+.field input:focus, .field textarea:focus, .field select:focus { border-color: #C4A35A; }
+.field textarea { resize: vertical; }
+.price-row { display: flex; gap: 8px; }
+.price-row input { flex: 1; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; background: #F0EDE8; color: #5C5A55; border: none; transition: all 0.15s; }
+.chip.sel { background: #1A1814; color: #FDFBF8; }
+.chip-pri.sel-high { background: #E8503A; color: #fff; }
+.chip-pri.sel-mid { background: #C4A35A; color: #fff; }
+.chip-pri.sel-low { background: #7EB8A0; color: #fff; }
+#modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+.btn-cancel { font-size: 14px; padding: 10px 18px; border-radius: 9px; background: #F0EDE8; color: #5C5A55; border: none; cursor: pointer; font-family: inherit; }
+.btn-save { font-size: 14px; padding: 10px 22px; border-radius: 9px; background: #1A1814; color: #FDFBF8; border: none; font-weight: 600; font-family: inherit; cursor: pointer; }
+.btn-save:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Group modal */
+#grp-modal-overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
+#grp-modal-overlay.open { display: flex; }
+#grp-modal { background: #FDFBF8; border-radius: 18px; padding: 24px 22px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 14px; }
+.grp-list { display: flex; flex-direction: column; gap: 6px; max-height: 240px; overflow-y: auto; }
+.grp-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #F7F4EF; border-radius: 9px; }
+.grp-item-name { font-size: 14px; color: #1A1814; }
+.grp-item-del { background: none; border: none; color: #C9C5BE; cursor: pointer; font-size: 16px; }
+.grp-add-row { display: flex; gap: 8px; }
+.grp-add-row input { flex: 1; padding: 9px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 14px; font-family: inherit; outline: none; }
+.grp-add-row input:focus { border-color: #C4A35A; }
+.grp-add-row button { padding: 9px 16px; background: #1A1814; color: #fff; border: none; border-radius: 9px; font-size: 13px; cursor: pointer; font-family: inherit; }
+.sub-add-row { display: flex; gap: 8px; margin-top: 4px; }
+.sub-add-row input { flex: 1; padding: 8px 12px; border: 1px solid #DDD9D2; border-radius: 9px; font-size: 13px; font-family: inherit; outline: none; }
+.sub-add-row button { padding: 8px 14px; background: #C4A35A; color: #1A1814; border: none; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <div id="header">
   <div id="header-inner">
     <div id="header-top">
@@ -93,42 +138,75 @@
         <div id="app-title">Wishlist ✦</div>
         <div id="app-subtitle"></div>
       </div>
-      <button id="btn-add" onclick="openModal()">＋ 追加</button>
+      <div id="header-actions">
+        <button class="btn-outline" onclick="openGrpModal()">グループ管理</button>
+        <button class="btn-gold" onclick="openModal()">＋ 追加</button>
+      </div>
     </div>
     <input id="search" type="search" placeholder="🔍  キーワードで検索..." oninput="render()">
   </div>
 </div>
 
-<!-- Tabs -->
-<div id="tabs-wrap">
-  <div id="tabs"></div>
-</div>
-
-<!-- Main -->
-<div id="main">
-  <button id="done-toggle" onclick="toggleShowDone()" style="display:none"></button>
-  <div id="card-list"></div>
-  <div id="empty" style="display:none">
-    <div id="empty-icon">✦</div>
-    <div id="empty-text">まだアイテムがありません。「＋ 追加」から始めましょう。</div>
+<div id="view-tabs">
+  <div id="view-tabs-inner">
+    <button class="view-tab active" onclick="setView('list',this)">📋 リスト</button>
+    <button class="view-tab" onclick="setView('budget',this)">💰 予算比較</button>
   </div>
 </div>
 
-<!-- Modal -->
+<div id="main">
+  <!-- Budget bar -->
+  <div id="budget-bar">
+    <div class="budget-title">BUDGET OVERVIEW</div>
+    <div class="budget-row">
+      <span class="budget-label">合計金額（未達成）</span>
+      <span class="budget-amount" id="total-amount">¥0</span>
+    </div>
+    <div class="budget-row">
+      <span class="budget-label">予算</span>
+      <span class="budget-amount" id="budget-display">未設定</span>
+    </div>
+    <div class="budget-progress"><div class="budget-fill" id="budget-fill" style="width:0%"></div></div>
+    <div class="budget-input-row">
+      <input type="number" id="budget-input" placeholder="予算を入力（円）">
+      <button onclick="setBudget()">設定</button>
+    </div>
+  </div>
+
+  <div id="card-list"></div>
+  <div id="empty" style="display:none">
+    <div style="font-size:36px;margin-bottom:12px">✦</div>
+    <div style="font-size:14px" id="empty-text">まだアイテムがありません。「＋ 追加」から始めましょう。</div>
+  </div>
+</div>
+
+<!-- Item Modal -->
 <div id="modal-overlay" onclick="overlayClick(event)">
   <div id="modal">
     <div id="modal-title">新しいアイテムを追加</div>
     <div class="field">
       <label>タイトル *</label>
-      <input id="f-title" type="text" placeholder="例：あのカフェのパスタ">
+      <input id="f-title" type="text" placeholder="例：レザーブーツ">
     </div>
     <div class="field">
-      <label>リンク（Instagram / Web / X など）</label>
+      <label>リンク</label>
       <input id="f-url" type="url" placeholder="https://...">
     </div>
     <div class="field">
-      <label>カテゴリ</label>
-      <div class="chips" id="chips-cat"></div>
+      <label>価格（円）</label>
+      <input id="f-price" type="number" placeholder="例：24800">
+    </div>
+    <div class="field">
+      <label>グループ</label>
+      <select id="f-group" onchange="updateSubSelect()">
+        <option value="">グループなし</option>
+      </select>
+    </div>
+    <div class="field" id="sub-field" style="display:none">
+      <label>サブカテゴリ</label>
+      <select id="f-sub">
+        <option value="">なし</option>
+      </select>
     </div>
     <div class="field">
       <label>優先度</label>
@@ -136,42 +214,63 @@
     </div>
     <div class="field">
       <label>メモ</label>
-      <textarea id="f-memo" rows="3" placeholder="気になった理由、サイズ感など..."></textarea>
+      <textarea id="f-memo" rows="2" placeholder="気になった理由など..."></textarea>
     </div>
     <div id="modal-actions">
-      <button id="btn-cancel" onclick="closeModal()">キャンセル</button>
-      <button id="btn-save" onclick="saveItem()" disabled>追加する</button>
+      <button class="btn-cancel" onclick="closeModal()">キャンセル</button>
+      <button class="btn-save" id="btn-save" onclick="saveItem()" disabled>追加する</button>
     </div>
   </div>
 </div>
 
+<!-- Group Modal -->
+<div id="grp-modal-overlay" onclick="grpOverlayClick(event)">
+  <div id="grp-modal">
+    <div style="font-weight:700;font-size:16px;color:#1A1814">グループ管理</div>
+    <div class="grp-list" id="grp-list"></div>
+    <div class="grp-add-row">
+      <input id="grp-input" type="text" placeholder="新しいグループ名">
+      <button onclick="addGroup()">追加</button>
+    </div>
+    <div style="margin-top:8px;border-top:1px solid #EAE6E0;padding-top:12px">
+      <div style="font-size:12px;font-weight:700;color:#8C8880;margin-bottom:8px">サブカテゴリを追加</div>
+      <select id="grp-select-for-sub" style="width:100%;padding:8px 10px;border:1px solid #DDD9D2;border-radius:8px;font-size:13px;font-family:inherit;margin-bottom:8px;outline:none;">
+        <option value="">グループを選択</option>
+      </select>
+      <div class="sub-add-row">
+        <input id="sub-input" type="text" placeholder="サブカテゴリ名（例：カジュアル）">
+        <button onclick="addSub()">追加</button>
+      </div>
+    </div>
+    <button class="btn-cancel" style="width:100%;text-align:center" onclick="closeGrpModal()">閉じる</button>
+  </div>
+</div>
+
 <script>
-const STORAGE_KEY = 'wishlist_v1';
-const CATEGORIES = [
-  { id: 'want',  label: '欲しいもの',      emoji: '🛍' },
-  { id: 'todo',  label: 'やりたいこと',    emoji: '🗺' },
-  { id: 'food',  label: '食べたい・行きたい', emoji: '🍽' },
-  { id: 'learn', label: '学びたい',         emoji: '📖' },
-  { id: 'other', label: 'その他',           emoji: '◎' },
-];
+const STORAGE_KEY = 'wishlist_v2';
+const GROUPS_KEY = 'wishlist_groups_v2';
+const BUDGET_KEY = 'wishlist_budget_v2';
 const PRIORITY = [
-  { id: 'high', label: '絶対',   color: '#E8503A' },
-  { id: 'mid',  label: 'いつか', color: '#C4A35A' },
+  { id: 'high', label: '絶対',    color: '#E8503A' },
+  { id: 'mid',  label: 'いつか',  color: '#C4A35A' },
   { id: 'low',  label: '気になる', color: '#7EB8A0' },
 ];
 
 let items = [];
-let filterCat = 'all';
-let showDone = false;
-let formCat = 'want';
+let groups = []; // [{id, name, subs:[]}]
+let budget = 0;
+let currentView = 'list';
 let formPri = 'mid';
 
 function load() {
   try { items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { items = []; }
+  try { groups = JSON.parse(localStorage.getItem(GROUPS_KEY)) || []; } catch { groups = []; }
+  try { budget = parseFloat(localStorage.getItem(BUDGET_KEY)) || 0; } catch { budget = 0; }
 }
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-}
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+function saveGroups() { localStorage.setItem(GROUPS_KEY, JSON.stringify(groups)); }
+function saveBudget() { localStorage.setItem(BUDGET_KEY, String(budget)); }
+
 function extractDomain(url) {
   try { return new URL(url).hostname.replace('www.', ''); } catch { return null; }
 }
@@ -180,97 +279,223 @@ function getFavicon(url) {
   return d ? `https://www.google.com/s2/favicons?domain=${d}&sz=32` : null;
 }
 function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function fmtDate(iso) {
-  return new Date(iso).toLocaleDateString('ja-JP', { year:'numeric', month:'short', day:'numeric' });
+  return new Date(iso).toLocaleDateString('ja-JP', { month:'short', day:'numeric' });
+}
+function fmtPrice(p) {
+  if (!p) return '';
+  return '¥' + Number(p).toLocaleString();
+}
+
+// --- View ---
+function setView(v, el) {
+  currentView = v;
+  document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+// --- Budget ---
+function setBudget() {
+  const v = parseFloat(document.getElementById('budget-input').value);
+  if (!isNaN(v) && v >= 0) { budget = v; saveBudget(); render(); }
 }
 
 // --- Render ---
 function render() {
   const q = document.getElementById('search').value.toLowerCase();
-  const active = items.filter(i => !i.done);
-  const done   = items.filter(i =>  i.done);
+  const activeItems = items.filter(i => !i.done);
+  const doneItems = items.filter(i => i.done);
+  const totalPrice = activeItems.filter(i => i.price).reduce((s, i) => s + Number(i.price), 0);
 
   // subtitle
   document.getElementById('app-subtitle').textContent =
-    `${active.length} 件未達成` + (done.length ? `　/ ${done.length} 件達成済み` : '');
+    `${activeItems.length} 件` + (totalPrice > 0 ? `　合計 ¥${totalPrice.toLocaleString()}` : '');
 
-  // tabs
-  const tabsEl = document.getElementById('tabs');
-  const allCats = [{ id:'all', label:'すべて', emoji:'✦' }, ...CATEGORIES];
-  tabsEl.innerHTML = allCats.map(c => {
-    const cnt = c.id === 'all'
-      ? active.length
-      : items.filter(i => i.category === c.id && !i.done).length;
-    return `<button class="tab ${filterCat===c.id?'active':''}" onclick="setFilter('${c.id}')">
-      ${c.emoji} ${c.label}
-      ${cnt > 0 ? `<span class="tab-count">${cnt}</span>` : ''}
-    </button>`;
-  }).join('');
+  // budget bar
+  const budgetBar = document.getElementById('budget-bar');
+  if (currentView === 'budget') {
+    budgetBar.classList.add('show');
+    document.getElementById('total-amount').textContent = '¥' + totalPrice.toLocaleString();
+    const overBudget = budget > 0 && totalPrice > budget;
+    document.getElementById('total-amount').className = 'budget-amount' + (overBudget ? ' over' : '');
+    document.getElementById('budget-display').textContent = budget > 0 ? '¥' + budget.toLocaleString() : '未設定';
+    if (budget > 0 && document.getElementById('budget-input').value === '') {
+      document.getElementById('budget-input').placeholder = '¥' + budget.toLocaleString();
+    }
+    const pct = budget > 0 ? Math.min((totalPrice / budget) * 100, 100) : 0;
+    const fill = document.getElementById('budget-fill');
+    fill.style.width = pct + '%';
+    fill.className = 'budget-fill' + (overBudget ? ' over' : '');
+  } else {
+    budgetBar.classList.remove('show');
+  }
 
-  // filter
+  // filter items
   let visible = items.filter(i => {
-    if (!showDone && i.done) return false;
-    if (filterCat !== 'all' && i.category !== filterCat) return false;
     if (q && !i.title.toLowerCase().includes(q) && !(i.memo||'').toLowerCase().includes(q)) return false;
     return true;
   });
 
-  // done toggle btn
-  const dt = document.getElementById('done-toggle');
-  if (done.length > 0) {
-    dt.style.display = 'block';
-    dt.textContent = showDone ? '▲ 達成済みを隠す' : `▼ 達成済みを表示 (${done.length})`;
-  } else {
-    dt.style.display = 'none';
-  }
-
-  // cards
   const list = document.getElementById('card-list');
   const empty = document.getElementById('empty');
+
   if (visible.length === 0) {
     list.innerHTML = '';
     empty.style.display = 'block';
-    document.getElementById('empty-text').textContent =
-      q ? '検索結果がありません' : 'まだアイテムがありません。「＋ 追加」から始めましょう。';
+    document.getElementById('empty-text').textContent = q ? '検索結果がありません' : 'まだアイテムがありません。「＋ 追加」から始めましょう。';
+    return;
+  }
+  empty.style.display = 'none';
+
+  if (currentView === 'budget') {
+    renderBudgetView(visible);
   } else {
-    empty.style.display = 'none';
-    list.innerHTML = visible.map(item => {
-      const cat = CATEGORIES.find(c => c.id === item.category);
-      const pri = PRIORITY.find(p => p.id === item.priority);
-      const domain = extractDomain(item.url);
-      const favicon = item.url ? getFavicon(item.url) : null;
-      return `
-        <div class="card ${item.done?'done':''}">
-          <div class="card-top">
-            <button class="check-btn ${item.done?'checked':''}" onclick="toggleDone('${item.id}')" title="${item.done?'未完了に戻す':'達成済みにする'}">
-              ${item.done ? '✓' : ''}
-            </button>
-            <div class="card-body">
-              <div class="card-title">${esc(item.title)}</div>
-              <div class="card-badges">
-                ${cat ? `<span class="badge-cat">${cat.emoji} ${cat.label}</span>` : ''}
-                ${pri ? `<span class="badge-pri" style="background:${pri.color}22;color:${pri.color};border:1px solid ${pri.color}44">${pri.label}</span>` : ''}
-              </div>
-            </div>
-            <button class="delete-btn" onclick="deleteItem('${item.id}')" title="削除">×</button>
-          </div>
-          ${item.memo ? `<div class="card-memo">${esc(item.memo)}</div>` : ''}
-          ${item.url ? `
-            <a class="card-link" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
-              ${favicon ? `<img src="${favicon}" width="14" height="14" onerror="this.style.display='none'" alt="">` : ''}
-              <span class="card-link-domain">${esc(domain || item.url)}</span>
-              <span class="card-link-icon">↗</span>
-            </a>` : ''}
-          <div class="card-date">${fmtDate(item.createdAt)}</div>
-        </div>`;
-    }).join('');
+    renderListView(visible);
   }
 }
 
-function setFilter(id) { filterCat = id; render(); }
-function toggleShowDone() { showDone = !showDone; render(); }
+function renderListView(visible) {
+  const list = document.getElementById('card-list');
+  // Group by group
+  const ungrouped = visible.filter(i => !i.groupId);
+  const grouped = {};
+  groups.forEach(g => {
+    const its = visible.filter(i => i.groupId === g.id);
+    if (its.length > 0) grouped[g.id] = its;
+  });
+  // Done items
+  const doneItems = visible.filter(i => i.done);
+  const activeUngrouped = ungrouped.filter(i => !i.done);
+
+  let html = '';
+
+  // Grouped sections
+  groups.forEach(g => {
+    const its = visible.filter(i => i.groupId === g.id);
+    if (its.length === 0) return;
+    const activeIts = its.filter(i => !i.done);
+    const total = activeIts.filter(i => i.price).reduce((s,i) => s + Number(i.price), 0);
+    html += `<div class="group-section">
+      <div class="group-header" onclick="toggleGroup('grp-${g.id}')">
+        <div class="group-header-left">
+          <span class="group-toggle open" id="toggle-grp-${g.id}">▶</span>
+          <span class="group-name">${esc(g.name)}</span>
+          <span class="group-count">${activeIts.length}</span>
+        </div>
+        ${total > 0 ? `<span class="group-total">${fmtPrice(total)}</span>` : ''}
+      </div>
+      <div class="group-body" id="grp-${g.id}">`;
+
+    // Sub groups
+    const subs = g.subs || [];
+    const noSub = its.filter(i => !i.subCat);
+    const subMap = {};
+    subs.forEach(s => { subMap[s] = its.filter(i => i.subCat === s); });
+
+    if (noSub.length > 0) {
+      noSub.forEach(item => { html += renderCard(item); });
+    }
+    subs.forEach(s => {
+      const sits = subMap[s];
+      if (sits.length === 0) return;
+      html += `<div class="subgroup-label">${esc(s)}</div>`;
+      sits.forEach(item => { html += renderCard(item); });
+    });
+
+    html += `</div></div>`;
+  });
+
+  // Ungrouped
+  if (activeUngrouped.length > 0) {
+    html += `<div class="group-section">
+      <div class="group-header" onclick="toggleGroup('grp-ungrouped')">
+        <div class="group-header-left">
+          <span class="group-toggle open" id="toggle-grp-ungrouped">▶</span>
+          <span class="group-name">未分類</span>
+          <span class="group-count">${activeUngrouped.length}</span>
+        </div>
+      </div>
+      <div class="group-body" id="grp-ungrouped">`;
+    activeUngrouped.forEach(item => { html += renderCard(item); });
+    html += `</div></div>`;
+  }
+
+  // Done
+  if (doneItems.length > 0) {
+    html += `<div class="group-section">
+      <div class="group-header" onclick="toggleGroup('grp-done')">
+        <div class="group-header-left">
+          <span class="group-toggle" id="toggle-grp-done">▶</span>
+          <span class="group-name" style="color:#B0ACA6">達成済み</span>
+          <span class="group-count">${doneItems.length}</span>
+        </div>
+      </div>
+      <div class="group-body collapsed" id="grp-done">`;
+    doneItems.forEach(item => { html += renderCard(item); });
+    html += `</div></div>`;
+  }
+
+  list.innerHTML = html;
+}
+
+function renderBudgetView(visible) {
+  const list = document.getElementById('card-list');
+  // Sort by price desc, active only
+  const priced = visible.filter(i => !i.done && i.price).sort((a,b) => Number(b.price) - Number(a.price));
+  const unpriced = visible.filter(i => !i.done && !i.price);
+
+  let html = '';
+  if (priced.length > 0) {
+    html += `<div class="subgroup-label" style="margin-top:0">価格あり</div>`;
+    priced.forEach(item => { html += renderCard(item, true); });
+  }
+  if (unpriced.length > 0) {
+    html += `<div class="subgroup-label">価格未設定</div>`;
+    unpriced.forEach(item => { html += renderCard(item, true); });
+  }
+  list.innerHTML = html;
+}
+
+function renderCard(item, showPrice = true) {
+  const pri = PRIORITY.find(p => p.id === item.priority);
+  const domain = extractDomain(item.url);
+  const favicon = item.url ? getFavicon(item.url) : null;
+  const grp = groups.find(g => g.id === item.groupId);
+  return `
+    <div class="card ${item.done?'done':''}">
+      <div class="card-top">
+        <button class="check-btn ${item.done?'checked':''}" onclick="toggleDone('${item.id}')">${item.done?'✓':''}</button>
+        <div class="card-body">
+          <div class="card-title">${esc(item.title)}</div>
+          ${item.price && showPrice ? `<div class="card-price">${fmtPrice(item.price)}</div>` : ''}
+          <div class="card-badges">
+            ${grp ? `<span class="badge badge-sub">${esc(grp.name)}${item.subCat ? ' / ' + esc(item.subCat) : ''}</span>` : ''}
+            ${pri ? `<span class="badge badge-pri pri-${item.priority}">${pri.label}</span>` : ''}
+          </div>
+        </div>
+        <button class="delete-btn" onclick="deleteItem('${item.id}')">×</button>
+      </div>
+      ${item.memo ? `<div class="card-memo">${esc(item.memo)}</div>` : ''}
+      ${item.url ? `<a class="card-link" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
+        ${favicon ? `<img src="${favicon}" width="13" height="13" onerror="this.style.display='none'" alt="">` : ''}
+        <span class="card-link-domain">${esc(domain || item.url)}</span>
+        <span style="color:#B0ACA6;flex-shrink:0">↗</span>
+      </a>` : ''}
+      <div class="card-date">${fmtDate(item.createdAt)}</div>
+    </div>`;
+}
+
+function toggleGroup(id) {
+  const body = document.getElementById(id);
+  const toggle = document.getElementById('toggle-' + id);
+  if (!body) return;
+  body.classList.toggle('collapsed');
+  if (toggle) toggle.classList.toggle('open');
+}
+
 function toggleDone(id) {
   items = items.map(i => i.id === id ? {...i, done: !i.done} : i);
   save(); render();
@@ -282,57 +507,126 @@ function deleteItem(id) {
 }
 
 // --- Modal ---
-function buildChips() {
-  document.getElementById('chips-cat').innerHTML = CATEGORIES.map(c =>
-    `<button class="chip ${formCat===c.id?'selected':''}" onclick="setFormCat('${c.id}')">${c.emoji} ${c.label}</button>`
-  ).join('');
+function buildPriChips() {
   document.getElementById('chips-pri').innerHTML = PRIORITY.map(p =>
-    `<button class="chip chip-pri ${formPri===p.id?'selected-'+p.id:''}" onclick="setFormPri('${p.id}')" style="${formPri===p.id?`background:${p.color};color:#fff`:''}">${p.label}</button>`
+    `<button class="chip chip-pri ${formPri===p.id?'sel-'+p.id:''}" onclick="setFormPri('${p.id}')" style="${formPri===p.id?`background:${p.color};color:#fff`:''}">${p.label}</button>`
   ).join('');
 }
-function setFormCat(id) { formCat = id; buildChips(); }
-function setFormPri(id) { formPri = id; buildChips(); }
+function setFormPri(id) { formPri = id; buildPriChips(); }
+
+function updateSubSelect() {
+  const gid = document.getElementById('f-group').value;
+  const subField = document.getElementById('sub-field');
+  const subSel = document.getElementById('f-sub');
+  if (!gid) { subField.style.display = 'none'; return; }
+  const grp = groups.find(g => g.id === gid);
+  if (!grp || !grp.subs || grp.subs.length === 0) { subField.style.display = 'none'; return; }
+  subField.style.display = 'block';
+  subSel.innerHTML = '<option value="">なし</option>' + grp.subs.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+}
+
+function buildGroupSelect() {
+  const sel = document.getElementById('f-group');
+  sel.innerHTML = '<option value="">グループなし</option>' + groups.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
+}
 
 function openModal(prefillUrl) {
+  buildGroupSelect();
   document.getElementById('f-title').value = '';
   document.getElementById('f-url').value = prefillUrl || '';
+  document.getElementById('f-price').value = '';
   document.getElementById('f-memo').value = '';
-  formCat = 'want'; formPri = 'mid';
-  buildChips();
+  document.getElementById('f-group').value = '';
+  document.getElementById('sub-field').style.display = 'none';
+  formPri = 'mid'; buildPriChips();
   document.getElementById('btn-save').disabled = true;
   document.getElementById('modal-overlay').classList.add('open');
   setTimeout(() => document.getElementById('f-title').focus(), 100);
 }
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-}
-function overlayClick(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function overlayClick(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
 
-document.getElementById('f-title').addEventListener('input', function() {
-  document.getElementById('btn-save').disabled = this.value.trim() === '';
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('f-title').addEventListener('input', function() {
+    document.getElementById('btn-save').disabled = this.value.trim() === '';
+  });
 });
 
 function saveItem() {
   const title = document.getElementById('f-title').value.trim();
   if (!title) return;
+  const gid = document.getElementById('f-group').value;
   const item = {
     id: Date.now().toString(),
     title,
     url: document.getElementById('f-url').value.trim(),
+    price: document.getElementById('f-price').value.trim(),
     memo: document.getElementById('f-memo').value.trim(),
-    category: formCat,
+    groupId: gid || null,
+    subCat: gid ? document.getElementById('f-sub').value : '',
     priority: formPri,
     done: false,
     createdAt: new Date().toISOString(),
   };
   items.unshift(item);
-  save(); render();
-  closeModal();
+  save(); render(); closeModal();
 }
 
-// URLパラメータから自動入力（ショートカット連携用）
+// --- Group Modal ---
+function openGrpModal() {
+  renderGrpList();
+  buildGrpSubSelect();
+  document.getElementById('grp-modal-overlay').classList.add('open');
+}
+function closeGrpModal() { document.getElementById('grp-modal-overlay').classList.remove('open'); render(); }
+function grpOverlayClick(e) { if (e.target === document.getElementById('grp-modal-overlay')) closeGrpModal(); }
+
+function renderGrpList() {
+  document.getElementById('grp-list').innerHTML = groups.map(g => `
+    <div class="grp-item">
+      <div>
+        <div class="grp-item-name">${esc(g.name)}</div>
+        ${g.subs && g.subs.length > 0 ? `<div style="font-size:11px;color:#B0ACA6;margin-top:2px">${g.subs.map(s=>esc(s)).join(' · ')}</div>` : ''}
+      </div>
+      <button class="grp-item-del" onclick="deleteGroup('${g.id}')">×</button>
+    </div>`).join('') || '<div style="font-size:13px;color:#B0ACA6;padding:8px 0">グループがありません</div>';
+}
+
+function buildGrpSubSelect() {
+  document.getElementById('grp-select-for-sub').innerHTML =
+    '<option value="">グループを選択</option>' + groups.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
+}
+
+function addGroup() {
+  const name = document.getElementById('grp-input').value.trim();
+  if (!name) return;
+  groups.push({ id: Date.now().toString(), name, subs: [] });
+  saveGroups();
+  document.getElementById('grp-input').value = '';
+  renderGrpList(); buildGrpSubSelect();
+}
+
+function deleteGroup(id) {
+  if (!confirm('グループを削除しますか？（アイテムは未分類になります）')) return;
+  groups = groups.filter(g => g.id !== id);
+  items = items.map(i => i.groupId === id ? {...i, groupId: null, subCat: ''} : i);
+  save(); saveGroups(); renderGrpList(); buildGrpSubSelect();
+}
+
+function addSub() {
+  const gid = document.getElementById('grp-select-for-sub').value;
+  const name = document.getElementById('sub-input').value.trim();
+  if (!gid || !name) return;
+  const grp = groups.find(g => g.id === gid);
+  if (!grp) return;
+  if (!grp.subs) grp.subs = [];
+  if (!grp.subs.includes(name)) grp.subs.push(name);
+  saveGroups();
+  document.getElementById('sub-input').value = '';
+  renderGrpList();
+}
+
+// URL param
 function checkUrlParam() {
   const params = new URLSearchParams(window.location.search);
   const sharedUrl = params.get('url');
@@ -342,10 +636,13 @@ function checkUrlParam() {
   }
 }
 
+load(); render(); checkUrlParam();
 
-load();
-render();
-checkUrlParam();
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('f-title').addEventListener('input', function() {
+    document.getElementById('btn-save').disabled = this.value.trim() === '';
+  });
+});
 </script>
 </body>
 </html>
