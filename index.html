@@ -338,9 +338,10 @@ function checkUrlParam() {
   const sharedUrl = params.get('url');
   if (sharedUrl) {
     history.replaceState({}, '', window.location.pathname);
-    openModal(sharedUrl);
+    setTimeout(() => openModal(decodeURIComponent(sharedUrl)), 300);
   }
 }
+
 
 load();
 render();
