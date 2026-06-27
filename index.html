@@ -192,6 +192,7 @@ body {
   letter-spacing: 0.04em;
 }
 .quest-del { background: none; border: none; color: #C4B090; cursor: pointer; font-size: 17px; flex-shrink: 0; padding: 0 2px; }
+.quest-edit { background: none; border: none; color: #C4B090; cursor: pointer; font-size: 13px; flex-shrink: 0; padding: 0 4px; }
 .quest-memo { font-size: 12px; color: var(--muted); line-height: 1.65; padding-left: 28px; }
 .quest-link {
   display: flex; align-items: center; gap: 6px;
@@ -378,7 +379,7 @@ body {
 <!-- Quest Modal -->
 <div class="m-overlay" id="qm-overlay" onclick="qmOverlayClick(event)">
   <div class="m-sheet">
-    <div class="m-title">クエストを記録する</div>
+    <div class="m-title" id="qm-title-label">クエストを記録する</div>
     <div class="m-field">
       <label>タイトル *</label>
       <input id="qm-title" type="text" placeholder="例：白シャツを探す">
@@ -612,6 +613,7 @@ function renderQCard(x) {
           ${pri?`<span class="quest-tag ${pri.cls}">${pri.label}</span>`:''}
         </div>
       </div>
+      <button class="quest-edit" onclick="editQuest('${x.id}')" title="編集">✎</button>
       <button class="quest-del" onclick="deleteQuest('${x.id}')">×</button>
     </div>
     ${x.memo?`<div class="quest-memo">${esc(x.memo)}</div>`:''}
@@ -651,6 +653,7 @@ function renderDreams(q, list, empty) {
           <span class="dream-quest-stat">${dq.length>0?`${doneQ}/${dq.length} quests`:'no quests yet'}</span>
           <div class="dream-btns">
             <button class="btn-sm danger" onclick="deleteDream('${d.id}')">削除</button>
+            <button class="btn-sm ghost" onclick="editDream('${d.id}')">編集</button>
             <button class="btn-sm gold" onclick="openQuestForDream('${d.id}')">＋ クエスト</button>
           </div>
         </div>
@@ -711,8 +714,12 @@ function buildDreamSelect(preId) {
 }
 
 let _prefillDreamId = null;
+let _editQuestId = null;
+
 function openQuestModal(url) {
-  _prefillDreamId = null;
+  _prefillDreamId = null; _editQuestId = null;
+  document.getElementById('qm-title-label').textContent = 'クエストを記録する';
+  document.getElementById('qm-save').textContent = '記録する';
   buildDreamSelect(null);
   buildQTypeChips(); buildQPriChips();
   document.getElementById('qm-title').value = '';
@@ -724,7 +731,9 @@ function openQuestModal(url) {
   setTimeout(()=>document.getElementById('qm-title').focus(),100);
 }
 function openQuestForDream(did) {
-  _prefillDreamId = did;
+  _prefillDreamId = did; _editQuestId = null;
+  document.getElementById('qm-title-label').textContent = 'クエストを記録する';
+  document.getElementById('qm-save').textContent = '記録する';
   buildDreamSelect(did);
   buildQTypeChips(); buildQPriChips();
   document.getElementById('qm-title').value = '';
@@ -735,22 +744,52 @@ function openQuestForDream(did) {
   document.getElementById('qm-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('qm-title').focus(),100);
 }
+function editQuest(id) {
+  const x = quests.find(q=>q.id===id);
+  if (!x) return;
+  _editQuestId = id; _prefillDreamId = null;
+  document.getElementById('qm-title-label').textContent = 'クエストを編集する';
+  document.getElementById('qm-save').textContent = '更新する';
+  qType = x.type||'armor'; qSub = x.subCat||''; qPri = x.priority||'soon';
+  buildDreamSelect(x.dreamId);
+  buildQTypeChips(); buildQPriChips();
+  document.getElementById('qm-title').value = x.title||'';
+  document.getElementById('qm-url').value = x.url||'';
+  document.getElementById('qm-price').value = x.price||'';
+  document.getElementById('qm-memo').value = x.memo||'';
+  document.getElementById('qm-dream').value = x.dreamId||'';
+  document.getElementById('qm-save').disabled = false;
+  document.getElementById('qm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('qm-title').focus(),100);
+}
 function closeQuestModal() { document.getElementById('qm-overlay').classList.remove('open'); }
 function qmOverlayClick(e) { if(e.target===document.getElementById('qm-overlay')) closeQuestModal(); }
 
 function saveQuest() {
   const title = document.getElementById('qm-title').value.trim();
   if (!title) return;
-  quests.unshift({
-    id: Date.now().toString(), title,
-    type: qType, subCat: qSub,
-    url: document.getElementById('qm-url').value.trim(),
-    price: document.getElementById('qm-price').value.trim(),
-    memo: document.getElementById('qm-memo').value.trim(),
-    dreamId: document.getElementById('qm-dream').value || null,
-    priority: qPri, done: false,
-    createdAt: new Date().toISOString(),
-  });
+  if (_editQuestId) {
+    quests = quests.map(x => x.id===_editQuestId ? {
+      ...x, title,
+      type: qType, subCat: qSub,
+      url: document.getElementById('qm-url').value.trim(),
+      price: document.getElementById('qm-price').value.trim(),
+      memo: document.getElementById('qm-memo').value.trim(),
+      dreamId: document.getElementById('qm-dream').value || null,
+      priority: qPri,
+    } : x);
+  } else {
+    quests.unshift({
+      id: Date.now().toString(), title,
+      type: qType, subCat: qSub,
+      url: document.getElementById('qm-url').value.trim(),
+      price: document.getElementById('qm-price').value.trim(),
+      memo: document.getElementById('qm-memo').value.trim(),
+      dreamId: document.getElementById('qm-dream').value || null,
+      priority: qPri, done: false,
+      createdAt: new Date().toISOString(),
+    });
+  }
   saveQ(); render(); closeQuestModal();
 }
 
@@ -761,6 +800,20 @@ function buildDRealmChips() {
   ).join('');
 }
 function setDRealm(id) { dRealm=id; buildDRealmChips(); }
+function editDream(id) {
+  const d = dreams.find(x=>x.id===id);
+  if (!d) return;
+  dRealm = d.realm||'taste';
+  buildDRealmChips();
+  document.getElementById('dm-title').value = d.title||'';
+  document.getElementById('dm-desc').value = d.desc||'';
+  document.getElementById('dm-img').value = d.img||'';
+  document.getElementById('dm-save').disabled = false;
+  document.getElementById('dm-save').textContent = '更新する';
+  document.getElementById('dm-overlay').classList.add('open');
+  document.getElementById('dm-overlay').dataset.editId = id;
+  setTimeout(()=>document.getElementById('dm-title').focus(),100);
+}
 function openDreamModal() {
   dRealm='taste'; buildDRealmChips();
   document.getElementById('dm-title').value='';
