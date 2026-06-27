@@ -823,17 +823,38 @@ function openDreamModal() {
   document.getElementById('dm-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('dm-title').focus(),100);
 }
+function openDreamModal() {
+  dRealm='taste'; buildDRealmChips();
+  document.getElementById('dm-title').value='';
+  document.getElementById('dm-desc').value='';
+  document.getElementById('dm-img').value='';
+  document.getElementById('dm-save').disabled=true;
+  document.getElementById('dm-save').textContent='地図に刻む';
+  document.getElementById('dm-overlay').dataset.editId='';
+  document.getElementById('dm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('dm-title').focus(),100);
+}
 function closeDreamModal() { document.getElementById('dm-overlay').classList.remove('open'); }
 function dmOverlayClick(e) { if(e.target===document.getElementById('dm-overlay')) closeDreamModal(); }
 function saveDream() {
   const title = document.getElementById('dm-title').value.trim();
   if (!title) return;
-  dreams.push({
-    id: Date.now().toString(), title,
-    desc: document.getElementById('dm-desc').value.trim(),
-    img: document.getElementById('dm-img').value.trim(),
-    realm: dRealm, createdAt: new Date().toISOString(),
-  });
+  const editId = document.getElementById('dm-overlay').dataset.editId;
+  if (editId) {
+    dreams = dreams.map(d => d.id===editId ? {
+      ...d, title,
+      desc: document.getElementById('dm-desc').value.trim(),
+      img: document.getElementById('dm-img').value.trim(),
+      realm: dRealm,
+    } : d);
+  } else {
+    dreams.push({
+      id: Date.now().toString(), title,
+      desc: document.getElementById('dm-desc').value.trim(),
+      img: document.getElementById('dm-img').value.trim(),
+      realm: dRealm, createdAt: new Date().toISOString(),
+    });
+  }
   saveD(); render(); closeDreamModal();
 }
 
