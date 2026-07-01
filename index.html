@@ -285,31 +285,138 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
 /* Quest check sparkle particles */
 .spark{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:300;animation:sparkle .8s ease forwards;}
 
-/* STATUS CARD */
-#sc-overlay{position:fixed;inset:0;background:rgba(20,40,60,.7);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+/* STATUS CARD — Character Sheet Style */
+#sc-overlay{position:fixed;inset:0;background:rgba(8,16,30,.88);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
 #sc-overlay.open{display:flex;}
-#sc-sheet{background:var(--paper);border-radius:22px 22px 0 0;padding:24px 20px 48px;width:100%;max-width:560px;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:16px;}
-.sc-title{font-family:'Cinzel',serif;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:.08em;text-align:center;}
-.sc-avatar-wrap{display:flex;justify-content:center;padding:8px 0;}
-.sc-job-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
-.sc-job{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:var(--ink);background:var(--parch2);border:1px solid var(--line);border-radius:20px;padding:5px 16px;}
-.sc-title-badge{font-size:11px;font-weight:700;color:var(--gold);background:rgba(74,155,170,.1);border:1px solid rgba(74,155,170,.25);border-radius:20px;padding:4px 12px;letter-spacing:.04em;}
-.sc-ultimate{font-size:11px;font-weight:700;color:#B8924A;background:rgba(184,146,74,.1);border:1px solid rgba(184,146,74,.3);border-radius:20px;padding:4px 12px;letter-spacing:.04em;}
-.sc-stats{display:flex;flex-direction:column;gap:8px;}
-.sc-stat-row{display:flex;align-items:center;gap:10px;}
-.sc-stat-label{font-size:11px;font-weight:700;color:var(--muted);width:64px;flex-shrink:0;letter-spacing:.03em;}
-.sc-stat-bar{flex:1;height:8px;background:var(--parch2);border-radius:10px;overflow:hidden;}
-.sc-stat-fill{height:100%;border-radius:10px;transition:width .6s ease;}
-.sc-stat-val{font-size:11px;font-weight:700;color:var(--ink);width:28px;text-align:right;flex-shrink:0;}
-.sc-bio{background:linear-gradient(135deg,var(--parch) 0%,var(--parch2) 100%);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:13px;color:var(--ink);line-height:1.8;font-style:italic;position:relative;}
-.sc-bio::before{content:'❝';font-size:24px;color:var(--gold);opacity:.4;position:absolute;top:8px;left:12px;font-style:normal;}
-.sc-bio-text{padding-left:20px;}
-.sc-bio-loading{text-align:center;color:var(--faint);font-size:12px;padding:8px 0;}
-.sc-recommend{display:flex;flex-direction:column;gap:8px;}
-.sc-rec-title{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
-.sc-rec-item{background:var(--parch);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13px;color:var(--ink);cursor:pointer;transition:background .15s;}
-.sc-rec-item:hover{background:var(--parch2);}
-.sc-rec-tag{font-size:10px;font-weight:700;margin-right:6px;padding:2px 7px;border-radius:20px;}
+#sc-sheet{
+  width:100%;max-width:560px;max-height:96vh;overflow-y:auto;
+  background:#EEF4F8;
+  border-radius:24px 24px 0 0;
+  padding-bottom:48px;
+  position:relative;
+}
+#sc-sheet::before{
+  content:'';position:absolute;inset:0;border-radius:24px 24px 0 0;
+  background-image:
+    linear-gradient(rgba(74,155,170,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,155,170,.05) 1px,transparent 1px);
+  background-size:24px 24px;
+  pointer-events:none;z-index:0;
+}
+
+/* Top bar */
+#sc-topbar{
+  background:#1C2B3A;padding:14px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-radius:24px 24px 0 0;position:relative;z-index:1;
+}
+.sc-topbar-label{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.2em;text-transform:uppercase;}
+.sc-topbar-close{background:none;border:none;color:rgba(255,255,255,.4);font-size:20px;cursor:pointer;padding:0;}
+
+/* Avatar — hero image full width tall */
+#sc-avatar-hero{
+  position:relative;width:100%;height:340px;overflow:hidden;
+  background:#1C2B3A;
+}
+#sc-avatar-img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+#sc-avatar-svg-wrap{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#sc-bg-svg{position:absolute;inset:0;width:100%;height:100%;}
+#sc-avatar-svg{width:65%;height:90%;position:relative;z-index:2;}
+#sc-avatar-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(15,28,48,.95) 0%,rgba(15,28,48,.5) 40%,transparent 70%);
+}
+#sc-hero-stars{position:absolute;inset:0;pointer-events:none;z-index:1;}
+.sc-star{position:absolute;border-radius:50%;background:#fff;animation:pulse 2s ease infinite;}
+
+/* Name block over avatar */
+#sc-name-block{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:20px 18px 16px;z-index:2;
+}
+.sc-job{
+  font-family:'Cinzel',serif;font-size:22px;font-weight:600;
+  color:#fff;letter-spacing:.04em;
+  text-shadow:0 2px 12px rgba(0,0,0,.6);
+  margin-bottom:5px;
+}
+.sc-title-badge{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;
+  color:var(--gold-lt);background:rgba(74,155,170,.25);
+  border:1px solid rgba(74,155,170,.5);border-radius:20px;padding:3px 12px;
+}
+.sc-ultimate{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;
+  background:linear-gradient(90deg,#B8924A,#E8D080,#B8924A);background-size:200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shimmer 2s linear infinite;
+  border:1px solid rgba(184,146,74,.5);border-radius:20px;padding:3px 12px;
+}
+
+/* Avatar controls */
+#sc-avatar-controls{
+  position:absolute;top:14px;right:14px;z-index:3;
+  display:flex;gap:6px;
+}
+.sc-avatar-btn,.sc-spell-btn{
+  font-size:10px;padding:5px 11px;border-radius:20px;
+  cursor:pointer;font-family:inherit;font-weight:600;
+  backdrop-filter:blur(4px);
+}
+.sc-avatar-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;}
+.sc-spell-btn{background:rgba(74,155,170,.25);border:1px solid rgba(74,155,170,.5);color:var(--gold-lt);}
+#sc-spell-copied{
+  position:absolute;top:48px;right:14px;z-index:3;
+  font-size:10px;color:var(--gold-lt);
+  background:rgba(15,28,48,.8);border-radius:10px;padding:4px 10px;
+}
+
+/* Body */
+#sc-body{padding:18px 16px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;}
+
+/* Section label */
+.sc-section-label{
+  font-size:9px;font-weight:700;color:var(--faint);
+  letter-spacing:.12em;text-transform:uppercase;
+  border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:10px;
+}
+
+/* Notes / Bio */
+#sc-bio-panel{
+  background:rgba(247,250,251,.95);border:1px solid var(--line);border-radius:14px;padding:16px;
+}
+.sc-bio-text{font-size:13px;color:var(--ink);line-height:1.9;position:relative;padding-left:18px;}
+.sc-bio-text::before{
+  content:'❝';font-size:22px;color:var(--gold);opacity:.4;
+  position:absolute;top:-2px;left:0;line-height:1;
+}
+.sc-bio-loading{text-align:center;color:var(--faint);font-size:12px;padding:4px 0;animation:pulse 1.5s ease infinite;}
+
+/* Bottom 2 column grid */
+#sc-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sc-panel{background:rgba(247,250,251,.95);border:1px solid var(--line);border-radius:14px;padding:14px;}
+.sc-panel-title{font-size:9px;font-weight:700;color:var(--faint);letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:10px;}
+.sc-panel-item{
+  display:flex;align-items:flex-start;gap:6px;
+  font-size:12px;color:var(--ink);line-height:1.5;
+  padding:5px 0;border-bottom:1px solid rgba(200,220,232,.4);
+}
+.sc-panel-item:last-child{border-bottom:none;}
+.sc-panel-item-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;}
+.sc-panel-empty{font-size:11px;color:var(--faint);font-style:italic;}
+
+/* Recommend */
+.sc-recommend{display:flex;flex-direction:column;gap:7px;}
+.sc-rec-item{
+  background:rgba(247,250,251,.95);border:1px solid var(--line);border-radius:12px;
+  padding:11px 14px;font-size:13px;color:var(--ink);cursor:pointer;
+  transition:all .15s;display:flex;align-items:center;gap:8px;
+}
+.sc-rec-item:active{background:var(--parch2);transform:scale(.98);}
+.sc-rec-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -546,39 +653,82 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
 <!-- Status Card Modal -->
 <div id="sc-overlay" onclick="if(event.target===this)closeStatusCard()">
   <div id="sc-sheet">
-    <div class="sc-title">✦ あなたの冒険者</div>
 
-    <!-- Avatar -->
-    <div class="sc-avatar-wrap" style="position:relative;">
-      <div id="sc-avatar-img-wrap" style="display:none;width:160px;height:186px;border-radius:16px;overflow:hidden;border:2px solid var(--line);">
-        <img id="sc-avatar-img" src="" style="width:100%;height:100%;object-fit:cover;" alt="avatar">
+    <!-- Top bar -->
+    <div id="sc-topbar">
+      <span class="sc-topbar-label">✦ Character Sheet</span>
+      <button class="sc-topbar-close" onclick="closeStatusCard()">×</button>
+    </div>
+
+    <!-- Avatar Hero — full width tall -->
+    <div id="sc-avatar-hero">
+      <div id="sc-hero-stars"></div>
+      <!-- Custom image -->
+      <img id="sc-avatar-img" src="" style="display:none;width:100%;height:100%;object-fit:cover;object-position:top center;" alt="avatar">
+      <!-- Default SVG -->
+      <div id="sc-avatar-svg-wrap">
+        <!-- Sky + Map background -->
+        <svg id="sc-bg-svg" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="bg" x1="0" y1="0" x2="0.2" y2="1">
+              <stop offset="0%" stop-color="#1C2B3A"/>
+              <stop offset="100%" stop-color="#2A4A5A"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="340" fill="url(#bg)"/>
+        </svg>
+        <svg id="sc-avatar-svg" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" style="width:65%;height:90%;position:relative;z-index:2;"></svg>
       </div>
-      <svg id="sc-avatar-svg" viewBox="0 0 120 140" width="160" height="186" xmlns="http://www.w3.org/2000/svg"></svg>
-    </div>
-
-    <!-- Avatar controls -->
-    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
-      <input type="file" id="sc-avatar-file" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
-      <button onclick="document.getElementById('sc-avatar-file').click()" style="font-size:12px;padding:7px 16px;background:var(--parch2);border:1px solid var(--line);border-radius:20px;color:var(--muted);cursor:pointer;font-family:inherit;">📷 アバター画像を設定</button>
-      <button id="sc-spell-btn" onclick="copyMagicSpell()" style="font-size:12px;padding:7px 16px;background:linear-gradient(135deg,#2A4A6A,#4A7A9A);border:none;border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-weight:600;letter-spacing:.03em;">✨ 魔法の呪文をコピー</button>
-      <div id="sc-spell-copied" style="display:none;font-size:11px;color:var(--gold);">呪文をコピーしました ✓</div>
-    </div>
-
-    <div class="sc-job-row">
-      <span class="sc-job" id="sc-job-label">見習い冒険者</span>
-      <span class="sc-title-badge" id="sc-title-label">—</span>
-    </div>
-    <div class="sc-stats" id="sc-stats"></div>
-    <div class="sc-bio">
-      <div class="sc-bio-text" id="sc-bio-text">
-        <div class="sc-bio-loading">冒険の記録を読み解いています...</div>
+      <!-- Overlay gradient -->
+      <div id="sc-avatar-overlay"></div>
+      <!-- Controls top right -->
+      <div id="sc-avatar-controls">
+        <input type="file" id="sc-avatar-file" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+        <button class="sc-avatar-btn" onclick="document.getElementById('sc-avatar-file').click()">📷</button>
+        <button class="sc-spell-btn" onclick="copyMagicSpell()">✨ 呪文</button>
+      </div>
+      <div id="sc-spell-copied" style="display:none;">呪文コピー ✓</div>
+      <!-- Name over image bottom -->
+      <div id="sc-name-block">
+        <div class="sc-job" id="sc-job-label">見習い冒険者</div>
+        <span class="sc-title-badge" id="sc-title-label">—</span>
       </div>
     </div>
-    <div class="sc-recommend">
-      <div class="sc-rec-title">✦ Next Quest Recommendation</div>
-      <div id="sc-recs"><div class="sc-bio-loading">レコメンドを生成中...</div></div>
+
+    <!-- Body -->
+    <div id="sc-body">
+
+      <!-- Notes / Bio — full width -->
+      <div id="sc-bio-panel">
+        <div class="sc-section-label">Notes</div>
+        <div class="sc-bio-text" id="sc-bio-text">
+          <div class="sc-bio-loading">物語を紡いでいます...</div>
+        </div>
+      </div>
+
+      <!-- Scenario + Belongings -->
+      <div id="sc-bottom-grid">
+        <div class="sc-panel">
+          <div class="sc-panel-title">Scenario</div>
+          <div id="sc-scenario"><div class="sc-panel-empty">作戦を立てると表示されます</div></div>
+        </div>
+        <div class="sc-panel">
+          <div class="sc-panel-title">Belongings</div>
+          <div id="sc-belongings"><div class="sc-panel-empty">クエストを達成すると表示されます</div></div>
+        </div>
+      </div>
+
+      <!-- Next Quest -->
+      <div>
+        <div class="sc-section-label">✦ Next Quest</div>
+        <div class="sc-recommend" id="sc-recs">
+          <div class="sc-bio-loading">レコメンドを生成中...</div>
+        </div>
+      </div>
+
+      <button class="btn-cancel" style="width:100%;text-align:center;padding:13px;margin-top:6px;" onclick="closeStatusCard()">閉じる</button>
     </div>
-    <button class="btn-cancel" style="width:100%;text-align:center;padding:12px;" onclick="closeStatusCard()">閉じる</button>
+
   </div>
 </div>
 
@@ -1572,13 +1722,133 @@ function drawAvatar(job, scores) {
   `;
 }
 
+function drawRadarChart(scores) {
+  const canvas = document.getElementById('sc-radar');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2 + 4;
+  const r = Math.min(W,H)/2 - 22;
+  const keys = Object.keys(scores);
+  const vals = keys.map(k=>scores[k]/100);
+  const n = keys.length;
+  const colors = ['#7A9EC4','#5A8EAA','#5A9E8A','#7A7EC4','#8A9EBA'];
+
+  ctx.clearRect(0,0,W,H);
+
+  // Grid
+  for(let level=1;level<=4;level++){
+    ctx.beginPath();
+    for(let i=0;i<n;i++){
+      const angle = (Math.PI*2/n)*i - Math.PI/2;
+      const x = cx + Math.cos(angle)*(r*level/4);
+      const y = cy + Math.sin(angle)*(r*level/4);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(74,155,170,.2)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Axes
+  for(let i=0;i<n;i++){
+    const angle = (Math.PI*2/n)*i - Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(angle)*r, cy+Math.sin(angle)*r);
+    ctx.strokeStyle = 'rgba(74,155,170,.2)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Fill
+  ctx.beginPath();
+  for(let i=0;i<n;i++){
+    const angle = (Math.PI*2/n)*i - Math.PI/2;
+    const x = cx + Math.cos(angle)*r*vals[i];
+    const y = cy + Math.sin(angle)*r*vals[i];
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(74,155,170,.2)';
+  ctx.fill();
+  ctx.strokeStyle = '#4A9BAA';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Labels
+  ctx.font = 'bold 9px Noto Sans JP, sans-serif';
+  ctx.fillStyle = '#6A8898';
+  for(let i=0;i<n;i++){
+    const angle = (Math.PI*2/n)*i - Math.PI/2;
+    const x = cx + Math.cos(angle)*(r+14);
+    const y = cy + Math.sin(angle)*(r+14);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(keys[i], x, y);
+  }
+
+  // Dots
+  for(let i=0;i<n;i++){
+    const angle = (Math.PI*2/n)*i - Math.PI/2;
+    const x = cx + Math.cos(angle)*r*vals[i];
+    const y = cy + Math.sin(angle)*r*vals[i];
+    ctx.beginPath();
+    ctx.arc(x,y,3,0,Math.PI*2);
+    ctx.fillStyle = colors[i]||'#4A9BAA';
+    ctx.fill();
+  }
+}
+
 function renderStats(scores) {
-  document.getElementById('sc-stats').innerHTML = Object.entries(scores).map(([k,v])=>`
-    <div class="sc-stat-row">
-      <span class="sc-stat-label">${k}</span>
-      <div class="sc-stat-bar"><div class="sc-stat-fill" style="width:${v}%;background:${STAT_COLORS[k]}"></div></div>
-      <span class="sc-stat-val">${v}</span>
-    </div>`).join('');
+  // sc-stats removed from new layout, skip silently
+  const el = document.getElementById('sc-stats');
+  if(el) {
+    el.innerHTML = Object.entries(scores).map(([k,v])=>`
+      <div class="sc-stat-row">
+        <span class="sc-stat-label">${k}</span>
+        <div class="sc-stat-bar"><div class="sc-stat-fill" style="width:${v}%;background:${STAT_COLORS[k]}"></div></div>
+        <span class="sc-stat-val">${v}</span>
+      </div>`).join('');
+  }
+}
+
+function renderScenarioBelongings(stats, job) {
+  // Scenario = active projects with descriptions
+  const scenarioEl = document.getElementById('sc-scenario');
+  const activeProjs = projects.filter(p=>p.name).slice(0,5);
+  if(activeProjs.length > 0) {
+    scenarioEl.innerHTML = activeProjs.map(p=>`
+      <div class="sc-panel-item">
+        <div class="sc-panel-item-dot"></div>
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--ink)">${esc(p.name)}</div>
+          ${p.desc?`<div style="font-size:11px;color:var(--muted);margin-top:1px">${esc(p.desc)}</div>`:''}
+        </div>
+      </div>`).join('');
+  } else {
+    scenarioEl.innerHTML = '<div class="sc-panel-empty">作戦を立てると表示されます</div>';
+  }
+
+  // Belongings = mix of done quests + recent active quests
+  const belongEl = document.getElementById('sc-belongings');
+  const doneItems = quests.filter(x=>x.done).slice(0,4);
+  const activeItems = quests.filter(x=>!x.done).slice(0,3);
+  const allItems = [...doneItems, ...activeItems].slice(0,6);
+  if(allItems.length > 0) {
+    const typeEmoji = {armor:'⚔️',weapon:'🪄',skill:'📜',dungeon:'🏰',guild:'🍺',tome:'📖'};
+    belongEl.innerHTML = allItems.map(x=>`
+      <div class="sc-panel-item">
+        <div class="sc-panel-item-dot" style="background:${x.done?'#5A9E8A':'var(--gold)'}"></div>
+        <div style="font-size:11px;color:var(--ink);line-height:1.4">
+          ${typeEmoji[x.type]||'✦'} ${esc(x.title)}
+          ${x.done?'<span style="font-size:9px;color:#5A9E8A;margin-left:4px">✓</span>':''}
+        </div>
+      </div>`).join('');
+  } else {
+    belongEl.innerHTML = '<div class="sc-panel-empty">クエストを記録すると表示されます</div>';
+  }
 }
 
 async function generateBio(stats, job, titleInfo) {
@@ -1656,30 +1926,37 @@ function openStatusCard() {
   document.getElementById('sc-job-label').textContent = job.name;
   const titleEl = document.getElementById('sc-title-label');
   titleEl.textContent = titleInfo.title;
-  if(titleInfo.isUlt) {
-    titleEl.className = 'sc-ultimate';
-  } else {
-    titleEl.className = 'sc-title-badge';
+  titleEl.className = titleInfo.isUlt ? 'sc-ultimate' : 'sc-title-badge';
+
+  // Stars in hero bg
+  const starsEl = document.getElementById('sc-hero-stars');
+  starsEl.innerHTML = '';
+  for(let i=0;i<20;i++){
+    const s=document.createElement('div');
+    s.className='sc-star';
+    const size=1+Math.random()*3;
+    s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${.2+Math.random()*.5};animation-delay:${Math.random()*2}s;animation-duration:${1.5+Math.random()*2}s;`;
+    starsEl.appendChild(s);
   }
 
   // Show custom avatar if set
   const savedAvatar = localStorage.getItem('lifemap_avatar');
   if(savedAvatar) {
     document.getElementById('sc-avatar-img').src = savedAvatar;
-    document.getElementById('sc-avatar-img-wrap').style.display = 'block';
-    document.getElementById('sc-avatar-svg').style.display = 'none';
+    document.getElementById('sc-avatar-img').style.display = 'block';
+    document.getElementById('sc-avatar-svg-wrap').style.display = 'none';
   } else {
-    document.getElementById('sc-avatar-img-wrap').style.display = 'none';
-    document.getElementById('sc-avatar-svg').style.display = 'block';
+    document.getElementById('sc-avatar-img').style.display = 'none';
+    document.getElementById('sc-avatar-svg-wrap').style.display = 'flex';
     drawAvatar(job, stats.scores);
   }
 
-  // Store current job/title for spell generation
   document.getElementById('sc-overlay').dataset.job = job.name;
   document.getElementById('sc-overlay').dataset.title = titleInfo.title;
   document.getElementById('sc-overlay').dataset.scores = JSON.stringify(stats.scores);
 
   renderStats(stats.scores);
+  renderScenarioBelongings(stats, job);
   document.getElementById('sc-bio-text').innerHTML = '<div class="sc-bio-loading">物語を紡いでいます...</div>';
   document.getElementById('sc-recs').innerHTML = '<div class="sc-bio-loading">レコメンドを生成中...</div>';
   document.getElementById('sc-spell-copied').style.display = 'none';
