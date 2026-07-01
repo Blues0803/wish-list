@@ -14,400 +14,190 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Sans+JP:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink:     #1E1A14;
-  --parch:   #F4EDD8;
-  --parch2:  #EAE0C4;
-  --paper:   #FAF6EC;
-  --line:    #D8CBA8;
-  --gold:    #B8924A;
-  --gold-lt: #CFA85E;
-  --muted:   #8A7E64;
-  --faint:   #B0A07C;
+  --ink:     #1C2B3A;
+  --parch:   #EEF4F8;
+  --parch2:  #DDE8EF;
+  --paper:   #F7FAFB;
+  --line:    #C8DCE8;
+  --gold:    #4A9BAA;
+  --gold-lt: #62B4C4;
+  --muted:   #6A8898;
+  --faint:   #96B4C4;
 
-  --taste:    #9B6B8A;
-  --narrative:#4A7A6A;
-  --ajito:    #5A6E9A;
-  --gear:     #8A6A3A;
-  --aura:     #9A5A4A;
+  --taste:    #7A9EC4;
+  --narrative:#5A9E8A;
+  --ajito:    #7A7EC4;
+  --gear:     #5A8EAA;
+  --aura:     #8A9EBA;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--parch);
-  font-family: 'Noto Sans JP', sans-serif;
-  min-height: 100vh;
-  background-image:
-    url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:100vh;}
 
-/* ── HEADER ── */
-#hdr {
-  background: var(--ink);
-  padding: 18px 18px 14px;
-  position: sticky; top: 0; z-index: 30;
-}
-#hdr-inner { max-width: 680px; margin: 0 auto; }
-#hdr-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
-#app-title {
-  font-family: 'Cinzel', serif;
-  font-size: 18px; font-weight: 600;
-  color: var(--gold-lt);
-  letter-spacing: 0.1em;
-  line-height: 1.2;
-}
-#app-sub { font-size: 11px; color: #6A6050; margin-top: 3px; letter-spacing: 0.03em; }
-#hdr-btns { display: flex; gap: 7px; flex-shrink: 0; }
-.btn-hdr {
-  border: 1px solid rgba(184,146,74,0.3);
-  color: var(--gold-lt);
-  background: rgba(184,146,74,0.08);
-  border-radius: 10px; padding: 8px 13px;
-  font-size: 12px; font-weight: 600;
-  cursor: pointer; font-family: inherit;
-  letter-spacing: 0.03em; white-space: nowrap;
-}
-.btn-hdr.primary {
-  background: var(--gold); border-color: var(--gold); color: var(--ink);
-}
-.btn-hdr.icon {
-  padding: 8px 11px; font-size: 15px;
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.1);
-  color: #8A7E64;
-}
+/* HEADER */
+#hdr{background:linear-gradient(135deg,#1C2B3A 0%,#2A4A5A 100%);padding:18px 18px 14px;position:sticky;top:0;z-index:30;}
+#hdr-inner{max-width:680px;margin:0 auto;}
+#hdr-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px;}
+#app-title{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:var(--gold-lt);letter-spacing:.1em;line-height:1.2;}
+#app-sub{font-size:11px;color:#6A6050;margin-top:3px;}
+#hdr-btns{display:flex;gap:6px;flex-shrink:0;}
+.btn-hdr{border:1px solid rgba(184,146,74,.3);color:var(--gold-lt);background:rgba(184,146,74,.08);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.btn-hdr.primary{background:var(--gold);border-color:var(--gold);color:var(--ink);}
+.btn-hdr.icon{padding:8px 10px;font-size:14px;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:#8A7E64;}
+#hdr-search{width:100%;padding:9px 14px;border-radius:10px;border:none;background:rgba(255,255,255,.06);color:#C8B888;font-size:13px;outline:none;font-family:inherit;}
+#hdr-search::placeholder{color:#4A4030;}
 
-/* ── SETTINGS MODAL ── */
-#st-overlay {
-  position: fixed; inset: 0;
-  background: rgba(20,16,10,0.65);
-  z-index: 100; display: none;
-  align-items: flex-end; justify-content: center;
-  backdrop-filter: blur(3px);
-}
-#st-overlay.open { display: flex; }
-#st-sheet {
-  background: var(--paper);
-  border-radius: 22px 22px 0 0;
-  padding: 22px 18px 44px;
-  width: 100%; max-width: 560px;
-  display: flex; flex-direction: column; gap: 16px;
-}
-.st-title {
-  font-family: 'Cinzel', serif;
-  font-size: 15px; font-weight: 600;
-  color: var(--ink); letter-spacing: 0.07em;
-}
-.st-section { display: flex; flex-direction: column; gap: 8px; }
-.st-label {
-  font-size: 10px; font-weight: 700;
-  color: var(--faint); letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-.st-url-box {
-  background: var(--parch2);
-  border: 1px solid var(--line);
-  border-radius: 10px; padding: 12px 14px;
-  font-size: 13px; color: var(--ink);
-  word-break: break-all; line-height: 1.5;
-  font-family: monospace;
-}
-.st-copy-btn {
-  width: 100%; padding: 11px;
-  background: var(--ink); color: var(--parch);
-  border: none; border-radius: 10px;
-  font-size: 13px; font-weight: 600;
-  cursor: pointer; font-family: inherit;
-  letter-spacing: 0.03em;
-}
-.st-steps {
-  background: var(--parch);
-  border: 1px solid var(--line);
-  border-radius: 10px; padding: 14px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.st-step {
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.st-step-num {
-  width: 22px; height: 22px; min-width: 22px;
-  background: var(--gold); color: var(--ink);
-  border-radius: 50%; font-size: 11px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 1px;
-}
-.st-step-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
-#hdr-search {
-  width: 100%; padding: 9px 14px;
-  border-radius: 10px; border: none;
-  background: rgba(255,255,255,0.06);
-  color: #C8B888; font-size: 13px;
-  outline: none; font-family: inherit;
-}
-#hdr-search::placeholder { color: #4A4030; }
+/* TABS */
+#tabs-wrap{background:var(--paper);border-bottom:1px solid var(--line);overflow-x:auto;}
+#tabs{max-width:680px;margin:0 auto;display:flex;padding:0 14px;}
+.tab{padding:10px 11px;font-size:12px;color:var(--faint);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;}
+.tab.active{font-weight:700;color:var(--ink);border-bottom-color:var(--gold);}
 
-/* ── TABS ── */
-#tabs-wrap { background: var(--paper); border-bottom: 1px solid var(--line); overflow-x: auto; }
-#tabs { max-width: 680px; margin: 0 auto; display: flex; padding: 0 14px; }
-.tab {
-  padding: 10px 12px; font-size: 12px;
-  color: var(--faint); background: none;
-  border: none; border-bottom: 2px solid transparent;
-  cursor: pointer; font-family: inherit;
-  white-space: nowrap; letter-spacing: 0.02em;
-  flex-shrink: 0;
-}
-.tab.active { font-weight: 700; color: var(--ink); border-bottom-color: var(--gold); }
+/* MAIN */
+#main{max-width:680px;margin:0 auto;padding:18px 14px 80px;}
 
-/* ── MAIN ── */
-#main { max-width: 680px; margin: 0 auto; padding: 18px 14px 80px; }
+/* DREAM CARDS */
+.dream-card{border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 16px rgba(30,26,20,.1);border:1px solid var(--line);}
+.dream-hero{height:110px;position:relative;display:flex;align-items:flex-end;padding:12px 14px;overflow:hidden;}
+.dream-hero-img{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;}
+.dream-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,40,60,.65) 0%,rgba(20,40,60,.15) 60%,transparent 100%);}
+.dream-realm-badge{position:absolute;top:10px;right:10px;font-family:'EB Garamond',serif;font-size:11px;letter-spacing:.12em;color:rgba(255,255,255,.8);background:rgba(0,0,0,.3);border-radius:20px;padding:3px 10px;z-index:1;}
+.dream-title{font-family:'Cinzel',serif;font-size:15px;font-weight:600;color:#FAF6EC;position:relative;z-index:1;text-shadow:0 1px 6px rgba(0,0,0,.5);line-height:1.3;}
+.dream-body{background:var(--paper);padding:12px 14px;}
+.dream-desc{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:10px;}
+.dream-footer{display:flex;align-items:center;justify-content:space-between;}
+.dream-quest-stat{font-size:11px;color:var(--gold);font-weight:600;}
+.dream-btns{display:flex;gap:7px;}
+.btn-sm{font-size:11px;padding:5px 11px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;}
+.btn-sm.ghost{background:transparent;border:1px solid var(--line);color:var(--muted);}
+.btn-sm.gold{background:var(--gold);border:none;color:var(--ink);}
+.btn-sm.danger{background:transparent;border:1px solid #90B8C8;color:#2A6A8A;}
 
-/* ── DREAM CARDS ── */
-.dream-card {
-  border-radius: 16px; margin-bottom: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 16px rgba(30,26,20,0.1);
-  border: 1px solid var(--line);
-}
-.dream-hero {
-  height: 110px; position: relative;
-  display: flex; align-items: flex-end;
-  padding: 12px 14px; overflow: hidden;
-}
-.dream-hero-img {
-  position: absolute; inset: 0;
-  object-fit: cover; width: 100%; height: 100%;
-}
-.dream-hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(20,16,10,0.75) 0%, rgba(20,16,10,0.2) 60%, transparent 100%);
-}
-.dream-realm-badge {
-  position: absolute; top: 10px; right: 10px;
-  font-family: 'EB Garamond', serif;
-  font-size: 11px; letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.8);
-  background: rgba(0,0,0,0.3);
-  border-radius: 20px; padding: 3px 10px;
-  z-index: 1;
-}
-.dream-title {
-  font-family: 'Cinzel', serif;
-  font-size: 15px; font-weight: 600;
-  color: #FAF6EC; position: relative; z-index: 1;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-  line-height: 1.3;
-}
-.dream-body { background: var(--paper); padding: 12px 14px; }
-.dream-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
-.dream-footer { display: flex; align-items: center; justify-content: space-between; }
-.dream-quest-stat { font-size: 11px; color: var(--gold); font-weight: 600; }
-.dream-btns { display: flex; gap: 7px; }
-.btn-sm {
-  font-size: 11px; padding: 5px 11px;
-  border-radius: 8px; cursor: pointer;
-  font-family: inherit; font-weight: 600;
-  letter-spacing: 0.03em;
-}
-.btn-sm.ghost { background: transparent; border: 1px solid var(--line); color: var(--muted); }
-.btn-sm.gold { background: var(--gold); border: none; color: var(--ink); }
-.btn-sm.danger { background: transparent; border: 1px solid #E0A090; color: #B05040; }
+/* HERO GRADIENTS */
+.hero-taste{background:linear-gradient(135deg,#2A4A6A 0%,#5A8EBA 100%);}
+.hero-narrative{background:linear-gradient(135deg,#1A4A3A 0%,#4A9A7A 100%);}
+.hero-ajito{background:linear-gradient(135deg,#2A3A6A 0%,#5A6AAA 100%);}
+.hero-gear{background:linear-gradient(135deg,#1A3A4A 0%,#4A7A9A 100%);}
+.hero-aura{background:linear-gradient(135deg,#2A3A5A 0%,#6A8AAA 100%);}
 
-/* realm hero gradients */
-.hero-taste     { background: linear-gradient(135deg, #4A2A44 0%, #9B6B8A 100%); }
-.hero-narrative { background: linear-gradient(135deg, #1A3A2A 0%, #4A7A6A 100%); }
-.hero-ajito     { background: linear-gradient(135deg, #1A2A4A 0%, #5A6E9A 100%); }
-.hero-gear      { background: linear-gradient(135deg, #3A2A1A 0%, #8A6A3A 100%); }
-.hero-aura      { background: linear-gradient(135deg, #3A1A14 0%, #9A5A4A 100%); }
+/* PROJECT SECTION */
+.proj-section{margin-bottom:20px;}
+.proj-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px;cursor:pointer;padding:4px 0;}
+.proj-badge{font-size:12px;font-weight:700;letter-spacing:.04em;padding:5px 12px;border-radius:20px;background:rgba(74,155,170,.1);color:var(--gold);border:1px solid rgba(74,155,170,.25);}
+.proj-count{font-size:11px;color:var(--faint);}
+.proj-toggle{font-size:10px;color:var(--faint);margin-left:auto;}
+.proj-list{display:flex;flex-direction:column;gap:8px;}
+.proj-list.collapsed{display:none;}
 
-/* ── QUEST SECTION ── */
-.quest-section { margin-bottom: 18px; }
-.quest-sec-hdr {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 9px; cursor: pointer; padding: 2px 0;
-}
-.quest-sec-badge {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.06em; padding: 4px 11px;
-  border-radius: 20px;
-}
-.quest-sec-count { font-size: 11px; color: var(--faint); }
-.quest-sec-toggle { font-size: 10px; color: var(--faint); margin-left: auto; }
-.quest-list { display: flex; flex-direction: column; gap: 8px; }
-.quest-list.collapsed { display: none; }
+/* QUEST SECTION */
+.quest-section{margin-bottom:18px;}
+.quest-sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px;cursor:pointer;padding:2px 0;}
+.quest-sec-badge{font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 11px;border-radius:20px;}
+.quest-sec-count{font-size:11px;color:var(--faint);}
+.quest-sec-toggle{font-size:10px;color:var(--faint);margin-left:auto;}
+.quest-list{display:flex;flex-direction:column;gap:8px;}
+.quest-list.collapsed{display:none;}
 
-/* ── QUEST CARD ── */
-.quest-card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  padding: 12px 13px;
-  display: flex; flex-direction: column; gap: 7px;
-  transition: opacity 0.2s;
-}
-.quest-card.done { opacity: 0.45; }
-.quest-card-top { display: flex; align-items: flex-start; gap: 9px; }
-.quest-check {
-  width: 19px; height: 19px; min-width: 19px;
-  border-radius: 5px; border: 1.5px solid var(--line);
-  background: transparent; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 10px; margin-top: 2px;
-  transition: all 0.15s; flex-shrink: 0;
-}
-.quest-check.done { border-color: #5A8A5A; background: #5A8A5A; }
-.quest-body { flex: 1; min-width: 0; }
-.quest-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; word-break: break-word; }
-.quest-card.done .quest-title { text-decoration: line-through; color: var(--faint); }
-.quest-price { font-size: 13px; font-weight: 700; color: var(--gold); margin-top: 2px; }
-.quest-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-.quest-tag {
-  font-size: 10px; border-radius: 20px;
-  padding: 2px 8px; font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.quest-del { background: none; border: none; color: #C4B090; cursor: pointer; font-size: 17px; flex-shrink: 0; padding: 0 2px; }
-.quest-edit { background: none; border: none; color: #C4B090; cursor: pointer; font-size: 13px; flex-shrink: 0; padding: 0 4px; }
-.quest-memo { font-size: 12px; color: var(--muted); line-height: 1.65; padding-left: 28px; }
-.quest-link {
-  display: flex; align-items: center; gap: 6px;
-  margin-left: 28px; padding: 6px 10px;
-  background: var(--parch); border: 1px solid var(--line);
-  border-radius: 8px; text-decoration: none;
-  color: var(--ink); font-size: 11px; overflow: hidden;
-}
-.quest-link-domain { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-.quest-date { font-size: 10px; color: var(--faint); padding-left: 28px; }
+/* QUEST CARD */
+.quest-card{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:12px 13px;display:flex;flex-direction:column;gap:7px;transition:opacity .2s;}
+.quest-card.done{opacity:.45;}
+.quest-card-top{display:flex;align-items:flex-start;gap:9px;}
+.quest-check{width:19px;height:19px;min-width:19px;border-radius:5px;border:1.5px solid var(--line);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;margin-top:2px;transition:all .15s;flex-shrink:0;}
+.quest-check.done{border-color:#4A9BAA;background:#4A9BAA;}
+.quest-body{flex:1;min-width:0;}
+.quest-title{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;word-break:break-word;}
+.quest-card.done .quest-title{text-decoration:line-through;color:var(--faint);}
+.quest-price{font-size:13px;font-weight:700;color:var(--gold);margin-top:2px;}
+.quest-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.quest-tag{font-size:10px;border-radius:20px;padding:2px 8px;font-weight:600;letter-spacing:.04em;}
+.quest-actions{display:flex;gap:4px;flex-shrink:0;}
+.quest-edit{background:none;border:none;color:var(--faint);cursor:pointer;font-size:14px;padding:0 3px;}
+.quest-del{background:none;border:none;color:#96B4C4;cursor:pointer;font-size:17px;padding:0 2px;}
+.quest-memo{font-size:12px;color:var(--muted);line-height:1.65;padding-left:28px;}
+.quest-links{display:flex;flex-direction:column;gap:5px;padding-left:28px;}
+.quest-link{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--parch);border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);font-size:11px;overflow:hidden;}
+.quest-link-domain{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
+.quest-img{margin-left:28px;border-radius:8px;overflow:hidden;max-height:160px;}
+.quest-img img{width:100%;height:160px;object-fit:cover;display:block;}
+.quest-date{font-size:10px;color:var(--faint);padding-left:28px;}
 
-/* quest type colors */
-.type-armor    { background: rgba(80,100,160,0.12); color: #506090; border: 1px solid rgba(80,100,160,0.25); }
-.type-weapon   { background: rgba(160,80,40,0.12);  color: #904830; border: 1px solid rgba(160,80,40,0.25); }
-.type-skill    { background: rgba(80,140,80,0.12);  color: #407840; border: 1px solid rgba(80,140,80,0.25); }
-.type-dungeon  { background: rgba(100,70,140,0.12); color: #604888; border: 1px solid rgba(100,70,140,0.25); }
-.type-guild    { background: rgba(160,120,40,0.12); color: #907020; border: 1px solid rgba(160,120,40,0.25); }
-.type-tome     { background: rgba(60,100,120,0.12); color: #305870; border: 1px solid rgba(60,100,120,0.25); }
+/* TYPE COLORS */
+.type-armor{background:rgba(74,155,170,.12);color:#2A7A8A;border:1px solid rgba(74,155,170,.3);}
+.type-weapon{background:rgba(90,142,170,.12);color:#2A5A7A;border:1px solid rgba(90,142,170,.3);}
+.type-skill{background:rgba(90,158,138,.12);color:#2A6A5A;border:1px solid rgba(90,158,138,.3);}
+.type-dungeon{background:rgba(122,126,196,.12);color:#4A4A9A;border:1px solid rgba(122,126,196,.3);}
+.type-guild{background:rgba(74,130,170,.12);color:#2A5A8A;border:1px solid rgba(74,130,170,.3);}
+.type-tome{background:rgba(90,110,170,.12);color:#3A4A8A;border:1px solid rgba(90,110,170,.3);}
+.realm-taste{background:rgba(122,158,196,.15);color:var(--taste);}
+.realm-narrative{background:rgba(90,158,138,.15);color:var(--narrative);}
+.realm-ajito{background:rgba(122,126,196,.15);color:var(--ajito);}
+.realm-gear{background:rgba(90,142,170,.15);color:var(--gear);}
+.realm-aura{background:rgba(138,158,186,.15);color:var(--aura);}
+.pri-now{background:rgba(90,140,200,.15);color:#2A5A9A;border:1px solid rgba(90,140,200,.3);}
+.pri-soon{background:rgba(74,155,170,.15);color:#2A7A8A;border:1px solid rgba(74,155,170,.3);}
+.pri-someday{background:rgba(90,158,138,.15);color:#2A6A5A;border:1px solid rgba(90,158,138,.3);}
 
-/* dream realm colors */
-.realm-taste     { background: rgba(155,107,138,0.15); color: var(--taste); }
-.realm-narrative { background: rgba(74,122,106,0.15);  color: var(--narrative); }
-.realm-ajito     { background: rgba(90,110,154,0.15);  color: var(--ajito); }
-.realm-gear      { background: rgba(138,106,58,0.15);  color: var(--gear); }
-.realm-aura      { background: rgba(154,90,74,0.15);   color: var(--aura); }
+/* INBOX (手配書) */
+.inbox-card{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:13px;padding:12px 13px;display:flex;flex-direction:column;gap:7px;}
+.inbox-card-top{display:flex;align-items:flex-start;gap:9px;}
+.inbox-body{flex:1;min-width:0;}
+.inbox-title{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;}
+.inbox-date{font-size:10px;color:var(--faint);}
+.inbox-actions{display:flex;gap:6px;flex-shrink:0;}
 
-/* priority */
-.pri-now    { background: rgba(180,70,40,0.12); color: #B04428; border: 1px solid rgba(180,70,40,0.25); }
-.pri-soon   { background: rgba(184,146,74,0.12); color: #8A6020; border: 1px solid rgba(184,146,74,0.25); }
-.pri-someday{ background: rgba(80,120,80,0.12); color: #406040; border: 1px solid rgba(80,120,80,0.25); }
+/* EMPTY */
+#empty{text-align:center;padding:60px 20px;}
+#empty-icon{font-size:38px;margin-bottom:12px;opacity:.45;}
+#empty-text{font-size:14px;color:var(--muted);line-height:1.7;}
 
-/* ── EMPTY ── */
-#empty { text-align: center; padding: 60px 20px; }
-#empty-icon { font-size: 38px; margin-bottom: 12px; opacity: 0.45; }
-#empty-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+/* MODAL */
+.m-overlay{position:fixed;inset:0;background:rgba(20,16,10,.65);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
+.m-overlay.open{display:flex;}
+.m-sheet{background:var(--paper);border-radius:22px 22px 0 0;padding:22px 18px 44px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;gap:13px;}
+.m-center{position:fixed;inset:0;background:rgba(20,16,10,.65);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.m-center.open{display:flex;}
+.m-box{background:var(--paper);border-radius:18px;padding:22px 18px;width:100%;max-width:460px;display:flex;flex-direction:column;gap:13px;max-height:90vh;overflow-y:auto;}
+.m-title{font-family:'Cinzel',serif;font-size:15px;font-weight:600;color:var(--ink);letter-spacing:.07em;}
+.m-field label{display:block;font-size:10px;font-weight:700;color:var(--faint);margin-bottom:5px;letter-spacing:.09em;text-transform:uppercase;}
+.m-field input,.m-field textarea,.m-field select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;color:var(--ink);background:#FFF;outline:none;font-family:inherit;}
+.m-field input:focus,.m-field textarea:focus,.m-field select:focus{border-color:var(--gold);}
+.m-field textarea{resize:vertical;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;font-family:inherit;border:1px solid var(--line);background:var(--parch2);color:var(--muted);transition:all .15s;font-weight:500;}
+.chip.sel{background:var(--ink);color:var(--parch);border-color:var(--ink);}
+.m-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:4px;}
+.btn-cancel{font-size:14px;padding:10px 17px;border-radius:10px;background:var(--parch2);color:var(--muted);border:none;cursor:pointer;font-family:inherit;}
+.btn-commit{font-size:14px;padding:10px 20px;border-radius:10px;background:var(--ink);color:var(--parch);border:none;font-weight:600;font-family:inherit;cursor:pointer;}
+.btn-commit:disabled{opacity:.3;cursor:not-allowed;}
+.realm-chip{font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;font-family:inherit;border:1px solid transparent;transition:all .15s;opacity:.55;font-weight:600;letter-spacing:.04em;}
+.realm-chip.sel{opacity:1;}
+.type-chip{font-size:12px;padding:6px 13px;border-radius:20px;cursor:pointer;font-family:inherit;border:1px solid var(--line);background:var(--parch2);color:var(--muted);transition:all .15s;font-weight:500;opacity:.65;}
+.type-chip.sel{opacity:1;font-weight:700;}
+.sub-chip{font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;font-family:inherit;border:1px solid var(--line);background:transparent;color:var(--muted);transition:all .15s;}
+.sub-chip.sel{background:var(--ink);color:var(--parch);border-color:var(--ink);}
 
-/* ── MODAL ── */
-.m-overlay {
-  position: fixed; inset: 0;
-  background: rgba(20,16,10,0.65);
-  z-index: 100; display: none;
-  align-items: flex-end; justify-content: center;
-  backdrop-filter: blur(3px);
-}
-.m-overlay.open { display: flex; }
-.m-sheet {
-  background: var(--paper);
-  border-radius: 22px 22px 0 0;
-  padding: 22px 18px 44px;
-  width: 100%; max-width: 560px;
-  max-height: 92vh; overflow-y: auto;
-  display: flex; flex-direction: column; gap: 13px;
-}
-.m-title {
-  font-family: 'Cinzel', serif;
-  font-size: 15px; font-weight: 600;
-  color: var(--ink); letter-spacing: 0.07em;
-}
-.m-field label {
-  display: block; font-size: 10px; font-weight: 700;
-  color: var(--faint); margin-bottom: 5px;
-  letter-spacing: 0.09em; text-transform: uppercase;
-}
-.m-field input, .m-field textarea, .m-field select {
-  width: 100%; padding: 10px 12px;
-  border: 1px solid var(--line); border-radius: 10px;
-  font-size: 14px; color: var(--ink);
-  background: #FFF; outline: none; font-family: inherit;
-}
-.m-field input:focus, .m-field textarea:focus, .m-field select:focus { border-color: var(--gold); }
-.m-field textarea { resize: vertical; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip {
-  font-size: 12px; padding: 5px 13px;
-  border-radius: 20px; cursor: pointer;
-  font-family: inherit; border: 1px solid var(--line);
-  background: var(--parch2); color: var(--muted);
-  transition: all 0.15s; font-weight: 500;
-}
-.chip.sel { background: var(--ink); color: var(--parch); border-color: var(--ink); }
-.m-actions { display: flex; gap: 9px; justify-content: flex-end; margin-top: 4px; }
-.btn-cancel {
-  font-size: 14px; padding: 10px 17px;
-  border-radius: 10px; background: var(--parch2);
-  color: var(--muted); border: none; cursor: pointer; font-family: inherit;
-}
-.btn-commit {
-  font-size: 14px; padding: 10px 20px;
-  border-radius: 10px; background: var(--ink);
-  color: var(--parch); border: none;
-  font-weight: 600; font-family: inherit; cursor: pointer;
-}
-.btn-commit:disabled { opacity: 0.3; cursor: not-allowed; }
+/* LINKS INPUT */
+.link-input-row{display:flex;gap:6px;align-items:center;}
+.link-input-row input{flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--ink);background:#FFF;outline:none;font-family:inherit;}
+.link-input-row input:focus{border-color:var(--gold);}
+.link-add-btn{padding:9px 12px;background:var(--ink);color:var(--parch);border:none;border-radius:10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.link-list{display:flex;flex-direction:column;gap:5px;margin-top:6px;}
+.link-item{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--parch);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted);}
+.link-item-domain{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.link-item-del{background:none;border:none;color:#C4B090;cursor:pointer;font-size:14px;flex-shrink:0;}
 
-/* dream modal center */
-#dm-overlay {
-  position: fixed; inset: 0;
-  background: rgba(20,16,10,0.65);
-  z-index: 100; display: none;
-  align-items: center; justify-content: center;
-  padding: 20px; backdrop-filter: blur(3px);
-}
-#dm-overlay.open { display: flex; }
-#dm-sheet {
-  background: var(--paper); border-radius: 18px;
-  padding: 22px 18px; width: 100%; max-width: 460px;
-  display: flex; flex-direction: column; gap: 13px;
-  max-height: 90vh; overflow-y: auto;
-}
+/* IMAGE INPUT */
+.img-preview{margin-top:8px;border-radius:10px;overflow:hidden;max-height:140px;position:relative;}
+.img-preview img{width:100%;height:140px;object-fit:cover;display:block;}
+.img-preview-del{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.img-upload-btn{width:100%;padding:10px;border:1px dashed var(--line);border-radius:10px;background:transparent;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;text-align:center;}
 
-/* realm chips */
-.realm-chip {
-  font-family: 'EB Garamond', serif;
-  font-size: 13px; padding: 6px 14px;
-  border-radius: 20px; cursor: pointer;
-  font-family: inherit; border: 1px solid transparent;
-  transition: all 0.15s; opacity: 0.55; font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.realm-chip.sel { opacity: 1; }
-
-/* type chips */
-.type-chip {
-  font-size: 12px; padding: 6px 13px;
-  border-radius: 20px; cursor: pointer;
-  font-family: inherit; border: 1px solid var(--line);
-  background: var(--parch2); color: var(--muted);
-  transition: all 0.15s; font-weight: 500;
-  opacity: 0.65;
-}
-.type-chip.sel { opacity: 1; font-weight: 700; }
-
-/* subcat chips */
-.sub-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-.sub-chip {
-  font-size: 11px; padding: 4px 10px;
-  border-radius: 20px; cursor: pointer;
-  font-family: inherit; border: 1px solid var(--line);
-  background: transparent; color: var(--muted);
-  transition: all 0.15s;
-}
-.sub-chip.sel { background: var(--ink); color: var(--parch); border-color: var(--ink); }
+/* SETTINGS */
+.st-url-box{background:var(--parch2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--ink);word-break:break-all;line-height:1.5;font-family:monospace;}
+.st-copy-btn{width:100%;padding:11px;background:var(--ink);color:var(--parch);border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.st-steps{background:var(--parch);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.st-step{display:flex;gap:10px;align-items:flex-start;}
+.st-step-num{width:22px;height:22px;min-width:22px;background:var(--gold);color:var(--ink);border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.st-step-text{font-size:12px;color:var(--muted);line-height:1.6;}
 </style>
 </head>
 <body>
@@ -420,9 +210,10 @@ body {
         <div id="app-sub">—</div>
       </div>
       <div id="hdr-btns">
-        <button class="btn-hdr icon" onclick="openSettings()" title="設定">⚙</button>
+        <button class="btn-hdr icon" onclick="openSettings()">⚙</button>
         <button class="btn-hdr" onclick="openDreamModal()">夢を記す</button>
-        <button class="btn-hdr primary" onclick="openQuestModal()">＋ クエスト</button>
+        <button class="btn-hdr" onclick="openProjModal()">＋ 作戦</button>
+        <button class="btn-hdr primary" onclick="openQuestModal()">＋</button>
       </div>
     </div>
     <input id="hdr-search" type="search" placeholder="記録を探す..." oninput="render()">
@@ -431,14 +222,16 @@ body {
 
 <div id="tabs-wrap">
   <div id="tabs">
-    <button class="tab active" id="tab-all"    onclick="setTab('all',this)">すべて</button>
-    <button class="tab" id="tab-armor"   onclick="setTab('armor',this)">⚔️ 装備</button>
-    <button class="tab" id="tab-weapon"  onclick="setTab('weapon',this)">🪄 武器</button>
-    <button class="tab" id="tab-skill"   onclick="setTab('skill',this)">📜 スキル</button>
-    <button class="tab" id="tab-dungeon" onclick="setTab('dungeon',this)">🏰 ダンジョン</button>
-    <button class="tab" id="tab-guild"   onclick="setTab('guild',this)">🍺 ギルド酒場</button>
-    <button class="tab" id="tab-tome"    onclick="setTab('tome',this)">📖 魔導書</button>
-    <button class="tab" id="tab-dreams"  onclick="setTab('dreams',this)">🗺 夢の地図</button>
+    <button class="tab active" onclick="setTab('all',this)">すべて</button>
+    <button class="tab" onclick="setTab('inbox',this)">📋 手配書</button>
+    <button class="tab" onclick="setTab('projects',this)">🗂 作戦</button>
+    <button class="tab" onclick="setTab('armor',this)">⚔️ 装備</button>
+    <button class="tab" onclick="setTab('weapon',this)">🪄 武器</button>
+    <button class="tab" onclick="setTab('skill',this)">📜 スキル</button>
+    <button class="tab" onclick="setTab('dungeon',this)">🏰 ダンジョン</button>
+    <button class="tab" onclick="setTab('guild',this)">🍺 ギルド酒場</button>
+    <button class="tab" onclick="setTab('tome',this)">📖 魔導書</button>
+    <button class="tab" onclick="setTab('dreams',this)">🗺 夢の地図</button>
   </div>
 </div>
 
@@ -446,14 +239,14 @@ body {
   <div id="card-list"></div>
   <div id="empty" style="display:none">
     <div id="empty-icon">✦</div>
-    <div id="empty-text">まだ記録がありません。<br>「＋ クエスト」から冒険を始めよう。</div>
+    <div id="empty-text">まだ記録がありません。<br>「＋」から冒険を始めよう。</div>
   </div>
 </div>
 
 <!-- Quest Modal -->
-<div class="m-overlay" id="qm-overlay" onclick="qmOverlayClick(event)">
+<div class="m-overlay" id="qm-overlay" onclick="if(event.target===this)closeQuestModal()">
   <div class="m-sheet">
-    <div class="m-title" id="qm-title-label">クエストを記録する</div>
+    <div class="m-title" id="qm-label">クエストを記録する</div>
     <div class="m-field">
       <label>タイトル *</label>
       <input id="qm-title" type="text" placeholder="例：白シャツを探す">
@@ -462,21 +255,34 @@ body {
       <label>種別</label>
       <div class="chips" id="qm-type-chips"></div>
     </div>
-    <div class="m-field" id="qm-sub-field">
+    <div class="m-field">
       <label>サブカテゴリ</label>
-      <div class="sub-chips" id="qm-sub-chips"></div>
+      <div class="chips" id="qm-sub-chips"></div>
     </div>
     <div class="m-field">
-      <label>リンク（参考URL）</label>
-      <input id="qm-url" type="url" placeholder="https://...">
+      <label>リンク</label>
+      <div class="link-input-row">
+        <input id="qm-link-input" type="url" placeholder="https://...">
+        <button class="link-add-btn" onclick="addQuestLink()">追加</button>
+      </div>
+      <div class="link-list" id="qm-link-list"></div>
+    </div>
+    <div class="m-field">
+      <label>画像</label>
+      <input type="file" id="qm-img-file" accept="image/*" style="display:none" onchange="handleImgUpload(event)">
+      <button class="img-upload-btn" onclick="document.getElementById('qm-img-file').click()">📷 カメラロールから選ぶ</button>
+      <div class="img-preview" id="qm-img-preview" style="display:none">
+        <img id="qm-img-el" src="" alt="">
+        <button class="img-preview-del" onclick="removeImg()">×</button>
+      </div>
     </div>
     <div class="m-field">
       <label>価格（円）</label>
       <input id="qm-price" type="number" placeholder="例：24800">
     </div>
     <div class="m-field">
-      <label>どの夢のため？</label>
-      <select id="qm-dream"><option value="">夢に紐づけない</option></select>
+      <label>作戦</label>
+      <select id="qm-proj"><option value="">紐づけない</option></select>
     </div>
     <div class="m-field">
       <label>優先度</label>
@@ -493,10 +299,60 @@ body {
   </div>
 </div>
 
+<!-- Inbox Modal -->
+<div class="m-overlay" id="ibm-overlay" onclick="if(event.target===this)closeInboxModal()">
+  <div class="m-sheet">
+    <div class="m-title">手配書に書き留める</div>
+    <div class="m-field">
+      <label>タイトル *</label>
+      <input id="ibm-title" type="text" placeholder="例：あのブランドのジャケット">
+    </div>
+    <div class="m-field">
+      <label>リンク（任意）</label>
+      <input id="ibm-url" type="url" placeholder="https://...">
+    </div>
+    <div class="m-field">
+      <label>メモ（任意）</label>
+      <textarea id="ibm-memo" rows="2" placeholder="気になった理由など..."></textarea>
+    </div>
+    <div class="m-actions">
+      <button class="btn-cancel" onclick="closeInboxModal()">もどる</button>
+      <button class="btn-commit" id="ibm-save" onclick="saveInbox()" disabled>書き留める</button>
+    </div>
+  </div>
+</div>
+
+<!-- Promote Modal (inbox → quest) -->
+<div class="m-center" id="pm-overlay" onclick="if(event.target===this)closePromoteModal()">
+  <div class="m-box">
+    <div class="m-title">クエストに昇格する</div>
+    <div class="m-field">
+      <label>種別</label>
+      <div class="chips" id="pm-type-chips"></div>
+    </div>
+    <div class="m-field">
+      <label>サブカテゴリ</label>
+      <div class="chips" id="pm-sub-chips"></div>
+    </div>
+    <div class="m-field">
+      <label>作戦</label>
+      <select id="pm-proj"><option value="">紐づけない</option></select>
+    </div>
+    <div class="m-field">
+      <label>優先度</label>
+      <div class="chips" id="pm-pri-chips"></div>
+    </div>
+    <div class="m-actions">
+      <button class="btn-cancel" onclick="closePromoteModal()">もどる</button>
+      <button class="btn-commit" onclick="confirmPromote()">昇格させる ⚔️</button>
+    </div>
+  </div>
+</div>
+
 <!-- Dream Modal -->
-<div id="dm-overlay" onclick="dmOverlayClick(event)">
-  <div id="dm-sheet">
-    <div class="m-title">夢を地図に刻む</div>
+<div class="m-center" id="dm-overlay" onclick="if(event.target===this)closeDreamModal()">
+  <div class="m-box">
+    <div class="m-title" id="dm-label">夢を地図に刻む</div>
     <div class="m-field">
       <label>夢のタイトル *</label>
       <input id="dm-title" type="text" placeholder="例：自然の中に生きる">
@@ -520,196 +376,214 @@ body {
   </div>
 </div>
 
+<!-- Project Modal -->
+<div class="m-center" id="pjm-overlay" onclick="if(event.target===this)closeProjModal()">
+  <div class="m-box">
+    <div class="m-title" id="pjm-label">作戦を立案する</div>
+    <div class="m-field">
+      <label>作戦名 *</label>
+      <input id="pjm-title" type="text" placeholder="例：ゴルフ100切り">
+    </div>
+    <div class="m-field">
+      <label>ひとこと</label>
+      <textarea id="pjm-desc" rows="2" placeholder="例：スコア100を切って仲間とラウンドを楽しむ"></textarea>
+    </div>
+    <div class="m-field">
+      <label>夢に紐づける（任意）</label>
+      <select id="pjm-dream"><option value="">紐づけない</option></select>
+    </div>
+    <div class="m-actions">
+      <button class="btn-cancel" onclick="closeProjModal()">もどる</button>
+      <button class="btn-commit" id="pjm-save" onclick="saveProj()" disabled>立案する</button>
+    </div>
+  </div>
+</div>
+
 <!-- Settings Modal -->
-<div id="st-overlay" onclick="stOverlayClick(event)">
-  <div id="st-sheet">
-    <div class="st-title">⚙ 設定</div>
-    <div class="st-section">
-      <div class="st-label">このアプリのURL</div>
+<div class="m-overlay" id="st-overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="m-sheet">
+    <div class="m-title">⚙ 設定</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.09em;text-transform:uppercase;">このアプリのURL</div>
       <div class="st-url-box" id="st-url-display"></div>
       <button class="st-copy-btn" onclick="copyUrl()">URLをコピー</button>
     </div>
-    <div class="st-section">
-      <div class="st-label">ホーム画面にアイコンを追加する方法</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.09em;text-transform:uppercase;">ブックマークに追加する方法</div>
       <div class="st-steps">
-        <div class="st-step">
-          <div class="st-step-num">1</div>
-          <div class="st-step-text">SafariでこのアプリのURLを開く</div>
-        </div>
-        <div class="st-step">
-          <div class="st-step-num">2</div>
-          <div class="st-step-text">画面下の共有ボタン（□↑）をタップ</div>
-        </div>
-        <div class="st-step">
-          <div class="st-step-num">3</div>
-          <div class="st-step-text">「ホーム画面に追加」をタップ</div>
-        </div>
-        <div class="st-step">
-          <div class="st-step-num">4</div>
-          <div class="st-step-text">名前を「Life Map」にして「追加」をタップ</div>
-        </div>
+        <div class="st-step"><div class="st-step-num">1</div><div class="st-step-text">SafariでこのアプリのURLを開く</div></div>
+        <div class="st-step"><div class="st-step-num">2</div><div class="st-step-text">画面下の共有ボタン（□↑）をタップ</div></div>
+        <div class="st-step"><div class="st-step-num">3</div><div class="st-step-text">「ブックマークを追加」をタップ</div></div>
       </div>
     </div>
-    <button class="btn-cancel" style="width:100%;text-align:center;padding:12px" onclick="closeSettings()">閉じる</button>
+    <button class="btn-cancel" style="width:100%;text-align:center;padding:12px;" onclick="closeSettings()">閉じる</button>
   </div>
 </div>
 
 <script>
-const SK_Q = 'lifemap_q_v2';
-const SK_D = 'lifemap_d_v2';
+const SK_Q='lifemap_q_v3', SK_D='lifemap_d_v3', SK_P='lifemap_p_v3', SK_I='lifemap_i_v3';
 
-const QUEST_TYPES = [
-  { id:'armor',   label:'⚔️ 装備',     cls:'type-armor',
-    subs:['トップス','ボトムス','アウター','シューズ','バッグ','アクセサリー','帽子','時計','その他'] },
-  { id:'weapon',  label:'🪄 武器',     cls:'type-weapon',
-    subs:['ゴルフ','アウトドア','カメラ','ガジェット','スポーツ','音楽','その他'] },
-  { id:'skill',   label:'📜 スキル',   cls:'type-skill',
-    subs:['習い事','資格','語学','体験','読書','その他'] },
-  { id:'dungeon', label:'🏰 ダンジョン',cls:'type-dungeon',
-    subs:['国内旅行','海外旅行','ホテル','スポット','その他'] },
-  { id:'guild',   label:'🍺 ギルド酒場',cls:'type-guild',
-    subs:['レストラン','カフェ','バー','テイクアウト','その他'] },
-  { id:'tome',    label:'📖 魔導書',   cls:'type-tome',
-    subs:['レシピ','動画','本','レッスン','その他'] },
+const QUEST_TYPES=[
+  {id:'armor',  label:'⚔️ 装備',    cls:'type-armor',  subs:['トップス','ボトムス','アウター','シューズ','バッグ','アクセサリー','帽子','時計','その他']},
+  {id:'weapon', label:'🪄 武器',    cls:'type-weapon', subs:['ゴルフ','アウトドア','カメラ','ガジェット','スポーツ','音楽','その他']},
+  {id:'skill',  label:'📜 スキル',  cls:'type-skill',  subs:['習い事','資格','語学','体験','読書','その他']},
+  {id:'dungeon',label:'🏰 ダンジョン',cls:'type-dungeon',subs:['国内旅行','海外旅行','ホテル','スポット','その他']},
+  {id:'guild',  label:'🍺 ギルド酒場',cls:'type-guild', subs:['レストラン','カフェ','バー','テイクアウト','その他']},
+  {id:'tome',   label:'📖 魔導書',  cls:'type-tome',   subs:['レシピ','動画','本','レッスン','その他']},
+];
+const REALMS=[
+  {id:'taste',    label:'Taste',    cls:'realm-taste',    hero:'hero-taste'},
+  {id:'narrative',label:'Narrative',cls:'realm-narrative',hero:'hero-narrative'},
+  {id:'ajito',    label:'Ajito',    cls:'realm-ajito',    hero:'hero-ajito'},
+  {id:'gear',     label:'Gear',     cls:'realm-gear',     hero:'hero-gear'},
+  {id:'aura',     label:'Aura',     cls:'realm-aura',     hero:'hero-aura'},
+];
+const PRIORITIES=[
+  {id:'now',    label:'今すぐ',   cls:'pri-now'},
+  {id:'soon',   label:'近いうち', cls:'pri-soon'},
+  {id:'someday',label:'いつか',   cls:'pri-someday'},
 ];
 
-const REALMS = [
-  { id:'taste',     label:'Taste',     cls:'realm-taste',     hero:'hero-taste' },
-  { id:'narrative', label:'Narrative', cls:'realm-narrative', hero:'hero-narrative' },
-  { id:'ajito',     label:'Ajito',     cls:'realm-ajito',     hero:'hero-ajito' },
-  { id:'gear',      label:'Gear',      cls:'realm-gear',      hero:'hero-gear' },
-  { id:'aura',      label:'Aura',      cls:'realm-aura',      hero:'hero-aura' },
-];
+let quests=[], dreams=[], projects=[], inbox=[];
+let currentTab='all';
+let qType='armor', qSub='', qPri='soon', qLinks=[], qImgData='';
+let pmType='armor', pmSub='', pmPri='soon', _promoteId=null;
+let dRealm='taste', _editDreamId=null, _editQuestId=null;
+let _dmProjects=[];
 
-const PRIORITIES = [
-  { id:'now',     label:'今すぐ',   cls:'pri-now' },
-  { id:'soon',    label:'近いうち', cls:'pri-soon' },
-  { id:'someday', label:'いつか',   cls:'pri-someday' },
-];
-
-let quests = [];
-let dreams = [];
-let currentTab = 'all';
-let qType = 'armor';
-let qSub  = '';
-let qPri  = 'soon';
-let dRealm = 'taste';
-
-function load() {
-  try { quests = JSON.parse(localStorage.getItem(SK_Q)) || []; } catch { quests = []; }
-  try { dreams = JSON.parse(localStorage.getItem(SK_D)) || []; } catch { dreams = []; }
+function load(){
+  try{quests=JSON.parse(localStorage.getItem(SK_Q))||[];}catch{quests=[];}
+  try{dreams=JSON.parse(localStorage.getItem(SK_D))||[];}catch{dreams=[];}
+  try{projects=JSON.parse(localStorage.getItem(SK_P))||[];}catch{projects=[];}
+  try{inbox=JSON.parse(localStorage.getItem(SK_I))||[];}catch{inbox=[];}
 }
-function saveQ() { localStorage.setItem(SK_Q, JSON.stringify(quests)); }
-function saveD() { localStorage.setItem(SK_D, JSON.stringify(dreams)); }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fmtPrice(p) { return p ? '¥'+Number(p).toLocaleString() : ''; }
-function fmtDate(iso) { return new Date(iso).toLocaleDateString('ja-JP',{month:'short',day:'numeric'}); }
-function getFavicon(url) { try { return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=32`; } catch { return null; } }
-function getDomain(url) { try { return new URL(url).hostname.replace('www.',''); } catch { return null; } }
+function saveQ(){localStorage.setItem(SK_Q,JSON.stringify(quests));}
+function saveD(){localStorage.setItem(SK_D,JSON.stringify(dreams));}
+function saveP(){localStorage.setItem(SK_P,JSON.stringify(projects));}
+function saveI(){localStorage.setItem(SK_I,JSON.stringify(inbox));}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtPrice(p){return p?'¥'+Number(p).toLocaleString():'';}
+function fmtDate(iso){return new Date(iso).toLocaleDateString('ja-JP',{month:'short',day:'numeric'});}
+function getFavicon(url){try{return`https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=32`;}catch{return null;}}
+function getDomain(url){try{return new URL(url).hostname.replace('www.','');}catch{return null;}}
 
-function setTab(t, el) {
-  currentTab = t;
-  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+function setTab(t,el){
+  currentTab=t;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   el.classList.add('active');
   render();
 }
 
-function render() {
-  const q = document.getElementById('hdr-search').value.toLowerCase();
-  const list = document.getElementById('card-list');
-  const empty = document.getElementById('empty');
+function render(){
+  const q=document.getElementById('hdr-search').value.toLowerCase();
+  const list=document.getElementById('card-list');
+  const empty=document.getElementById('empty');
+  const activeQ=quests.filter(x=>!x.done).length;
+  const total=quests.filter(x=>!x.done&&x.price).reduce((s,x)=>s+Number(x.price),0);
+  document.getElementById('app-sub').textContent=`${activeQ} quests${total>0?'  ·  ¥'+total.toLocaleString():''}`;
 
-  const activeQ = quests.filter(x => !x.done).length;
-  const total = quests.filter(x => !x.done && x.price).reduce((s,x)=>s+Number(x.price),0);
-  document.getElementById('app-sub').textContent =
-    `${activeQ} quests active${total>0 ? '  ·  ¥'+total.toLocaleString() : ''}`;
+  if(currentTab==='dreams'){renderDreams(q,list,empty);return;}
+  if(currentTab==='inbox'){renderInbox(q,list,empty);return;}
+  if(currentTab==='projects'){renderProjects(q,list,empty);return;}
 
-  if (currentTab === 'dreams') { renderDreams(q, list, empty); return; }
-
-  let visible = quests.filter(x => {
-    if (currentTab !== 'all' && x.type !== currentTab) return false;
-    if (q && !x.title.toLowerCase().includes(q) && !(x.memo||'').toLowerCase().includes(q)) return false;
+  let visible=quests.filter(x=>{
+    if(currentTab!=='all'&&x.type!==currentTab)return false;
+    if(q&&!x.title.toLowerCase().includes(q)&&!(x.memo||'').toLowerCase().includes(q))return false;
     return true;
   });
 
-  if (visible.length === 0) {
-    list.innerHTML = ''; empty.style.display = 'block';
-    document.getElementById('empty-icon').textContent = '⚔️';
-    document.getElementById('empty-text').innerHTML = q ? '該当する記録がありません。' : '「＋ クエスト」から冒険を始めよう。';
+  if(visible.length===0){
+    list.innerHTML='';empty.style.display='block';
+    document.getElementById('empty-icon').textContent='⚔️';
+    document.getElementById('empty-text').innerHTML=q?'該当する記録がありません。':'「＋」から冒険を始めよう。';
     return;
   }
-  empty.style.display = 'none';
+  empty.style.display='none';
 
-  // Group: by dream, then ungrouped, then done
-  let html = '';
-  const active = visible.filter(x => !x.done);
-  const done   = visible.filter(x =>  x.done);
+  let html='';
+  const active=visible.filter(x=>!x.done);
+  const done=visible.filter(x=>x.done);
 
-  if (currentTab === 'all') {
-    // group by dream
-    const dreamIds = [...new Set(active.filter(x=>x.dreamId).map(x=>x.dreamId))];
-    dreamIds.forEach(did => {
-      const d = dreams.find(x=>x.id===did);
-      if (!d) return;
-      const realm = REALMS.find(r=>r.id===d.realm)||REALMS[0];
-      const its = active.filter(x=>x.dreamId===did);
-      html += `<div class="quest-section">
-        <div class="quest-sec-hdr" onclick="toggleSec('sec-${did}','tog-${did}')">
-          <span class="quest-sec-badge ${realm.cls}">${realm.label} — ${esc(d.title)}</span>
-          <span class="quest-sec-count">${its.length}</span>
-          <span class="quest-sec-toggle" id="tog-${did}">▼</span>
+  if(currentTab==='all'){
+    // Show all projects (even those with no active quests) + their quests
+    projects.forEach(p=>{
+      const dream=dreams.find(d=>d.id===p.dreamId);
+      const realm=dream?REALMS.find(r=>r.id===dream.realm):null;
+      const its=active.filter(x=>x.projId===p.id);
+      const doneIts=done.filter(x=>x.projId===p.id);
+      html+=`<div class="quest-section">
+        <div style="background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:11px 13px;margin-bottom:8px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:14px;font-weight:700;color:var(--ink);line-height:1.3">${esc(p.name)}</div>
+              ${p.desc?`<div style="font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5">${esc(p.desc)}</div>`:''}
+              <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">
+                ${dream?`<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.04em" class="quest-tag ${realm?realm.cls:'realm-gear'}">${realm?realm.label+' — ':''} ${esc(dream.title)}</span>`:'<span style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(184,146,74,.1);color:var(--gold);border:1px solid rgba(184,146,74,.2);font-weight:600">単独作戦</span>'}
+                <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(0,0,0,.05);color:var(--muted);border:1px solid var(--line)">${its.length} active</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:5px;flex-shrink:0;">
+              <button class="quest-edit" onclick="editProj('${p.id}')">✎</button>
+              <button class="btn-sm gold" style="font-size:10px;padding:4px 9px" onclick="openQuestForProjId('${p.id}')">＋</button>
+              <button class="quest-sec-toggle" onclick="toggleSec('sec-${p.id}','tog-${p.id}')" id="tog-${p.id}" style="background:none;border:none;color:var(--faint);cursor:pointer;font-size:12px;padding:0 2px;">▶</button>
+            </div>
+          </div>
         </div>
-        <div class="quest-list" id="sec-${did}">${its.map(renderQCard).join('')}</div>
+        <div class="quest-list collapsed" id="sec-${p.id}">
+          ${its.length===0&&doneIts.length===0?`<div style="font-size:12px;color:var(--faint);padding:8px 4px">クエストがまだありません</div>`:''}
+          ${its.map(renderQCard).join('')}
+        </div>
       </div>`;
     });
-    const free = active.filter(x=>!x.dreamId);
-    if (free.length>0) {
-      html += `<div class="quest-section">
+    const free=active.filter(x=>!x.projId);
+    if(free.length>0){
+      html+=`<div class="quest-section">
         <div class="quest-sec-hdr" onclick="toggleSec('sec-free','tog-free')">
-          <span class="quest-sec-badge" style="background:rgba(184,146,74,0.12);color:var(--gold)">✦ 自由なクエスト</span>
+          <span class="quest-sec-badge" style="background:rgba(184,146,74,.1);color:var(--gold)">✦ 自由なクエスト</span>
           <span class="quest-sec-count">${free.length}</span>
           <span class="quest-sec-toggle" id="tog-free">▼</span>
         </div>
         <div class="quest-list" id="sec-free">${free.map(renderQCard).join('')}</div>
       </div>`;
     }
+    if(projects.length===0&&free.length===0){
+      list.innerHTML='';empty.style.display='block';
+      document.getElementById('empty-icon').textContent='⚔️';
+      document.getElementById('empty-text').innerHTML='「＋ 作戦」から作戦を立案して、<br>「＋」でクエストを記録しよう。';
+      return;
+    }
   } else {
-    // flat list by subcat
-    const type = QUEST_TYPES.find(t=>t.id===currentTab);
-    const subs = type ? type.subs : [];
-    const noSub = active.filter(x=>!x.subCat);
-    const subMap = {};
-    subs.forEach(s=>{ subMap[s] = active.filter(x=>x.subCat===s); });
-
-    if (noSub.length>0) html += noSub.map(renderQCard).join('');
+    // flat by subcat
+    const type=QUEST_TYPES.find(t=>t.id===currentTab);
+    const subs=type?type.subs:[];
+    const noSub=active.filter(x=>!x.subCat);
+    if(noSub.length>0)html+=noSub.map(renderQCard).join('');
     subs.forEach(s=>{
-      if (!subMap[s] || subMap[s].length===0) return;
-      html += `<div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:0.09em;text-transform:uppercase;margin:14px 0 6px 2px">${esc(s)}</div>`;
-      html += subMap[s].map(renderQCard).join('');
+      const its=active.filter(x=>x.subCat===s);
+      if(!its.length)return;
+      html+=`<div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.09em;text-transform:uppercase;margin:14px 0 6px 2px">${esc(s)}</div>`;
+      html+=its.map(renderQCard).join('');
     });
   }
 
-  if (done.length>0) {
-    html += `<div class="quest-section" style="margin-top:8px">
+  if(done.length>0){
+    html+=`<div class="quest-section" style="margin-top:8px">
       <div class="quest-sec-hdr" onclick="toggleSec('sec-done','tog-done')">
-        <span class="quest-sec-badge" style="background:rgba(0,0,0,0.05);color:var(--faint)">✓ 達成済み</span>
+        <span class="quest-sec-badge" style="background:rgba(0,0,0,.05);color:var(--faint)">✓ 達成済み</span>
         <span class="quest-sec-count">${done.length}</span>
         <span class="quest-sec-toggle" id="tog-done">▶</span>
       </div>
       <div class="quest-list collapsed" id="sec-done">${done.map(renderQCard).join('')}</div>
     </div>`;
   }
-
-  list.innerHTML = html;
+  list.innerHTML=html;
 }
 
-function renderQCard(x) {
-  const type = QUEST_TYPES.find(t=>t.id===x.type);
-  const pri  = PRIORITIES.find(p=>p.id===x.priority);
-  const domain = getDomain(x.url);
-  const favicon = x.url ? getFavicon(x.url) : null;
-  return `
-  <div class="quest-card ${x.done?'done':''}">
+function renderQCard(x){
+  const type=QUEST_TYPES.find(t=>t.id===x.type);
+  const pri=PRIORITIES.find(p=>p.id===x.priority);
+  const links=x.links||[];
+  return`<div class="quest-card ${x.done?'done':''}">
     <div class="quest-card-top">
       <button class="quest-check ${x.done?'done':''}" onclick="toggleQuest('${x.id}')">${x.done?'✓':''}</button>
       <div class="quest-body">
@@ -717,38 +591,42 @@ function renderQCard(x) {
         ${x.price?`<div class="quest-price">${fmtPrice(x.price)}</div>`:''}
         <div class="quest-tags">
           ${type?`<span class="quest-tag ${type.cls}">${type.label}</span>`:''}
-          ${x.subCat?`<span class="quest-tag" style="background:rgba(0,0,0,0.05);color:var(--muted);border:1px solid var(--line)">${esc(x.subCat)}</span>`:''}
+          ${x.subCat?`<span class="quest-tag" style="background:rgba(0,0,0,.05);color:var(--muted);border:1px solid var(--line)">${esc(x.subCat)}</span>`:''}
           ${pri?`<span class="quest-tag ${pri.cls}">${pri.label}</span>`:''}
         </div>
       </div>
-      <button class="quest-edit" onclick="editQuest('${x.id}')" title="編集">✎</button>
-      <button class="quest-del" onclick="deleteQuest('${x.id}')">×</button>
+      <div class="quest-actions">
+        <button class="quest-edit" onclick="editQuest('${x.id}')">✎</button>
+        <button class="quest-del" onclick="deleteQuest('${x.id}')">×</button>
+      </div>
     </div>
     ${x.memo?`<div class="quest-memo">${esc(x.memo)}</div>`:''}
-    ${x.url?`<a class="quest-link" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">
-      ${favicon?`<img src="${favicon}" width="13" height="13" onerror="this.style.display='none'" alt="">`:''}
-      <span class="quest-link-domain">${esc(domain||x.url)}</span>
-      <span style="color:var(--faint);flex-shrink:0">↗</span>
-    </a>`:''}
+    ${x.imgData?`<div class="quest-img"><img src="${x.imgData}" alt=""></div>`:''}
+    ${links.length>0?`<div class="quest-links">${links.map(u=>`
+      <a class="quest-link" href="${esc(u)}" target="_blank" rel="noopener noreferrer">
+        ${getFavicon(u)?`<img src="${getFavicon(u)}" width="13" height="13" onerror="this.style.display='none'" alt="">`:''}
+        <span class="quest-link-domain">${esc(getDomain(u)||u)}</span>
+        <span style="color:var(--faint);flex-shrink:0">↗</span>
+      </a>`).join('')}</div>`:''}
     <div class="quest-date">${fmtDate(x.createdAt)}</div>
   </div>`;
 }
 
-function renderDreams(q, list, empty) {
-  const visible = dreams.filter(d=>!q||d.title.toLowerCase().includes(q)||(d.desc||'').toLowerCase().includes(q));
-  if (visible.length===0) {
-    list.innerHTML=''; empty.style.display='block';
+function renderDreams(q,list,empty){
+  const visible=dreams.filter(d=>!q||d.title.toLowerCase().includes(q)||(d.desc||'').toLowerCase().includes(q));
+  if(visible.length===0){
+    list.innerHTML='';empty.style.display='block';
     document.getElementById('empty-icon').textContent='🗺';
     document.getElementById('empty-text').innerHTML='夢がまだ記されていません。<br>「夢を記す」から始めよう。';
     return;
   }
   empty.style.display='none';
-  list.innerHTML = visible.map(d=>{
-    const realm = REALMS.find(r=>r.id===d.realm)||REALMS[0];
-    const dq = quests.filter(x=>x.dreamId===d.id);
-    const doneQ = dq.filter(x=>x.done).length;
-    return `
-    <div class="dream-card">
+  list.innerHTML=visible.map(d=>{
+    const realm=REALMS.find(r=>r.id===d.realm)||REALMS[0];
+    const dProjs=projects.filter(p=>p.dreamId===d.id);
+    const dq=quests.filter(x=>dProjs.some(p=>p.id===x.projId));
+    const doneQ=dq.filter(x=>x.done).length;
+    return`<div class="dream-card">
       <div class="dream-hero ${realm.hero}">
         ${d.img?`<img class="dream-hero-img" src="${esc(d.img)}" alt="" onerror="this.style.display='none'">`:''}
         <div class="dream-hero-overlay"></div>
@@ -757,12 +635,15 @@ function renderDreams(q, list, empty) {
       </div>
       <div class="dream-body">
         ${d.desc?`<div class="dream-desc">${esc(d.desc)}</div>`:''}
+        ${dProjs.length>0?`<div style="margin-bottom:10px;display:flex;flex-wrap:wrap;gap:5px">
+          ${dProjs.map(p=>`<span style="font-size:11px;background:rgba(184,146,74,.1);color:var(--gold);border:1px solid rgba(184,146,74,.2);border-radius:20px;padding:3px 9px;font-weight:600">${esc(p.name)}</span>`).join('')}
+        </div>`:''}
         <div class="dream-footer">
           <span class="dream-quest-stat">${dq.length>0?`${doneQ}/${dq.length} quests`:'no quests yet'}</span>
           <div class="dream-btns">
             <button class="btn-sm danger" onclick="deleteDream('${d.id}')">削除</button>
             <button class="btn-sm ghost" onclick="editDream('${d.id}')">編集</button>
-            <button class="btn-sm gold" onclick="openQuestForDream('${d.id}')">＋ クエスト</button>
+            <button class="btn-sm gold" onclick="openQuestForProj('${d.id}')">＋ クエスト</button>
           </div>
         </div>
       </div>
@@ -770,233 +651,461 @@ function renderDreams(q, list, empty) {
   }).join('');
 }
 
-function toggleSec(id, togId) {
-  const el = document.getElementById(id);
-  const tog = document.getElementById(togId);
-  if (!el) return;
-  el.classList.toggle('collapsed');
-  if (tog) tog.textContent = el.classList.contains('collapsed') ? '▶' : '▼';
-}
-function toggleQuest(id) {
-  quests = quests.map(x=>x.id===id?{...x,done:!x.done}:x);
-  saveQ(); render();
-}
-function deleteQuest(id) {
-  if (!confirm('このクエストを削除しますか？')) return;
-  quests = quests.filter(x=>x.id!==id);
-  saveQ(); render();
-}
-function deleteDream(id) {
-  if (!confirm('この夢を削除しますか？')) return;
-  dreams = dreams.filter(d=>d.id!==id);
-  quests = quests.map(x=>x.dreamId===id?{...x,dreamId:null}:x);
-  saveD(); saveQ(); render();
+function renderProjects(q,list,empty){
+  const visible=projects.filter(p=>!q||p.name.toLowerCase().includes(q)||(p.desc||'').toLowerCase().includes(q));
+  if(visible.length===0){
+    list.innerHTML=`<div style="text-align:center;padding:20px 0">
+      <button class="btn-commit" onclick="openProjModal()" style="padding:12px 24px">＋ 作戦を立案する</button>
+    </div>`;
+    empty.style.display='none';return;
+  }
+  empty.style.display='none';
+  list.innerHTML=`<div style="text-align:right;margin-bottom:10px">
+    <button class="btn-hdr" onclick="openProjModal()">＋ 立案する</button>
+  </div>`+visible.map(p=>{
+    const dream=dreams.find(d=>d.id===p.dreamId);
+    const realm=dream?REALMS.find(r=>r.id===dream.realm):null;
+    const pq=quests.filter(x=>x.projId===p.id);
+    const doneQ=pq.filter(x=>x.done).length;
+    return`<div class="quest-card" style="margin-bottom:10px;border-left:3px solid var(--gold)">
+      <div class="quest-card-top">
+        <div class="quest-body">
+          <div class="quest-title" style="font-size:15px">${esc(p.name)}</div>
+          ${p.desc?`<div style="font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5">${esc(p.desc)}</div>`:''}
+          <div class="quest-tags" style="margin-top:6px">
+            ${dream?`<span class="quest-tag ${realm?realm.cls:'realm-gear'}">${realm?realm.label+' — ':''} ${esc(dream.title)}</span>`:'<span class="quest-tag" style="background:rgba(184,146,74,.1);color:var(--gold);border:1px solid rgba(184,146,74,.2)">独立作戦</span>'}
+            <span class="quest-tag" style="background:rgba(0,0,0,.05);color:var(--muted);border:1px solid var(--line)">${doneQ}/${pq.length} quests</span>
+          </div>
+        </div>
+        <div class="quest-actions">
+          <button class="quest-edit" onclick="editProj('${p.id}')">✎</button>
+          <button class="quest-del" onclick="deleteProj('${p.id}')">×</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:7px;padding-left:0;margin-top:4px">
+        <button class="btn-sm gold" onclick="openQuestForProjId('${p.id}')">＋ クエスト</button>
+      </div>
+      <div class="quest-date">${fmtDate(p.createdAt)}</div>
+    </div>`;
+  }).join('');
 }
 
+function renderInbox(q,list,empty){
+  const visible=inbox.filter(x=>!q||x.title.toLowerCase().includes(q));
+  if(visible.length===0){
+    list.innerHTML='';empty.style.display='block';
+    document.getElementById('empty-icon').textContent='📋';
+    document.getElementById('empty-text').innerHTML='手配書は空です。<br>気になったものをとりあえず書き留めよう。';
+    // Show add button
+    list.innerHTML=`<div style="text-align:center;padding:20px 0">
+      <button class="btn-commit" onclick="openInboxModal()" style="padding:12px 24px">＋ 書き留める</button>
+    </div>`;
+    empty.style.display='none';
+    return;
+  }
+  empty.style.display='none';
+  list.innerHTML=`<div style="text-align:right;margin-bottom:10px">
+    <button class="btn-hdr" onclick="openInboxModal()">＋ 書き留める</button>
+  </div>`+
+  visible.map(x=>{
+    const domain=getDomain(x.url);
+    const favicon=x.url?getFavicon(x.url):null;
+    return`<div class="inbox-card">
+      <div class="inbox-card-top">
+        <div class="inbox-body">
+          <div class="inbox-title">${esc(x.title)}</div>
+          ${x.memo?`<div style="font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5">${esc(x.memo)}</div>`:''}
+          ${x.url?`<a class="quest-link" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer" style="margin:6px 0 0">
+            ${favicon?`<img src="${favicon}" width="13" height="13" onerror="this.style.display='none'" alt="">`:''}
+            <span class="quest-link-domain">${esc(domain||x.url)}</span>
+            <span style="color:var(--faint);flex-shrink:0">↗</span>
+          </a>`:''}
+          <div class="inbox-date">${fmtDate(x.createdAt)}</div>
+        </div>
+        <div class="inbox-actions">
+          <button class="btn-sm gold" onclick="openPromoteModal('${x.id}')">昇格 ⚔️</button>
+          <button class="btn-sm danger" onclick="deleteInbox('${x.id}')">×</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSec(id,togId){
+  const el=document.getElementById(id);
+  const tog=document.getElementById(togId);
+  if(!el)return;
+  el.classList.toggle('collapsed');
+  if(tog)tog.textContent=el.classList.contains('collapsed')?'▶':'▼';
+}
+function toggleQuest(id){quests=quests.map(x=>x.id===id?{...x,done:!x.done}:x);saveQ();render();}
+function deleteQuest(id){if(!confirm('削除しますか？'))return;quests=quests.filter(x=>x.id!==id);saveQ();render();}
+function deleteDream(id){
+  if(!confirm('この夢を削除しますか？'))return;
+  dreams=dreams.filter(d=>d.id!==id);
+  projects=projects.filter(p=>p.dreamId!==id);
+  saveD();saveP();render();
+}
+function deleteInbox(id){if(!confirm('削除しますか？'))return;inbox=inbox.filter(x=>x.id!==id);saveI();render();}
+
 // ── Quest Modal ──
-function buildQTypeChips() {
-  document.getElementById('qm-type-chips').innerHTML = QUEST_TYPES.map(t=>
+function buildQTypeChips(targetPre,subPre){
+  document.getElementById('qm-type-chips').innerHTML=QUEST_TYPES.map(t=>
     `<button class="type-chip ${t.cls} ${qType===t.id?'sel':''}" onclick="setQType('${t.id}')">${t.label}</button>`
   ).join('');
   buildQSubChips();
 }
-function setQType(id) { qType=id; qSub=''; buildQTypeChips(); }
-function buildQSubChips() {
-  const type = QUEST_TYPES.find(t=>t.id===qType);
-  const subs = type ? type.subs : [];
-  document.getElementById('qm-sub-chips').innerHTML = subs.map(s=>
+function setQType(id){qType=id;qSub='';buildQTypeChips();}
+function buildQSubChips(){
+  const type=QUEST_TYPES.find(t=>t.id===qType);
+  document.getElementById('qm-sub-chips').innerHTML=(type?type.subs:[]).map(s=>
     `<button class="sub-chip ${qSub===s?'sel':''}" onclick="setQSub('${s}')">${esc(s)}</button>`
   ).join('');
 }
-function setQSub(s) { qSub = qSub===s?'':s; buildQSubChips(); }
-function buildQPriChips() {
-  document.getElementById('qm-pri-chips').innerHTML = PRIORITIES.map(p=>
+function setQSub(s){qSub=qSub===s?'':s;buildQSubChips();}
+function buildQPriChips(){
+  document.getElementById('qm-pri-chips').innerHTML=PRIORITIES.map(p=>
     `<button class="chip ${qPri===p.id?'sel':''}" onclick="setQPri('${p.id}')">${p.label}</button>`
   ).join('');
 }
-function setQPri(id) { qPri=id; buildQPriChips(); }
-function buildDreamSelect(preId) {
-  document.getElementById('qm-dream').innerHTML =
-    '<option value="">夢に紐づけない</option>' +
-    dreams.map(d=>`<option value="${d.id}" ${preId===d.id?'selected':''}>${esc(d.title)}</option>`).join('');
+function setQPri(id){qPri=id;buildQPriChips();}
+function buildProjSelect(selId,prefillProjId){
+  document.getElementById(selId).innerHTML=
+    '<option value="">紐づけない</option>'+
+    projects.map(p=>`<option value="${p.id}" ${p.id===prefillProjId?'selected':''}>${esc(p.name)}</option>`).join('');
 }
 
-let _prefillDreamId = null;
-let _editQuestId = null;
+// links
+function addQuestLink(){
+  const input=document.getElementById('qm-link-input');
+  const url=input.value.trim();
+  if(!url)return;
+  qLinks.push(url);
+  input.value='';
+  renderQLinkList();
+}
+function removeQuestLink(i){qLinks.splice(i,1);renderQLinkList();}
+function renderQLinkList(){
+  document.getElementById('qm-link-list').innerHTML=qLinks.map((u,i)=>
+    `<div class="link-item">
+      <span class="link-item-domain">${esc(getDomain(u)||u)}</span>
+      <button class="link-item-del" onclick="removeQuestLink(${i})">×</button>
+    </div>`
+  ).join('');
+}
 
-function openQuestModal(url) {
-  _prefillDreamId = null; _editQuestId = null;
-  document.getElementById('qm-title-label').textContent = 'クエストを記録する';
-  document.getElementById('qm-save').textContent = '記録する';
-  buildDreamSelect(null);
-  buildQTypeChips(); buildQPriChips();
-  document.getElementById('qm-title').value = '';
-  document.getElementById('qm-url').value = url||'';
-  document.getElementById('qm-price').value = '';
-  document.getElementById('qm-memo').value = '';
-  document.getElementById('qm-save').disabled = true;
+// image
+function handleImgUpload(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    // compress
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      const max=800;
+      let w=img.width,h=img.height;
+      if(w>max){h=Math.round(h*max/w);w=max;}
+      if(h>max){w=Math.round(w*max/h);h=max;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      qImgData=canvas.toDataURL('image/jpeg',0.7);
+      document.getElementById('qm-img-el').src=qImgData;
+      document.getElementById('qm-img-preview').style.display='block';
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function removeImg(){qImgData='';document.getElementById('qm-img-preview').style.display='none';document.getElementById('qm-img-file').value='';}
+
+function openQuestModal(url){
+  _editQuestId=null;
+  document.getElementById('qm-label').textContent='クエストを記録する';
+  document.getElementById('qm-save').textContent='記録する';
+  qType='armor';qSub='';qPri='soon';qLinks=[];qImgData='';
+  buildQTypeChips();buildQPriChips();buildProjSelect('qm-proj',null);
+  document.getElementById('qm-title').value='';
+  document.getElementById('qm-link-input').value='';
+  document.getElementById('qm-link-list').innerHTML='';
+  document.getElementById('qm-price').value='';
+  document.getElementById('qm-memo').value='';
+  document.getElementById('qm-img-preview').style.display='none';
+  document.getElementById('qm-save').disabled=true;
   document.getElementById('qm-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('qm-title').focus(),100);
 }
-function openQuestForDream(did) {
-  _prefillDreamId = did; _editQuestId = null;
-  document.getElementById('qm-title-label').textContent = 'クエストを記録する';
-  document.getElementById('qm-save').textContent = '記録する';
-  buildDreamSelect(did);
-  buildQTypeChips(); buildQPriChips();
-  document.getElementById('qm-title').value = '';
-  document.getElementById('qm-url').value = '';
-  document.getElementById('qm-price').value = '';
-  document.getElementById('qm-memo').value = '';
-  document.getElementById('qm-save').disabled = true;
+function openQuestForProj(dreamId){
+  _editQuestId=null;
+  document.getElementById('qm-label').textContent='クエストを記録する';
+  document.getElementById('qm-save').textContent='記録する';
+  qType='armor';qSub='';qPri='soon';qLinks=[];qImgData='';
+  buildQTypeChips();buildQPriChips();
+  // pre-select first project of this dream
+  const dProjs=projects.filter(p=>p.dreamId===dreamId);
+  buildProjSelect('qm-proj',dProjs.length>0?dProjs[0].id:null);
+  document.getElementById('qm-title').value='';
+  document.getElementById('qm-link-input').value='';
+  document.getElementById('qm-link-list').innerHTML='';
+  document.getElementById('qm-price').value='';
+  document.getElementById('qm-memo').value='';
+  document.getElementById('qm-img-preview').style.display='none';
+  document.getElementById('qm-save').disabled=true;
   document.getElementById('qm-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('qm-title').focus(),100);
 }
-function editQuest(id) {
-  const x = quests.find(q=>q.id===id);
-  if (!x) return;
-  _editQuestId = id; _prefillDreamId = null;
-  document.getElementById('qm-title-label').textContent = 'クエストを編集する';
-  document.getElementById('qm-save').textContent = '更新する';
-  qType = x.type||'armor'; qSub = x.subCat||''; qPri = x.priority||'soon';
-  buildDreamSelect(x.dreamId);
-  buildQTypeChips(); buildQPriChips();
-  document.getElementById('qm-title').value = x.title||'';
-  document.getElementById('qm-url').value = x.url||'';
-  document.getElementById('qm-price').value = x.price||'';
-  document.getElementById('qm-memo').value = x.memo||'';
-  document.getElementById('qm-dream').value = x.dreamId||'';
-  document.getElementById('qm-save').disabled = false;
+function editQuest(id){
+  const x=quests.find(q=>q.id===id);if(!x)return;
+  _editQuestId=id;
+  document.getElementById('qm-label').textContent='クエストを編集する';
+  document.getElementById('qm-save').textContent='更新する';
+  qType=x.type||'armor';qSub=x.subCat||'';qPri=x.priority||'soon';
+  qLinks=[...(x.links||[])];
+  qImgData=x.imgData||'';
+  buildQTypeChips();buildQPriChips();buildProjSelect('qm-proj',x.projId);
+  document.getElementById('qm-title').value=x.title||'';
+  document.getElementById('qm-link-input').value='';
+  renderQLinkList();
+  document.getElementById('qm-price').value=x.price||'';
+  document.getElementById('qm-memo').value=x.memo||'';
+  if(qImgData){document.getElementById('qm-img-el').src=qImgData;document.getElementById('qm-img-preview').style.display='block';}
+  else{document.getElementById('qm-img-preview').style.display='none';}
+  document.getElementById('qm-save').disabled=false;
   document.getElementById('qm-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('qm-title').focus(),100);
 }
-function closeQuestModal() { document.getElementById('qm-overlay').classList.remove('open'); }
-function qmOverlayClick(e) { if(e.target===document.getElementById('qm-overlay')) closeQuestModal(); }
-
-function saveQuest() {
-  const title = document.getElementById('qm-title').value.trim();
-  if (!title) return;
-  if (_editQuestId) {
-    quests = quests.map(x => x.id===_editQuestId ? {
-      ...x, title,
-      type: qType, subCat: qSub,
-      url: document.getElementById('qm-url').value.trim(),
-      price: document.getElementById('qm-price').value.trim(),
-      memo: document.getElementById('qm-memo').value.trim(),
-      dreamId: document.getElementById('qm-dream').value || null,
-      priority: qPri,
-    } : x);
-  } else {
-    quests.unshift({
-      id: Date.now().toString(), title,
-      type: qType, subCat: qSub,
-      url: document.getElementById('qm-url').value.trim(),
-      price: document.getElementById('qm-price').value.trim(),
-      memo: document.getElementById('qm-memo').value.trim(),
-      dreamId: document.getElementById('qm-dream').value || null,
-      priority: qPri, done: false,
-      createdAt: new Date().toISOString(),
-    });
+function closeQuestModal(){document.getElementById('qm-overlay').classList.remove('open');}
+function saveQuest(){
+  const title=document.getElementById('qm-title').value.trim();if(!title)return;
+  const data={title,type:qType,subCat:qSub,links:qLinks,imgData:qImgData,
+    price:document.getElementById('qm-price').value.trim(),
+    memo:document.getElementById('qm-memo').value.trim(),
+    projId:document.getElementById('qm-proj').value||null,
+    priority:qPri};
+  if(_editQuestId){
+    quests=quests.map(x=>x.id===_editQuestId?{...x,...data}:x);
+  }else{
+    quests.unshift({id:Date.now().toString(),...data,done:false,createdAt:new Date().toISOString()});
   }
-  saveQ(); render(); closeQuestModal();
+  saveQ();render();closeQuestModal();
+}
+
+// ── Inbox Modal ──
+function openInboxModal(){
+  document.getElementById('ibm-title').value='';
+  document.getElementById('ibm-url').value='';
+  document.getElementById('ibm-memo').value='';
+  document.getElementById('ibm-save').disabled=true;
+  document.getElementById('ibm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('ibm-title').focus(),100);
+}
+function closeInboxModal(){document.getElementById('ibm-overlay').classList.remove('open');}
+function saveInbox(){
+  const title=document.getElementById('ibm-title').value.trim();if(!title)return;
+  inbox.unshift({id:Date.now().toString(),title,
+    url:document.getElementById('ibm-url').value.trim(),
+    memo:document.getElementById('ibm-memo').value.trim(),
+    createdAt:new Date().toISOString()});
+  saveI();render();closeInboxModal();
+}
+
+// ── Promote Modal ──
+function buildPmTypeChips(){
+  document.getElementById('pm-type-chips').innerHTML=QUEST_TYPES.map(t=>
+    `<button class="type-chip ${t.cls} ${pmType===t.id?'sel':''}" onclick="setPmType('${t.id}')">${t.label}</button>`
+  ).join('');
+  buildPmSubChips();
+}
+function setPmType(id){pmType=id;pmSub='';buildPmTypeChips();}
+function buildPmSubChips(){
+  const type=QUEST_TYPES.find(t=>t.id===pmType);
+  document.getElementById('pm-sub-chips').innerHTML=(type?type.subs:[]).map(s=>
+    `<button class="sub-chip ${pmSub===s?'sel':''}" onclick="setPmSub('${s}')">${esc(s)}</button>`
+  ).join('');
+}
+function setPmSub(s){pmSub=pmSub===s?'':s;buildPmSubChips();}
+function buildPmPriChips(){
+  document.getElementById('pm-pri-chips').innerHTML=PRIORITIES.map(p=>
+    `<button class="chip ${pmPri===p.id?'sel':''}" onclick="setPmPri('${p.id}')">${p.label}</button>`
+  ).join('');
+}
+function setPmPri(id){pmPri=id;buildPmPriChips();}
+function openPromoteModal(id){
+  _promoteId=id;pmType='armor';pmSub='';pmPri='soon';
+  buildPmTypeChips();buildPmPriChips();buildProjSelect('pm-proj',null);
+  document.getElementById('pm-overlay').classList.add('open');
+}
+function closePromoteModal(){document.getElementById('pm-overlay').classList.remove('open');}
+function confirmPromote(){
+  const item=inbox.find(x=>x.id===_promoteId);if(!item)return;
+  quests.unshift({
+    id:Date.now().toString(),title:item.title,
+    type:pmType,subCat:pmSub,
+    links:item.url?[item.url]:[],
+    imgData:'',price:'',memo:item.memo||'',
+    projId:document.getElementById('pm-proj').value||null,
+    priority:pmPri,done:false,createdAt:new Date().toISOString()
+  });
+  inbox=inbox.filter(x=>x.id!==_promoteId);
+  saveQ();saveI();render();closePromoteModal();
+}
+
+function openQuestForProjId(projId){
+  _editQuestId=null;
+  document.getElementById('qm-label').textContent='クエストを記録する';
+  document.getElementById('qm-save').textContent='記録する';
+  qType='armor';qSub='';qPri='soon';qLinks=[];qImgData='';
+  buildQTypeChips();buildQPriChips();buildProjSelect('qm-proj',projId);
+  document.getElementById('qm-title').value='';
+  document.getElementById('qm-link-input').value='';
+  document.getElementById('qm-link-list').innerHTML='';
+  document.getElementById('qm-price').value='';
+  document.getElementById('qm-memo').value='';
+  document.getElementById('qm-img-preview').style.display='none';
+  document.getElementById('qm-save').disabled=true;
+  document.getElementById('qm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('qm-title').focus(),100);
+}
+
+function deleteProj(id){
+  if(!confirm('この作戦を削除しますか？（クエストは残ります）'))return;
+  projects=projects.filter(p=>p.id!==id);
+  quests=quests.map(x=>x.projId===id?{...x,projId:null}:x);
+  saveP();saveQ();render();
+}
+
+// ── Project Modal ──
+function buildDreamSelectForProj(selId,prefillId){
+  document.getElementById(selId).innerHTML=
+    '<option value="">紐づけない（独立作戦）</option>'+
+    dreams.map(d=>`<option value="${d.id}" ${d.id===prefillId?'selected':''}>${esc(d.title)}</option>`).join('');
+}
+let _editProjId=null;
+function openProjModal(){
+  _editProjId=null;
+  document.getElementById('pjm-label').textContent='作戦を立案する';
+  document.getElementById('pjm-save').textContent='立案する';
+  document.getElementById('pjm-title').value='';
+  document.getElementById('pjm-desc').value='';
+  buildDreamSelectForProj('pjm-dream',null);
+  document.getElementById('pjm-save').disabled=true;
+  document.getElementById('pjm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('pjm-title').focus(),100);
+}
+function editProj(id){
+  const p=projects.find(x=>x.id===id);if(!p)return;
+  _editProjId=id;
+  document.getElementById('pjm-label').textContent='作戦を編集する';
+  document.getElementById('pjm-save').textContent='更新する';
+  document.getElementById('pjm-title').value=p.name||'';
+  document.getElementById('pjm-desc').value=p.desc||'';
+  buildDreamSelectForProj('pjm-dream',p.dreamId);
+  document.getElementById('pjm-save').disabled=false;
+  document.getElementById('pjm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('pjm-title').focus(),100);
+}
+function closeProjModal(){document.getElementById('pjm-overlay').classList.remove('open');}
+function saveProj(){
+  const name=document.getElementById('pjm-title').value.trim();if(!name)return;
+  const dreamId=document.getElementById('pjm-dream').value||null;
+  if(_editProjId){
+    projects=projects.map(p=>p.id===_editProjId?{...p,name,desc:document.getElementById('pjm-desc').value.trim(),dreamId}:p);
+  }else{
+    projects.push({id:Date.now().toString(),name,desc:document.getElementById('pjm-desc').value.trim(),dreamId,createdAt:new Date().toISOString()});
+  }
+  saveP();render();closeProjModal();
 }
 
 // ── Dream Modal ──
-function buildDRealmChips() {
-  document.getElementById('dm-realm-chips').innerHTML = REALMS.map(r=>
+function buildDRealmChips(){
+  document.getElementById('dm-realm-chips').innerHTML=REALMS.map(r=>
     `<button class="chip realm-chip ${r.cls} ${dRealm===r.id?'sel':''}" onclick="setDRealm('${r.id}')">${r.label}</button>`
   ).join('');
 }
-function setDRealm(id) { dRealm=id; buildDRealmChips(); }
-function editDream(id) {
-  const d = dreams.find(x=>x.id===id);
-  if (!d) return;
-  dRealm = d.realm||'taste';
+function setDRealm(id){dRealm=id;buildDRealmChips();}
+
+function openDreamModal(){
+  _editDreamId=null;dRealm='taste';
   buildDRealmChips();
-  document.getElementById('dm-title').value = d.title||'';
-  document.getElementById('dm-desc').value = d.desc||'';
-  document.getElementById('dm-img').value = d.img||'';
-  document.getElementById('dm-save').disabled = false;
-  document.getElementById('dm-save').textContent = '更新する';
-  document.getElementById('dm-overlay').classList.add('open');
-  document.getElementById('dm-overlay').dataset.editId = id;
-  setTimeout(()=>document.getElementById('dm-title').focus(),100);
-}
-function openDreamModal() {
-  dRealm='taste'; buildDRealmChips();
-  document.getElementById('dm-title').value='';
-  document.getElementById('dm-desc').value='';
-  document.getElementById('dm-img').value='';
-  document.getElementById('dm-save').disabled=true;
-  document.getElementById('dm-overlay').classList.add('open');
-  setTimeout(()=>document.getElementById('dm-title').focus(),100);
-}
-function openDreamModal() {
-  dRealm='taste'; buildDRealmChips();
-  document.getElementById('dm-title').value='';
-  document.getElementById('dm-desc').value='';
-  document.getElementById('dm-img').value='';
-  document.getElementById('dm-save').disabled=true;
+  document.getElementById('dm-label').textContent='夢を地図に刻む';
   document.getElementById('dm-save').textContent='地図に刻む';
-  document.getElementById('dm-overlay').dataset.editId='';
+  document.getElementById('dm-title').value='';
+  document.getElementById('dm-desc').value='';
+  document.getElementById('dm-img').value='';
+  document.getElementById('dm-save').disabled=true;
   document.getElementById('dm-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('dm-title').focus(),100);
 }
-function closeDreamModal() { document.getElementById('dm-overlay').classList.remove('open'); }
-function dmOverlayClick(e) { if(e.target===document.getElementById('dm-overlay')) closeDreamModal(); }
-function saveDream() {
-  const title = document.getElementById('dm-title').value.trim();
-  if (!title) return;
-  const editId = document.getElementById('dm-overlay').dataset.editId;
-  if (editId) {
-    dreams = dreams.map(d => d.id===editId ? {
-      ...d, title,
-      desc: document.getElementById('dm-desc').value.trim(),
-      img: document.getElementById('dm-img').value.trim(),
-      realm: dRealm,
-    } : d);
-  } else {
-    dreams.push({
-      id: Date.now().toString(), title,
-      desc: document.getElementById('dm-desc').value.trim(),
-      img: document.getElementById('dm-img').value.trim(),
-      realm: dRealm, createdAt: new Date().toISOString(),
-    });
+function editDream(id){
+  const d=dreams.find(x=>x.id===id);if(!d)return;
+  _editDreamId=id;dRealm=d.realm||'taste';
+  buildDRealmChips();
+  document.getElementById('dm-label').textContent='夢を編集する';
+  document.getElementById('dm-save').textContent='更新する';
+  document.getElementById('dm-title').value=d.title||'';
+  document.getElementById('dm-desc').value=d.desc||'';
+  document.getElementById('dm-img').value=d.img||'';
+  document.getElementById('dm-save').disabled=false;
+  document.getElementById('dm-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('dm-title').focus(),100);
+}
+function closeDreamModal(){document.getElementById('dm-overlay').classList.remove('open');}
+function saveDream(){
+  const title=document.getElementById('dm-title').value.trim();if(!title)return;
+  if(_editDreamId){
+    dreams=dreams.map(d=>d.id===_editDreamId?{...d,title,
+      desc:document.getElementById('dm-desc').value.trim(),
+      img:document.getElementById('dm-img').value.trim(),
+      realm:dRealm}:d);
+  }else{
+    dreams.push({id:Date.now().toString(),title,
+      desc:document.getElementById('dm-desc').value.trim(),
+      img:document.getElementById('dm-img').value.trim(),
+      realm:dRealm,createdAt:new Date().toISOString()});
   }
-  saveD(); render(); closeDreamModal();
+  saveD();render();closeDreamModal();
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{
-  document.getElementById('qm-title').addEventListener('input', function(){
-    document.getElementById('qm-save').disabled = !this.value.trim();
+// ── Settings ──
+function openSettings(){
+  document.getElementById('st-url-display').textContent=window.location.origin+window.location.pathname;
+  document.getElementById('st-overlay').classList.add('open');
+}
+function closeSettings(){document.getElementById('st-overlay').classList.remove('open');}
+function copyUrl(){
+  navigator.clipboard.writeText(window.location.origin+window.location.pathname).then(()=>{
+    const btn=document.querySelector('.st-copy-btn');
+    btn.textContent='コピーしました ✓';
+    setTimeout(()=>{btn.textContent='URLをコピー';},2000);
   });
-  document.getElementById('dm-title').addEventListener('input', function(){
-    document.getElementById('dm-save').disabled = !this.value.trim();
+}
+
+// Input listeners
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('pjm-title').addEventListener('input',function(){
+    document.getElementById('pjm-save').disabled=!this.value.trim();
+  });
+  document.getElementById('qm-title').addEventListener('input',function(){
+    document.getElementById('qm-save').disabled=!this.value.trim();
+  });
+  document.getElementById('dm-title').addEventListener('input',function(){
+    document.getElementById('dm-save').disabled=!this.value.trim();
+  });
+  document.getElementById('ibm-title').addEventListener('input',function(){
+    document.getElementById('ibm-save').disabled=!this.value.trim();
   });
 });
 
-function checkUrlParam() {
-  const params = new URLSearchParams(window.location.search);
-  const u = params.get('url');
-  if (u) { history.replaceState({},'',window.location.pathname); setTimeout(()=>openQuestModal(decodeURIComponent(u)),300); }
+// URL param (shortcut integration)
+function checkUrlParam(){
+  const params=new URLSearchParams(window.location.search);
+  const u=params.get('url');
+  if(u){history.replaceState({},'',window.location.pathname);setTimeout(()=>openInboxModal(),300);
+    setTimeout(()=>{document.getElementById('ibm-url').value=decodeURIComponent(u);},350);}
 }
 
-function openSettings() {
-  document.getElementById('st-url-display').textContent = window.location.origin + window.location.pathname;
-  document.getElementById('st-overlay').classList.add('open');
-}
-function closeSettings() { document.getElementById('st-overlay').classList.remove('open'); }
-function stOverlayClick(e) { if(e.target===document.getElementById('st-overlay')) closeSettings(); }
-function copyUrl() {
-  const url = window.location.origin + window.location.pathname;
-  navigator.clipboard.writeText(url).then(()=>{
-    const btn = document.querySelector('.st-copy-btn');
-    btn.textContent = 'コピーしました ✓';
-    setTimeout(()=>{ btn.textContent = 'URLをコピー'; }, 2000);
-  });
-}
-
-load(); render(); checkUrlParam();
+load();render();checkUrlParam();
 </script>
 </body>
 </html>
