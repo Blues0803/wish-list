@@ -198,6 +198,118 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
 .st-step{display:flex;gap:10px;align-items:flex-start;}
 .st-step-num{width:22px;height:22px;min-width:22px;background:var(--gold);color:var(--ink);border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
 .st-step-text{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* NOTIFICATIONS & CELEBRATIONS */
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideUp{from{transform:translateY(0);opacity:1}to{transform:translateY(-100%);opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes questCheck{0%{transform:scale(1)}40%{transform:scale(1.3)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+
+/* Quest check sparkle */
+.quest-check.just-done{animation:questCheck .4s ease;}
+.sparkle-wrap{position:fixed;pointer-events:none;z-index:200;}
+.sparkle{position:absolute;width:6px;height:6px;border-radius:50%;animation:sparkle .6s ease forwards;}
+
+/* Job up banner */
+#job-banner{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:none;
+  background:linear-gradient(135deg,#1C2B3A 0%,#2A4A6A 100%);
+  padding:20px 20px 24px;
+  text-align:center;
+  box-shadow:0 4px 24px rgba(20,40,60,.4);
+}
+#job-banner.show{display:block;animation:slideDown .5s cubic-bezier(.34,1.56,.64,1);}
+#job-banner.hide{animation:slideUp .4s ease forwards;}
+.jb-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.jb-job{font-family:'Cinzel',serif;font-size:22px;font-weight:600;color:#fff;letter-spacing:.06em;margin-bottom:6px;}
+.jb-sub{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:14px;}
+.jb-btn{font-size:13px;padding:9px 22px;background:var(--gold);color:var(--ink);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;margin-right:8px;}
+.jb-close{font-size:13px;padding:9px 16px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:10px;cursor:pointer;font-family:inherit;}
+
+/* Title rank up */
+#title-banner{
+  position:fixed;inset:0;z-index:210;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(20,40,60,.7);backdrop-filter:blur(6px);
+}
+#title-banner.show{display:flex;animation:fadeIn .4s ease;}
+.tb-card{
+  background:var(--paper);border-radius:20px;
+  padding:32px 28px;text-align:center;
+  max-width:320px;width:90%;
+  box-shadow:0 8px 40px rgba(20,40,60,.3);
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+.tb-icon{font-size:40px;margin-bottom:12px;animation:float 2s ease infinite;}
+.tb-label{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.tb-title{font-family:'Cinzel',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.4;}
+.tb-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.tb-btn{width:100%;padding:12px;background:var(--ink);color:var(--parch);border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;}
+
+/* Ultimate celebration */
+#ult-banner{
+  position:fixed;inset:0;z-index:220;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(10,20,40,.85);backdrop-filter:blur(8px);
+}
+#ult-banner.show{display:flex;animation:fadeIn .6s ease;}
+.ub-card{text-align:center;max-width:340px;width:90%;animation:popIn .7s cubic-bezier(.34,1.56,.64,1);}
+.ub-glow{
+  font-family:'Cinzel',serif;font-size:13px;font-weight:600;
+  background:linear-gradient(90deg,#B8924A,#E8D080,#B8924A);
+  background-size:200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shimmer 2s linear infinite;
+  letter-spacing:.15em;margin-bottom:16px;
+}
+.ub-title{
+  font-family:'Cinzel',serif;font-size:22px;font-weight:600;
+  background:linear-gradient(135deg,#E8D080,#B8924A,#E8D080);
+  background-size:200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shimmer 3s linear infinite;
+  line-height:1.4;margin-bottom:12px;
+}
+.ub-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:24px;}
+.ub-btn{padding:12px 32px;background:linear-gradient(135deg,#B8924A,#E8D080);color:#1C2B3A;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;}
+.ub-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.ub-particle{position:absolute;width:4px;height:4px;border-radius:50%;animation:sparkle 1.5s ease infinite;}
+
+/* Quest check sparkle particles */
+.spark{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:300;animation:sparkle .8s ease forwards;}
+
+/* STATUS CARD */
+#sc-overlay{position:fixed;inset:0;background:rgba(20,40,60,.7);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+#sc-overlay.open{display:flex;}
+#sc-sheet{background:var(--paper);border-radius:22px 22px 0 0;padding:24px 20px 48px;width:100%;max-width:560px;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:16px;}
+.sc-title{font-family:'Cinzel',serif;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:.08em;text-align:center;}
+.sc-avatar-wrap{display:flex;justify-content:center;padding:8px 0;}
+.sc-job-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+.sc-job{font-family:'Cinzel',serif;font-size:14px;font-weight:600;color:var(--ink);background:var(--parch2);border:1px solid var(--line);border-radius:20px;padding:5px 16px;}
+.sc-title-badge{font-size:11px;font-weight:700;color:var(--gold);background:rgba(74,155,170,.1);border:1px solid rgba(74,155,170,.25);border-radius:20px;padding:4px 12px;letter-spacing:.04em;}
+.sc-ultimate{font-size:11px;font-weight:700;color:#B8924A;background:rgba(184,146,74,.1);border:1px solid rgba(184,146,74,.3);border-radius:20px;padding:4px 12px;letter-spacing:.04em;}
+.sc-stats{display:flex;flex-direction:column;gap:8px;}
+.sc-stat-row{display:flex;align-items:center;gap:10px;}
+.sc-stat-label{font-size:11px;font-weight:700;color:var(--muted);width:64px;flex-shrink:0;letter-spacing:.03em;}
+.sc-stat-bar{flex:1;height:8px;background:var(--parch2);border-radius:10px;overflow:hidden;}
+.sc-stat-fill{height:100%;border-radius:10px;transition:width .6s ease;}
+.sc-stat-val{font-size:11px;font-weight:700;color:var(--ink);width:28px;text-align:right;flex-shrink:0;}
+.sc-bio{background:linear-gradient(135deg,var(--parch) 0%,var(--parch2) 100%);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:13px;color:var(--ink);line-height:1.8;font-style:italic;position:relative;}
+.sc-bio::before{content:'❝';font-size:24px;color:var(--gold);opacity:.4;position:absolute;top:8px;left:12px;font-style:normal;}
+.sc-bio-text{padding-left:20px;}
+.sc-bio-loading{text-align:center;color:var(--faint);font-size:12px;padding:8px 0;}
+.sc-recommend{display:flex;flex-direction:column;gap:8px;}
+.sc-rec-title{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+.sc-rec-item{background:var(--parch);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13px;color:var(--ink);cursor:pointer;transition:background .15s;}
+.sc-rec-item:hover{background:var(--parch2);}
+.sc-rec-tag{font-size:10px;font-weight:700;margin-right:6px;padding:2px 7px;border-radius:20px;}
 </style>
 </head>
 <body>
@@ -211,6 +323,7 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
       </div>
       <div id="hdr-btns">
         <button class="btn-hdr icon" onclick="openSettings()">⚙</button>
+        <button class="btn-hdr icon" onclick="openStatusCard()" title="ステータスカード">🧙</button>
         <button class="btn-hdr" onclick="openDreamModal()">夢を記す</button>
         <button class="btn-hdr" onclick="openProjModal()">＋ 作戦</button>
         <button class="btn-hdr primary" onclick="openQuestModal()">＋</button>
@@ -240,6 +353,37 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
   <div id="empty" style="display:none">
     <div id="empty-icon">✦</div>
     <div id="empty-text">まだ記録がありません。<br>「＋」から冒険を始めよう。</div>
+  </div>
+</div>
+
+<!-- Job Up Banner -->
+<div id="job-banner">
+  <div class="jb-label">Job Change</div>
+  <div class="jb-job" id="jb-job-name">旅人</div>
+  <div class="jb-sub" id="jb-job-sub">冒険が新たなステージへ</div>
+  <button class="jb-btn" onclick="closeJobBanner();openStatusCard()">🧙 ステータスを確認</button>
+  <button class="jb-close" onclick="closeJobBanner()">あとで</button>
+</div>
+
+<!-- Title Rank Up Banner -->
+<div id="title-banner">
+  <div class="tb-card">
+    <div class="tb-icon">✦</div>
+    <div class="tb-label">New Title Unlocked</div>
+    <div class="tb-title" id="tb-title-name">名高き語り部</div>
+    <div class="tb-desc" id="tb-title-desc">称号が新たなランクに達しました。</div>
+    <button class="tb-btn" onclick="closeTitleBanner()">受け取る</button>
+  </div>
+</div>
+
+<!-- Ultimate Title Banner -->
+<div id="ult-banner">
+  <div class="ub-particles" id="ub-particles"></div>
+  <div class="ub-card">
+    <div class="ub-glow">✦ ULTIMATE TITLE UNLOCKED ✦</div>
+    <div class="ub-title" id="ub-title-name">言の葉の錬金術師</div>
+    <div class="ub-desc" id="ub-title-desc">伝説の称号が解放されました。<br>あなたの冒険は新たな次元へ。</div>
+    <button class="ub-btn" onclick="closeUltBanner()">✦ 称号を受け取る</button>
   </div>
 </div>
 
@@ -396,6 +540,45 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
       <button class="btn-cancel" onclick="closeProjModal()">もどる</button>
       <button class="btn-commit" id="pjm-save" onclick="saveProj()" disabled>立案する</button>
     </div>
+  </div>
+</div>
+
+<!-- Status Card Modal -->
+<div id="sc-overlay" onclick="if(event.target===this)closeStatusCard()">
+  <div id="sc-sheet">
+    <div class="sc-title">✦ あなたの冒険者</div>
+
+    <!-- Avatar -->
+    <div class="sc-avatar-wrap" style="position:relative;">
+      <div id="sc-avatar-img-wrap" style="display:none;width:160px;height:186px;border-radius:16px;overflow:hidden;border:2px solid var(--line);">
+        <img id="sc-avatar-img" src="" style="width:100%;height:100%;object-fit:cover;" alt="avatar">
+      </div>
+      <svg id="sc-avatar-svg" viewBox="0 0 120 140" width="160" height="186" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <!-- Avatar controls -->
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+      <input type="file" id="sc-avatar-file" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+      <button onclick="document.getElementById('sc-avatar-file').click()" style="font-size:12px;padding:7px 16px;background:var(--parch2);border:1px solid var(--line);border-radius:20px;color:var(--muted);cursor:pointer;font-family:inherit;">📷 アバター画像を設定</button>
+      <button id="sc-spell-btn" onclick="copyMagicSpell()" style="font-size:12px;padding:7px 16px;background:linear-gradient(135deg,#2A4A6A,#4A7A9A);border:none;border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-weight:600;letter-spacing:.03em;">✨ 魔法の呪文をコピー</button>
+      <div id="sc-spell-copied" style="display:none;font-size:11px;color:var(--gold);">呪文をコピーしました ✓</div>
+    </div>
+
+    <div class="sc-job-row">
+      <span class="sc-job" id="sc-job-label">見習い冒険者</span>
+      <span class="sc-title-badge" id="sc-title-label">—</span>
+    </div>
+    <div class="sc-stats" id="sc-stats"></div>
+    <div class="sc-bio">
+      <div class="sc-bio-text" id="sc-bio-text">
+        <div class="sc-bio-loading">冒険の記録を読み解いています...</div>
+      </div>
+    </div>
+    <div class="sc-recommend">
+      <div class="sc-rec-title">✦ Next Quest Recommendation</div>
+      <div id="sc-recs"><div class="sc-bio-loading">レコメンドを生成中...</div></div>
+    </div>
+    <button class="btn-cancel" style="width:100%;text-align:center;padding:12px;" onclick="closeStatusCard()">閉じる</button>
   </div>
 </div>
 
@@ -737,7 +920,18 @@ function toggleSec(id,togId){
   el.classList.toggle('collapsed');
   if(tog)tog.textContent=el.classList.contains('collapsed')?'▶':'▼';
 }
-function toggleQuest(id){quests=quests.map(x=>x.id===id?{...x,done:!x.done}:x);saveQ();render();}
+function toggleQuest(id){
+  quests=quests.map(x=>x.id===id?{...x,done:!x.done}:x);
+  saveQ();
+  // sparkle on complete
+  const wasJustDone = quests.find(x=>x.id===id)?.done;
+  if(wasJustDone) {
+    const btn = document.querySelector(`[onclick*="toggleQuest('${id}')"]`);
+    if(btn) questCheckSparkle(btn);
+    setTimeout(()=>checkStatusChange(), 300);
+  }
+  render();
+}
 function deleteQuest(id){if(!confirm('削除しますか？'))return;quests=quests.filter(x=>x.id!==id);saveQ();render();}
 function deleteDream(id){
   if(!confirm('この夢を削除しますか？'))return;
@@ -1066,6 +1260,535 @@ function saveDream(){
   saveD();render();closeDreamModal();
 }
 
+// ── NOTIFICATIONS & CELEBRATIONS ──
+const SK_PREV = 'lifemap_prev_status';
+
+function saveCurrentStatus(job, titleInfo) {
+  localStorage.setItem(SK_PREV, JSON.stringify({ job: job.id, title: titleInfo.title, isUlt: titleInfo.isUlt }));
+}
+
+function checkStatusChange() {
+  const stats = calcStats();
+  if(stats.total === 0) return;
+  const job = getJob(stats);
+  const titleInfo = getTitle(stats);
+  const prev = JSON.parse(localStorage.getItem(SK_PREV) || 'null');
+
+  if(!prev) { saveCurrentStatus(job, titleInfo); return; }
+
+  // Check ultimate first (highest priority)
+  if(!prev.isUlt && titleInfo.isUlt) {
+    saveCurrentStatus(job, titleInfo);
+    setTimeout(() => showUltBanner(titleInfo.title), 800);
+    return;
+  }
+
+  // Check title rank up
+  if(prev.title !== titleInfo.title && titleInfo.title !== '—' && !titleInfo.isUlt) {
+    saveCurrentStatus(job, titleInfo);
+    setTimeout(() => showTitleBanner(titleInfo.title), 600);
+    return;
+  }
+
+  // Check job change
+  if(prev.job !== job.id) {
+    saveCurrentStatus(job, titleInfo);
+    setTimeout(() => showJobBanner(job), 400);
+  }
+}
+
+function showJobBanner(job) {
+  const jobDescs = {
+    traveler:'新たな旅が始まる。',
+    knight:'美学と強さを手に入れた。',
+    bard:'言葉と物語が武器になる。',
+    scout:'誰も知らない場所を知っている。',
+    gourmet:'食と場所が人生を彩る。',
+    craftsman:'道具を極める者の道。',
+    sage:'知恵は最強の武器だ。',
+    explorer:'地図なき道を切り拓く。',
+    samurai:'美学と武を兼ね備えた。',
+    flaneur:'遊びを知る者だけが粋だ。',
+    alchemist:'知と技が融合した。',
+    master:'すべての道に通じた。',
+    seeker:'すべてを超えた求道者。',
+  };
+  document.getElementById('jb-job-name').textContent = job.name;
+  document.getElementById('jb-job-sub').textContent = jobDescs[job.id] || '冒険が新たなステージへ。';
+  const banner = document.getElementById('job-banner');
+  banner.classList.remove('hide');
+  banner.style.display = 'block';
+  banner.classList.add('show');
+  spawnParticles(banner);
+}
+function closeJobBanner() {
+  const banner = document.getElementById('job-banner');
+  banner.classList.add('hide');
+  setTimeout(() => { banner.style.display='none'; banner.classList.remove('show','hide'); }, 400);
+}
+
+function showTitleBanner(title) {
+  document.getElementById('tb-title-name').textContent = title;
+  document.getElementById('tb-title-desc').textContent = '称号が新たなランクに達しました。あなたの物語は深まっている。';
+  document.getElementById('title-banner').classList.add('show');
+}
+function closeTitleBanner() {
+  document.getElementById('title-banner').classList.remove('show');
+}
+
+function showUltBanner(title) {
+  document.getElementById('ub-title-name').textContent = title;
+  document.getElementById('title-banner').classList.remove('show');
+  const banner = document.getElementById('ult-banner');
+  banner.classList.add('show');
+  spawnUltParticles();
+}
+function closeUltBanner() {
+  document.getElementById('ult-banner').classList.remove('show');
+}
+
+function spawnUltParticles() {
+  const container = document.getElementById('ub-particles');
+  container.innerHTML = '';
+  const colors = ['#E8D080','#B8924A','#62B4C4','#fff','#9EC4E8'];
+  for(let i=0; i<30; i++) {
+    const p = document.createElement('div');
+    p.className = 'ub-particle';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay:${Math.random()*2}s;
+      animation-duration:${1+Math.random()*2}s;
+      width:${3+Math.random()*5}px;
+      height:${3+Math.random()*5}px;
+    `;
+    container.appendChild(p);
+  }
+}
+
+function spawnParticles(anchor) {
+  const rect = anchor ? anchor.getBoundingClientRect() : {left:window.innerWidth/2, top:100};
+  const colors = ['#62B4C4','#4A9BAA','#9EC4E8','#fff','#E8D080'];
+  for(let i=0; i<12; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const angle = (Math.PI*2/12)*i;
+    const dist = 40+Math.random()*40;
+    s.style.cssText = `
+      left:${rect.left+rect.width/2 + Math.cos(angle)*dist}px;
+      top:${(rect.top||100) + 40 + Math.sin(angle)*dist}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay:${Math.random()*.3}s;
+    `;
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 900);
+  }
+}
+
+// Quest check sparkle
+function questCheckSparkle(btn) {
+  btn.classList.add('just-done');
+  setTimeout(()=>btn.classList.remove('just-done'), 400);
+  const rect = btn.getBoundingClientRect();
+  const colors = ['#62B4C4','#4A9BAA','#E8D080','#9EC4E8'];
+  for(let i=0; i<8; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const angle = (Math.PI*2/8)*i;
+    const dist = 20+Math.random()*20;
+    s.style.cssText = `
+      left:${rect.left+rect.width/2+Math.cos(angle)*dist}px;
+      top:${rect.top+rect.height/2+Math.sin(angle)*dist}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${4+Math.random()*4}px;height:${4+Math.random()*4}px;
+      animation-delay:${Math.random()*.2}s;
+    `;
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 900);
+  }
+}
+
+// ── STATUS CARD ──
+const JOBS = [
+  { id:'novice',   name:'見習い冒険者', cond: s=>s.total<10 },
+  { id:'traveler', name:'旅人',         cond: s=>s.total>=10 && s.total<20 },
+  { id:'knight',   name:'騎士',         cond: s=>s.armor>=20 && s.rate>=0.6 },
+  { id:'bard',     name:'吟遊詩人',     cond: s=>s.tome+s.skill>=20 },
+  { id:'scout',    name:'斥候',         cond: s=>s.dungeon>=15 },
+  { id:'gourmet',  name:'美食家',       cond: s=>s.guild>=15 },
+  { id:'craftsman',name:'職人',         cond: s=>s.weapon>=15 },
+  { id:'sage',     name:'賢者',         cond: s=>s.tome+s.skill>=30 && s.rate>=0.6 },
+  { id:'explorer', name:'探索者',       cond: s=>s.dungeon>=25 },
+  { id:'master',   name:'万能者',       cond: s=>s.armor>=5&&s.weapon>=5&&s.skill>=5&&s.dungeon>=5&&s.guild>=5&&s.tome>=5 },
+  // 複合職
+  { id:'samurai',  name:'武芸者',       cond: s=>s.armor>=10&&s.weapon>=10 },
+  { id:'flaneur',  name:'遊び人',       cond: s=>s.dungeon>=10&&s.guild>=10 },
+  { id:'alchemist',name:'錬金術師',     cond: s=>s.weapon>=10&&s.tome>=10 },
+  { id:'seeker',   name:'求道者',       cond: s=>s.total>=50&&s.rate>=0.7 },
+];
+
+const TITLE_TRACKS = {
+  taste:     { ranks:['着道楽','美の探求者','様式の継承者'], ultimate:'✦ 美を纏う粋道者',   cond:(s)=>s.armor, ult:(s)=>s.armor>=30&&s.rate>=0.7 },
+  narrative: { ranks:['語り部','名高き語り部','伝説の語り部'],ultimate:'✦ 言の葉の錬金術師', cond:(s)=>s.tome+s.skill, ult:(s)=>s.tome+s.skill>=40&&s.rate>=0.7 },
+  ajito:     { ranks:['場所知り','隠れ家の主','伝説の案内人'],ultimate:'✦ 秘境を知る遊行者', cond:(s)=>s.dungeon, ult:(s)=>s.dungeon>=30&&s.rate>=0.7 },
+  gear:      { ranks:['道具好き','熟練の使い手','道具の求道者'],ultimate:'✦ 神工の機巧師',   cond:(s)=>s.weapon, ult:(s)=>s.weapon>=30&&s.rate>=0.7 },
+  aura:      { ranks:['座の温め手','人を惹く者','場の支配者'],  ultimate:'✦ 燈火の英傑',     cond:(s)=>s.guild, ult:(s)=>s.guild>=25&&s.total>=50&&s.rate>=0.75 },
+};
+
+const STAT_COLORS = {
+  Style:'#7A9EC4', Mastery:'#5A8EAA', Wisdom:'#5A9E8A', Valor:'#7A7EC4', Charm:'#8A9EBA'
+};
+
+function calcStats() {
+  const done = quests.filter(x=>x.done);
+  const all  = quests;
+  const s = {
+    total: all.length, doneTotal: done.length,
+    rate: all.length>0 ? done.length/all.length : 0,
+    armor:   all.filter(x=>x.type==='armor').length,
+    weapon:  all.filter(x=>x.type==='weapon').length,
+    skill:   all.filter(x=>x.type==='skill').length,
+    dungeon: all.filter(x=>x.type==='dungeon').length,
+    guild:   all.filter(x=>x.type==='guild').length,
+    tome:    all.filter(x=>x.type==='tome').length,
+  };
+  // 5軸スコア（0-100）
+  const mx = Math.max(s.armor,s.weapon,s.skill,s.dungeon,s.guild,s.tome,1);
+  s.scores = {
+    Style:   Math.round(s.armor  /mx*100),
+    Mastery: Math.round(s.weapon /mx*100),
+    Wisdom:  Math.round((s.skill+s.tome)/2/mx*100),
+    Valor:   Math.round(s.dungeon/mx*100),
+    Charm:   Math.round(s.guild  /mx*100),
+  };
+  return s;
+}
+
+function getJob(s) {
+  const advanced = JOBS.filter(j=>!['novice','traveler'].includes(j.id) && j.cond(s));
+  if(advanced.length>0) return advanced[advanced.length-1];
+  return JOBS.find(j=>j.cond(s)) || JOBS[0];
+}
+
+function getTitle(s) {
+  // find dominant axis
+  const axes = Object.entries({
+    taste:s.armor, narrative:s.tome+s.skill,
+    ajito:s.dungeon, gear:s.weapon, aura:s.guild
+  }).sort((a,b)=>b[1]-a[1]);
+  const top = axes[0][0];
+  const track = TITLE_TRACKS[top];
+  if(track.ult(s)) return { title: track.ultimate, isUlt: true };
+  const score = track.cond(s);
+  if(score>=15) return { title: track.ranks[2], isUlt:false };
+  if(score>=8)  return { title: track.ranks[1], isUlt:false };
+  if(score>=3)  return { title: track.ranks[0], isUlt:false };
+  return { title: '—', isUlt:false };
+}
+
+function drawAvatar(job, scores) {
+  const svg = document.getElementById('sc-avatar-svg');
+  const jobId = job.id;
+  // color scheme by dominant stat
+  const dom = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+  const colors = {
+    Style:'#7A9EC4', Mastery:'#5A8EAA', Wisdom:'#5A9E8A', Valor:'#7A7EC4', Charm:'#C4909A'
+  };
+  const c = colors[dom] || '#7A9EC4';
+  const dark = '#1C2B3A';
+
+  // Base SVG - cute round character
+  let extras = '';
+
+  // Job-based accessories
+  if(['knight','samurai'].includes(jobId)) {
+    extras += `<rect x="18" y="58" width="8" height="24" rx="3" fill="${c}" opacity=".8"/>
+               <rect x="94" y="58" width="8" height="24" rx="3" fill="${c}" opacity=".8"/>`;
+  }
+  if(['bard','sage','alchemist'].includes(jobId)) {
+    extras += `<ellipse cx="90" cy="75" rx="12" ry="6" fill="#B8924A" opacity=".7"/>
+               <rect x="84" y="69" width="4" height="20" rx="2" fill="#8A6A3A"/>`;
+  }
+  if(['scout','explorer'].includes(jobId)) {
+    extras += `<path d="M28 45 Q20 35 30 30 Q40 25 38 38 Z" fill="#5A9E8A" opacity=".8"/>`;
+  }
+  if(['gourmet','flaneur'].includes(jobId)) {
+    extras += `<ellipse cx="88" cy="80" rx="10" ry="10" fill="#F7FAFB" stroke="${c}" stroke-width="2"/>
+               <line x1="83" y1="72" x2="83" y2="88" stroke="${c}" stroke-width="1.5"/>
+               <line x1="88" y1="72" x2="88" y2="88" stroke="${c}" stroke-width="1.5"/>`;
+  }
+  if(['craftsman','master','seeker'].includes(jobId)) {
+    extras += `<rect x="82" y="68" width="18" height="6" rx="2" fill="#8A6A3A"/>
+               <rect x="86" y="60" width="4" height="12" rx="1" fill="#5A4A2A"/>`;
+  }
+
+  // Aura for advanced jobs
+  const advJobs = ['sage','seeker','master','explorer'];
+  const aura = advJobs.includes(jobId) ?
+    `<ellipse cx="60" cy="75" rx="48" ry="52" fill="${c}" opacity=".06"/>
+     <ellipse cx="60" cy="75" rx="40" ry="44" fill="${c}" opacity=".06"/>` : '';
+
+  // Hat for traveler+
+  const hat = ['novice'].includes(jobId) ? '' :
+    `<ellipse cx="60" cy="30" rx="26" ry="6" fill="${dark}" opacity=".8"/>
+     <rect x="46" y="14" width="28" height="18" rx="8" fill="${dark}" opacity=".8"/>`;
+
+  svg.innerHTML = `
+    ${aura}
+    <!-- Shadow -->
+    <ellipse cx="60" cy="128" rx="28" ry="6" fill="#000" opacity=".08"/>
+    <!-- Body -->
+    <ellipse cx="60" cy="88" rx="30" ry="34" fill="${c}" opacity=".15"/>
+    <ellipse cx="60" cy="86" rx="28" ry="32" fill="${c}" opacity=".25"/>
+    <!-- Legs -->
+    <ellipse cx="48" cy="118" rx="10" ry="8" fill="${c}" opacity=".7"/>
+    <ellipse cx="72" cy="118" rx="10" ry="8" fill="${c}" opacity=".7"/>
+    <!-- Arms -->
+    <ellipse cx="26" cy="82" rx="9" ry="14" fill="${c}" opacity=".6" transform="rotate(-10,26,82)"/>
+    <ellipse cx="94" cy="82" rx="9" ry="14" fill="${c}" opacity=".6" transform="rotate(10,94,82)"/>
+    <!-- Body main -->
+    <ellipse cx="60" cy="90" rx="26" ry="30" fill="${c}"/>
+    <!-- Belly -->
+    <ellipse cx="60" cy="96" rx="16" ry="18" fill="#fff" opacity=".35"/>
+    <!-- Head -->
+    <ellipse cx="60" cy="46" rx="28" ry="26" fill="${c}"/>
+    ${hat}
+    <!-- Eyes -->
+    <ellipse cx="50" cy="44" rx="5" ry="6" fill="#fff"/>
+    <ellipse cx="70" cy="44" rx="5" ry="6" fill="#fff"/>
+    <ellipse cx="51" cy="45" rx="3" ry="3.5" fill="${dark}"/>
+    <ellipse cx="71" cy="45" rx="3" ry="3.5" fill="${dark}"/>
+    <ellipse cx="52" cy="44" rx="1" ry="1" fill="#fff"/>
+    <ellipse cx="72" cy="44" rx="1" ry="1" fill="#fff"/>
+    <!-- Cheeks -->
+    <ellipse cx="44" cy="52" rx="6" ry="4" fill="#FF9EA0" opacity=".4"/>
+    <ellipse cx="76" cy="52" rx="6" ry="4" fill="#FF9EA0" opacity=".4"/>
+    <!-- Smile -->
+    <path d="M52 56 Q60 62 68 56" stroke="${dark}" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Accessories -->
+    ${extras}
+    <!-- Sparkle for ultimate -->
+  `;
+}
+
+function renderStats(scores) {
+  document.getElementById('sc-stats').innerHTML = Object.entries(scores).map(([k,v])=>`
+    <div class="sc-stat-row">
+      <span class="sc-stat-label">${k}</span>
+      <div class="sc-stat-bar"><div class="sc-stat-fill" style="width:${v}%;background:${STAT_COLORS[k]}"></div></div>
+      <span class="sc-stat-val">${v}</span>
+    </div>`).join('');
+}
+
+async function generateBio(stats, job, titleInfo) {
+  const questTitles = quests.slice(0,20).map(q=>q.title).join('、');
+  const projNames = projects.map(p=>p.name).join('、');
+  const prompt = `あなたはRPGの語り部です。以下のデータを元に、この冒険者のキャラクター背景を2〜3文で語ってください。実際のクエスト内容を拾って、その人らしい具体的なエピソードを含めてください。語り口は味わい深く、少しユーモアを交えて。
+
+ジョブ：${job.name}
+称号：${titleInfo.title}
+クエスト例：${questTitles || 'まだ記録なし'}
+作戦：${projNames || 'まだ記録なし'}
+スコア：Style ${stats.scores.Style} / Mastery ${stats.scores.Mastery} / Wisdom ${stats.scores.Wisdom} / Valor ${stats.scores.Valor} / Charm ${stats.scores.Charm}
+
+日本語で、2〜3文のみ。鉤括弧や前置きは不要。`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:300,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '記録が少なく、まだ全貌が見えない。しかし、その歩みは確実に始まっている。';
+    document.getElementById('sc-bio-text').textContent = text;
+  } catch {
+    document.getElementById('sc-bio-text').textContent = 'クエストを積み重ねると、あなたの物語が見えてくる。';
+  }
+}
+
+async function generateRecommendations(stats, job) {
+  const questTitles = quests.slice(0,15).map(q=>`${q.type}:${q.title}`).join('、');
+  const prompt = `以下の冒険者データを元に、次に挑戦すべきクエストを3つ提案してください。
+ジョブ：${job.name}、クエスト例：${questTitles || 'なし'}
+
+以下のJSON形式のみで返してください（前置き・説明・バッククォート不要）：
+[{"type":"armor","title":"提案内容"},{"type":"skill","title":"提案内容"},{"type":"dungeon","title":"提案内容"}]
+
+typeはarmor/weapon/skill/dungeon/guild/tomeのいずれか。titleは具体的な日本語で20文字以内。`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:300,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.[0]?.text||'[]';
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const recs = JSON.parse(clean);
+    const typeMap = {armor:'⚔️ 装備',weapon:'🪄 武器',skill:'📜 スキル',dungeon:'🏰 ダンジョン',guild:'🍺 ギルド酒場',tome:'📖 魔導書'};
+    const clsMap = {armor:'type-armor',weapon:'type-weapon',skill:'type-skill',dungeon:'type-dungeon',guild:'type-guild',tome:'type-tome'};
+    document.getElementById('sc-recs').innerHTML = recs.map(r=>`
+      <div class="sc-rec-item" onclick="openQuestModal()">
+        <span class="sc-rec-tag quest-tag ${clsMap[r.type]||''}">${typeMap[r.type]||r.type}</span>
+        ${esc(r.title)}
+      </div>`).join('');
+  } catch {
+    document.getElementById('sc-recs').innerHTML = '<div style="font-size:12px;color:var(--faint);padding:8px">クエストを増やすとレコメンドが生成されます</div>';
+  }
+}
+
+function openStatusCard() {
+  const stats = calcStats();
+  const job = getJob(stats);
+  const titleInfo = getTitle(stats);
+
+  document.getElementById('sc-job-label').textContent = job.name;
+  const titleEl = document.getElementById('sc-title-label');
+  titleEl.textContent = titleInfo.title;
+  if(titleInfo.isUlt) {
+    titleEl.className = 'sc-ultimate';
+  } else {
+    titleEl.className = 'sc-title-badge';
+  }
+
+  // Show custom avatar if set
+  const savedAvatar = localStorage.getItem('lifemap_avatar');
+  if(savedAvatar) {
+    document.getElementById('sc-avatar-img').src = savedAvatar;
+    document.getElementById('sc-avatar-img-wrap').style.display = 'block';
+    document.getElementById('sc-avatar-svg').style.display = 'none';
+  } else {
+    document.getElementById('sc-avatar-img-wrap').style.display = 'none';
+    document.getElementById('sc-avatar-svg').style.display = 'block';
+    drawAvatar(job, stats.scores);
+  }
+
+  // Store current job/title for spell generation
+  document.getElementById('sc-overlay').dataset.job = job.name;
+  document.getElementById('sc-overlay').dataset.title = titleInfo.title;
+  document.getElementById('sc-overlay').dataset.scores = JSON.stringify(stats.scores);
+
+  renderStats(stats.scores);
+  document.getElementById('sc-bio-text').innerHTML = '<div class="sc-bio-loading">物語を紡いでいます...</div>';
+  document.getElementById('sc-recs').innerHTML = '<div class="sc-bio-loading">レコメンドを生成中...</div>';
+  document.getElementById('sc-spell-copied').style.display = 'none';
+  document.getElementById('sc-overlay').classList.add('open');
+
+  generateBio(stats, job, titleInfo);
+  generateRecommendations(stats, job);
+}
+function closeStatusCard() { document.getElementById('sc-overlay').classList.remove('open'); }
+
+function handleAvatarUpload(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    // compress
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const max = 400;
+      let w = img.width, h = img.height;
+      if(w > max) { h = Math.round(h*max/w); w = max; }
+      if(h > max) { w = Math.round(w*max/h); h = max; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const data = canvas.toDataURL('image/jpeg', 0.75);
+      localStorage.setItem('lifemap_avatar', data);
+      document.getElementById('sc-avatar-img').src = data;
+      document.getElementById('sc-avatar-img-wrap').style.display = 'block';
+      document.getElementById('sc-avatar-svg').style.display = 'none';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function copyMagicSpell() {
+  const overlay = document.getElementById('sc-overlay');
+  const job = overlay.dataset.job || '見習い冒険者';
+  const title = overlay.dataset.title || '—';
+  const scores = JSON.parse(overlay.dataset.scores || '{}');
+
+  // Dominant stat → visual style
+  const domEntry = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  const dom = domEntry ? domEntry[0] : 'Style';
+  const styleMap = {
+    Style:   '洗練されたファッションセンスを持ち、細部までこだわった装いの',
+    Mastery: '職人気質で道具への執着が強く、ギアに囲まれた',
+    Wisdom:  '知的で物語を語れる、本や巻物を手にした',
+    Valor:   '冒険心旺盛で地図やコンパスを携えた',
+    Charm:   '場を温める笑顔と、杯を片手に持つ魅力的な',
+  };
+  const styleDesc = styleMap[dom] || '';
+
+  // Job → accessories
+  const accessMap = {
+    '見習い冒険者': 'シンプルな旅装束',
+    '旅人':         '軽装のトラベルコートとバックパック',
+    '騎士':         '洗練された鎧と盾',
+    '吟遊詩人':     '羽根ペンと古い本',
+    '斥候':         'コンパスと地図',
+    '美食家':       'ワイングラスとメニュー表',
+    '職人':         '工具ベルトと精巧な道具',
+    '賢者':         '魔法書と輝くオーブ',
+    '探索者':       '冒険地図と双眼鏡',
+    '万能者':       '様々な道具をベルトに携えた',
+    '武芸者':       '刀と盾を両手に持つ',
+    '遊び人':       'おしゃれな帽子とステッキ',
+    '錬金術師':     '試験管と魔法書',
+    '求道者':       '光り輝くオーラを纏った',
+  };
+  const accessory = accessMap[job] || 'シンプルな装備';
+
+  const questKeywords = quests.slice(0,10).map(q=>q.title).join('・') || 'まだ記録なし';
+  const projKeywords = projects.map(p=>p.name).join('・') || 'なし';
+
+  const spell = `【Life Map アバター生成プロンプト】
+
+モンスト（モンスターストライク）風のアニメイラストスタイルで、以下のキャラクターを描いてください。
+
+キャラクター設定：
+・ジョブ：${job}
+・称号：${title}
+・外見：${styleDesc}男性キャラクター
+・装備・小道具：${accessory}
+・雰囲気：北欧サマーの爽やかさ、知性とユーモアを兼ね備えた大人の男
+
+ビジュアル指示：
+・モンスト特有のぷっくりとした丸みのある体型
+・大きくてくりくりした瞳
+・鮮やかな色彩、青・白・水色を基調
+・躍動感のあるポーズ
+・背景は北欧の夏の海辺か森
+・縦長構図、白または薄い背景
+
+インスピレーション（実際の興味・関心）：
+${questKeywords}
+
+作戦（目標）：
+${projKeywords}
+
+このキャラクターが冒険の旅に出るような、ワクワクする一枚をお願いします。`;
+
+  navigator.clipboard.writeText(spell).then(() => {
+    const copied = document.getElementById('sc-spell-copied');
+    copied.style.display = 'block';
+    setTimeout(() => { copied.style.display = 'none'; }, 3000);
+  });
+}
+
 // ── Settings ──
 function openSettings(){
   document.getElementById('st-url-display').textContent=window.location.origin+window.location.pathname;
@@ -1104,7 +1827,7 @@ function checkUrlParam(){
     setTimeout(()=>{document.getElementById('ibm-url').value=decodeURIComponent(u);},350);}
 }
 
-load();render();checkUrlParam();
+load();render();checkUrlParam();setTimeout(()=>checkStatusChange(),500);
 </script>
 </body>
 </html>
