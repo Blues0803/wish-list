@@ -236,7 +236,13 @@ body{background:var(--parch);font-family:'Noto Sans JP',sans-serif;min-height:10
 </div>
 
 <div id="main">
-  <div id="card-list"></div>
+  
+<div id="migrate-banner" style="background:#1C2B3A;border:2px solid #4A9BAA;border-radius:14px;padding:18px;margin-bottom:16px;text-align:center;">
+  <div style="font-family:'Cinzel',serif;color:#62B4C4;font-size:15px;margin-bottom:8px;">⚠ データ移行が必要です</div>
+  <div style="font-size:12px;color:#96B4C4;margin-bottom:14px;line-height:1.6">以前のバージョンのデータを<br>新しいバージョンに移行します</div>
+  <button onclick="migrateData()" style="background:#4A9BAA;color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">データを移行する</button>
+</div>
+<div id="card-list"></div>
   <div id="empty" style="display:none">
     <div id="empty-icon">✦</div>
     <div id="empty-text">まだ記録がありません。<br>「＋」から冒険を始めよう。</div>
@@ -1103,6 +1109,20 @@ function checkUrlParam(){
   const u=params.get('url');
   if(u){history.replaceState({},'',window.location.pathname);setTimeout(()=>openInboxModal(),300);
     setTimeout(()=>{document.getElementById('ibm-url').value=decodeURIComponent(u);},350);}
+}
+
+
+function migrateData() {
+  const q = localStorage.getItem('lifemap_q_v2');
+  const d = localStorage.getItem('lifemap_d_v2');
+  const p = localStorage.getItem('lifemap_p_v2');
+  const i = localStorage.getItem('lifemap_i_v2');
+  if (q) localStorage.setItem('lifemap_q_v3', q);
+  if (d) localStorage.setItem('lifemap_d_v3', d);
+  if (p) localStorage.setItem('lifemap_p_v3', p);
+  if (i) localStorage.setItem('lifemap_i_v3', i);
+  document.getElementById('migrate-banner').innerHTML = '<div style="color:#4A9BAA;font-size:15px;font-weight:700;padding:8px">✓ 移行完了！ページを再読み込みします...</div>';
+  setTimeout(() => location.reload(), 1500);
 }
 
 load();render();checkUrlParam();
