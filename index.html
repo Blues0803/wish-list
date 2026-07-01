@@ -583,9 +583,9 @@ function renderQCard(x){
   const type=QUEST_TYPES.find(t=>t.id===x.type);
   const pri=PRIORITIES.find(p=>p.id===x.priority);
   const links=x.links||[];
-  return`<div class="quest-card ${x.done?'done':''}">
+  return`<div class="quest-card ${x.done?'done':''}" onclick="editQuest('${x.id}')" style="cursor:pointer;">
     <div class="quest-card-top">
-      <button class="quest-check ${x.done?'done':''}" onclick="toggleQuest('${x.id}')">${x.done?'✓':''}</button>
+      <button class="quest-check ${x.done?'done':''}" onclick="event.stopPropagation();toggleQuest('${x.id}')">${x.done?'✓':''}</button>
       <div class="quest-body">
         <div class="quest-title">${esc(x.title)}</div>
         ${x.price?`<div class="quest-price">${fmtPrice(x.price)}</div>`:''}
@@ -596,14 +596,13 @@ function renderQCard(x){
         </div>
       </div>
       <div class="quest-actions">
-        <button class="quest-edit" onclick="editQuest('${x.id}')">✎</button>
-        <button class="quest-del" onclick="deleteQuest('${x.id}')">×</button>
+        <button class="quest-del" onclick="event.stopPropagation();deleteQuest('${x.id}')">×</button>
       </div>
     </div>
     ${x.memo?`<div class="quest-memo">${esc(x.memo)}</div>`:''}
     ${x.imgData?`<div class="quest-img"><img src="${x.imgData}" alt=""></div>`:''}
     ${links.length>0?`<div class="quest-links">${links.map(u=>`
-      <a class="quest-link" href="${esc(u)}" target="_blank" rel="noopener noreferrer">
+      <a class="quest-link" href="${esc(u)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
         ${getFavicon(u)?`<img src="${getFavicon(u)}" width="13" height="13" onerror="this.style.display='none'" alt="">`:''}
         <span class="quest-link-domain">${esc(getDomain(u)||u)}</span>
         <span style="color:var(--faint);flex-shrink:0">↗</span>
